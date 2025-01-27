@@ -3,20 +3,18 @@ package com.kipcollo.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.kipcollo.dto.CustomerRequest;
 import com.kipcollo.dto.CustomerResponse;
 import com.kipcollo.service.CustomerService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
 
    private final CustomerService service;
@@ -26,9 +24,27 @@ public class CustomerController {
       return ResponseEntity.ok(service.getAllCustomers());
    }
 
-   // @PostMapping
-   // public ResponseEntity<String> addCustomer(@RequestBody CustomerRequest customer) {
-   //    return ResponseEntity.created(service.createCustomer(customer));
-   // }
+   @GetMapping("/{customerId")
+   public ResponseEntity<CustomerResponse> getCustomer(@PathVariable("customerId") Integer customerId){
+       return ResponseEntity.ok(service.getCustomerById(customerId));
+   }
+
+    @PostMapping
+    public ResponseEntity<String> addCustomer(@RequestBody CustomerRequest customer) {
+       return ResponseEntity.ok(service.createCustomer(customer));
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> updateCustomer(@RequestBody CustomerRequest customer) {
+       service.updateCustomer(customer);
+       return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{customerId}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable("customerId") Integer customerId) {
+       service.deleteCustomer(customerId);
+       return ResponseEntity.ok().build();
+    }
+
    
 }

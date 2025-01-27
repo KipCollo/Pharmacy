@@ -1,15 +1,13 @@
 package com.kipcollo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,5 +25,12 @@ public class Medicine {
    private String name;
    private String description;
    private MedicineType type;
+   @Column(nullable = false)
+   private String manufacturer;
+   private LocalDate expiryDate;
+   @Column(nullable = false)
+   private int stockQuantity;
+   @Column(nullable = false)
+   private double price;
 
 }

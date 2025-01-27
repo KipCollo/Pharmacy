@@ -45,6 +45,7 @@ public class Customer implements UserDetails, Principal{
    private int customerId;
    private String firstName;
    private String lastName;
+   private int age;
    private String password;
    private LocalDate dateOfBirthDate;
    private String phone;
