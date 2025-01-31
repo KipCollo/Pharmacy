@@ -28,6 +28,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,6 +36,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @EntityListeners(AuditingEntityListener.class)
+@Validated
 
 @Entity
 @Table(name="user")
@@ -52,6 +54,8 @@ public class Customer implements UserDetails, Principal{
    @Column(unique = true)
    private String email;
    private String location;
+   private boolean accountLocked;
+   private boolean enabled;
    @Column(updatable = false,nullable = false)
    @CreatedDate
    private LocalDateTime createdDate;
@@ -65,7 +69,7 @@ public class Customer implements UserDetails, Principal{
    public Collection<? extends GrantedAuthority> getAuthorities() {
       return this.roles
                   .stream()
-                  .map(r -> new SimpleGrantedAuthority(r.getName()))
+                  .map(role -> new SimpleGrantedAuthority(role.getName()))
                   .collect(Collectors.toList());
    }
    @Override
@@ -81,7 +85,7 @@ public class Customer implements UserDetails, Principal{
       return email;
    }
 
-   private String fullname(){
+   public String fullname(){
       return firstName + " " + lastName;
    }
 }

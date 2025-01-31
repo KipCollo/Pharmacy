@@ -2,6 +2,7 @@ package com.kipcollo.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/customers")
+@RequestMapping("customers")
 public class CustomerController {
 
    private final CustomerService service;
@@ -30,12 +31,12 @@ public class CustomerController {
    }
 
     @PostMapping
-    public ResponseEntity<String> addCustomer(@RequestBody CustomerRequest customer) {
+    public ResponseEntity<String> addCustomer(@RequestBody @Valid CustomerRequest customer) {
        return ResponseEntity.ok(service.createCustomer(customer));
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateCustomer(@RequestBody CustomerRequest customer) {
+    public ResponseEntity<Void> updateCustomer(@RequestBody @Valid CustomerRequest customer) {
        service.updateCustomer(customer);
        return ResponseEntity.ok().build();
     }
