@@ -2,11 +2,9 @@ package com.kipcollo.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import com.kipcollo.dto.CustomerRequest;
 import com.kipcollo.dto.CustomerResponse;
 import io.micrometer.common.util.StringUtils;
-import org.apache.catalina.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import com.kipcollo.model.Customer;

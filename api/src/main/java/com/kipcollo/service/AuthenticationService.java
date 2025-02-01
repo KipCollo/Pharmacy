@@ -30,10 +30,11 @@ public class AuthenticationService {
     private String activationUrl;
 
     public void register(RegistrationRequest request) throws MessagingException {
-        var userRole = roleRepository.findByName("ROLE_USER")
+        var userRole = roleRepository.findByName("USER")
                 .orElseThrow(()-> new IllegalArgumentException("ROLE USER was not initialised"));
 
-        var user = Customer.builder()
+        var user = Customer
+                .builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())

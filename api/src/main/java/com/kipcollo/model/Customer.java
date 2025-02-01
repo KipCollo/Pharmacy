@@ -63,14 +63,11 @@ public class Customer implements UserDetails, Principal{
    @Column(insertable = false)
    private LocalDateTime lastModifiedDate;
    @ManyToMany(fetch = FetchType.EAGER)
-   private List<Role> roles;
+   private List<Roles> roles;
 
    @Override
    public Collection<? extends GrantedAuthority> getAuthorities() {
-      return this.roles
-                  .stream()
-                  .map(role -> new SimpleGrantedAuthority(role.getName()))
-                  .collect(Collectors.toList());
+      return null;
    }
    @Override
    public String getPassword() {

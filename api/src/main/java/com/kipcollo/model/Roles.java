@@ -30,7 +30,7 @@ import lombok.Setter;
 @EntityListeners(AuditingEntityListener.class)
 
 @Entity
-public class Role {
+public class Roles {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)

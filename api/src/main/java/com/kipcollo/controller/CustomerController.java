@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("customers")
+@RequestMapping("/customers")
 public class CustomerController {
 
    private final CustomerService service;
@@ -25,7 +25,7 @@ public class CustomerController {
       return ResponseEntity.ok(service.getAllCustomers());
    }
 
-   @GetMapping("/{customerId")
+   @GetMapping("/{customerId}")
    public ResponseEntity<CustomerResponse> getCustomer(@PathVariable("customerId") Integer customerId){
        return ResponseEntity.ok(service.getCustomerById(customerId));
    }
