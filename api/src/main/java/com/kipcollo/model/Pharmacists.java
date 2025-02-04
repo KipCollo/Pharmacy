@@ -14,15 +14,15 @@ import java.util.List;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "doctor")
-public class Doctor {
+@Table(name = "pharmacist")
+public class Pharmacists {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer doctorId;
+    @GeneratedValue
+    private Integer id;
     private String license;
     private String email;
     @OneToMany
-    private List<Prescriptions> prescriptions;
-
+    @JoinColumn
+    private List<Orders> orders;
 }

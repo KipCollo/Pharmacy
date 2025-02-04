@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,15 +15,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,7 +31,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 
 @Entity
-@Table(name="user")
+@Table(name="users")
 public class Customer implements UserDetails, Principal{
 
    @Id
@@ -47,13 +39,14 @@ public class Customer implements UserDetails, Principal{
    private int customerId;
    private String firstName;
    private String lastName;
-   private int age;
-   private String password;
    private LocalDate dateOfBirthDate;
-   private String phone;
    @Column(unique = true)
    private String email;
+   private String password;
+   private String phone;
    private String location;
+   @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+   private List<Orders> orders;
    private boolean accountLocked;
    private boolean enabled;
    @Column(updatable = false,nullable = false)
@@ -67,7 +60,9 @@ public class Customer implements UserDetails, Principal{
 
    @Override
    public Collection<? extends GrantedAuthority> getAuthorities() {
-      return null;
+      return this.roles.stream()
+              .map(r -> new SimpleGrantedAuthority(r.getName()))
+              .collect(Collectors.toList());
    }
    @Override
    public String getPassword() {

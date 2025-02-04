@@ -32,5 +32,8 @@ public class Medicine {
    private int stockQuantity;
    @Column(nullable = false)
    private double price;
+   @ManyToOne
+   @JoinColumn(name = "supplierId")
+   private Suppliers suppliers;
 
 }

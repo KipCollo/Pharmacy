@@ -3,19 +3,13 @@ package com.kipcollo.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +24,7 @@ import lombok.Setter;
 @EntityListeners(AuditingEntityListener.class)
 
 @Entity
+@Table(name = "roles")
 public class Roles {
 
    @Id
@@ -46,4 +41,12 @@ public class Roles {
    @LastModifiedDate
    @Column(insertable = false)
    private LocalDateTime lastModifiedDate;
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getName() {
+      return name;
+   }
 }

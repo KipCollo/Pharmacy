@@ -6,23 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 
 @Entity
-@Table(name = "doctor")
-public class Doctor {
+@Table(name = "prescription-item")
+public class PrescriptionItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer doctorId;
-    private String license;
-    private String email;
-    @OneToMany
-    private List<Prescriptions> prescriptions;
-
+    private Integer id;
+    @ManyToOne
+    private Prescriptions prescriptions;
+    @ManyToOne
+    private Medicine medicine;
+    private Integer quantity;
 }
