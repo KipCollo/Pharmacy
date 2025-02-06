@@ -6,8 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,5 +38,11 @@ public class Medicine {
    @ManyToOne
    @JoinColumn(name = "supplierId")
    private Suppliers suppliers;
+   @Column(updatable = false,nullable = false)
+   @CreatedDate
+   private LocalDateTime createdDate;
+   @LastModifiedDate
+   @Column(insertable = false)
+   private LocalDateTime lastModifiedDate;
 
 }
