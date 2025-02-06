@@ -42,11 +42,4 @@ public class Roles {
    @Column(insertable = false)
    private LocalDateTime lastModifiedDate;
 
-   public void setName(String name) {
-      this.name = name;
-   }
-
-   public String getName() {
-      return name;
-   }
 }

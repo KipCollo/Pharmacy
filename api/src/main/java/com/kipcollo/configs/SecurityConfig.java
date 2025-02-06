@@ -3,6 +3,7 @@ package com.kipcollo.configs;
 import com.kipcollo.service.CustomerService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -77,5 +78,9 @@ public class SecurityConfig {
       return authenticationConfiguration.getAuthenticationManager();
    }
 
+   @Bean
+   public AuditorAware<Integer> auditorAware(){
+      return new ApplicationAuditAware();
+   }
 
 }
