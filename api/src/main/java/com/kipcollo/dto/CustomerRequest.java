@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,7 +18,7 @@ public class CustomerRequest {
    private String firstName;
    @NotNull(message="Last Name is required")
    private String lastName;
-   private int age;
+   private LocalDate dateOfBirth;
    private String phone;
    @NotNull(message = "Email is required")
    @Email(message = "Invalid Email")

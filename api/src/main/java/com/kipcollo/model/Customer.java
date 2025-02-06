@@ -32,7 +32,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Entity
 @Table(name="users")
-public class Customer implements UserDetails, Principal{
+public class Customer implements Principal,UserDetails{
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,24 +58,24 @@ public class Customer implements UserDetails, Principal{
    @ManyToMany(fetch = FetchType.EAGER)
    private List<Roles> roles;
 
-   @Override
-   public Collection<? extends GrantedAuthority> getAuthorities() {
-      return this.roles.stream()
-              .map(r -> new SimpleGrantedAuthority(r.getName()))
-              .collect(Collectors.toList());
-   }
-   @Override
-   public String getPassword() {
-      return password;
-   }
-   @Override
-   public String getUsername() {
-      return email;
-   }
-   @Override
-   public String getName() {
-      return email;
-   }
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+     return this.roles.stream()
+             .map(r -> new SimpleGrantedAuthority(r.getName()))
+             .collect(Collectors.toList());
+  }
+  @Override
+  public String getPassword() {
+     return password;
+  }
+  @Override
+  public String getUsername() {
+     return email;
+  }
+  @Override
+  public String getName() {
+     return email;
+  }
 
    public String fullname(){
       return firstName + " " + lastName;
