@@ -1,1 +1,32 @@
-<p>login works!</p>
+<section class="portal">
+  <form>
+    <div class="title">
+      <h1>LOG IN</h1>
+      <p>Welcome back! Please enter your details</p>
+    </div>
+    <div *ngIf="errorMsg.length">
+      <p *ngFor="let msg of errorMsg">{{msg}}</p>
+    </div>
+    <button id="google-signin"> <img src="assets/google-logo.svg" alt=""> Log in with Google </button>
+    <span>or</span>
+    <div class="input-field">
+      <input [(ngModel)]="authRequest.email"  type="email" id="username" placeholder="name@gmail.com" class="form-control">
+      <label for="username">Username</label>
+    </div>
+    <div class="input-field">
+      <input [(ngModel)]="authRequest.password" type="password" id="password" placeholder="password">
+      <label for="password">Password</label>
+      <img src="assets/show-eye.svg" alt="">
+    </div>
+    <a href="#" id="forgot-pass">Forgot Password</a>
+    <div>
+      <button (click)="login()"  type="button">
+        <em>&nbsp;Sign In</em>
+      </button>
+    </div>
+    <div>
+      Don't have an account?&nbsp;
+      <button (click)="register()" type="button">Register</button>
+    </div>
+  </form>
+</section>
