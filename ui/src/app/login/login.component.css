@@ -1,88 +1,88 @@
-.portal{
-   display: grid;
-   place-items: center;
-   min-height: 100vh;
-}
+/*.portal{*/
+/*   display: grid;*/
+/*   place-items: center;*/
+/*   min-height: 100vh;*/
+/*}*/
 
-.portal form{
-   background: var(--bg-light);
-   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-   width: min(100%, 470px);
-   padding: 70px;
-  display: grid;
-}
+/*.portal form{*/
+/*   background: var(--bg-light);*/
+/*   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;*/
+/*   width: min(100%, 470px);*/
+/*   padding: 70px;*/
+/*  display: grid;*/
+/*}*/
 
-.title h1{
-   font-size: 2rem;
-   position: relative;
-   padding-left: 20px;
-}
+/*.title h1{*/
+/*   font-size: 2rem;*/
+/*   position: relative;*/
+/*   padding-left: 20px;*/
+/*}*/
 
-.title p{
-  color: var(--secondary);
-  font-size: 9rem;
-}
-.title h1::before{
-   content: '';
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  background: var(--primary);
-  left: 0;
-  top: 12px;
-  border-radius: 50%;
-}
+/*.title p{*/
+/*  color: var(--secondary);*/
+/*  font-size: 9rem;*/
+/*}*/
+/*.title h1::before{*/
+/*   content: '';*/
+/*  position: absolute;*/
+/*  width: 16px;*/
+/*  height: 16px;*/
+/*  background: var(--primary);*/
+/*  left: 0;*/
+/*  top: 12px;*/
+/*  border-radius: 50%;*/
+/*}*/
 
-.title p{
-  color: var(--secondary);
-  font-size: .9rem;
-}
-.input-field{
-  position: absolute;
-  color: var(--secondary);
-  left: 15px;
-  top: 16px;
-}
-input, button{
-  font: inherit;
-  border: 2px solid transparent;
-  outline: 2px solid transparent;
-}
-#google-signin{
-  padding: 15px;
-  display: flex;
-  justify-content: center;
-  gap: 5rem;
-  background: #fff;
-  box-shadow: rgba(0,0,0,0.02) 0px 1px 3px 0px,
-          rgba(27,31,35,0.15) 0px opx 0px 1px;
-}
+/*.title p{*/
+/*  color: var(--secondary);*/
+/*  font-size: .9rem;*/
+/*}*/
+/*.input-field{*/
+/*  position: absolute;*/
+/*  color: var(--secondary);*/
+/*  left: 15px;*/
+/*  top: 16px;*/
+/*}*/
+/*input, button{*/
+/*  font: inherit;*/
+/*  border: 2px solid transparent;*/
+/*  outline: 2px solid transparent;*/
+/*}*/
+/*#google-signin{*/
+/*  padding: 15px;*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  gap: 5rem;*/
+/*  background: #fff;*/
+/*  box-shadow: rgba(0,0,0,0.02) 0px 1px 3px 0px,*/
+/*          rgba(27,31,35,0.15) 0px opx 0px 1px;*/
+/*}*/
 
-span{
-  color: var(--secondary);
-  display: flex;
-}
+/*span{*/
+/*  color: var(--secondary);*/
+/*  display: flex;*/
+/*}*/
 
-span::before, span::after{
-  content: '';
-  width: 100%;
-  height: 1px;
-  background: var(--secondary);
-  margin: auto;
-}
-span::before{
-  margin-right: 1rem;
-}
-span::after{
-  margin-left: 1rem;
-}
+/*span::before, span::after{*/
+/*  content: '';*/
+/*  width: 100%;*/
+/*  height: 1px;*/
+/*  background: var(--secondary);*/
+/*  margin: auto;*/
+/*}*/
+/*span::before{*/
+/*  margin-right: 1rem;*/
+/*}*/
+/*span::after{*/
+/*  margin-left: 1rem;*/
+/*}*/
 
-.input-field{
-  position: relative;
-}
-.input-field label{
-  position: absolute;
-  color: var(--secondary);
-  left: 15px;
-  top: 16px;
-}
+/*.input-field{*/
+/*  position: relative;*/
+/*}*/
+/*.input-field label{*/
+/*  position: absolute;*/
+/*  color: var(--secondary);*/
+/*  left: 15px;*/
+/*  top: 16px;*/
+/*}*/

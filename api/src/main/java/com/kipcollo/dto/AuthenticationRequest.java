@@ -1,10 +1,9 @@
 package com.kipcollo.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
@@ -12,10 +11,12 @@ import lombok.Setter;
 @Builder
 public class AuthenticationRequest {
 
-    @NotNull(message = "Email is required")
+    @NotBlank(message = "Email is required")
     @Email(message = "Invalid Email")
+    @NotEmpty(message= "Username should not be Blank")
     private String email;
-    @NotNull(message = "Password is required")
+    @NotBlank(message = "Password is required")
+    @NotEmpty(message= "Password should not be Blank")
     @Size(min = 8,message = "Password should be 8 characters long")
     private String password;
 }
