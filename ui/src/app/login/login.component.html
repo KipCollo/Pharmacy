@@ -1,32 +1,45 @@
-<section class="portal">
-  <form>
-    <div class="title">
-      <h1>LOG IN</h1>
-      <p>Welcome back! Please enter your details</p>
+<div class="container">
+  <div class="left-section">
+    <div class="logo">&#12638;</div>
+    <h1>LOG IN</h1>
+    <h2>Welcome back! Please sign in to your account</h2>
+    <form>
+          <div *ngIf="errorMsg.length">
+            <p *ngFor="let msg of errorMsg">{{ msg }}</p>
+          </div>
+      <div class="form-group">
+        <label for="username">Email address</label>
+        <input [(ngModel)]="authRequest.email"  type="email" id="username" placeholder="name@gmail.com" class="input-field">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input [(ngModel)]="authRequest.password" type="password" id="password" placeholder="password" class="input-field">
+      </div>
+      <div class="form-footer">
+        <div>
+          <input type="checkbox" id="remember">
+          <label for="remember">Remember me</label>
+        </div>
+        <a href="#" class="link">Forgot password?</a>
+      </div>
+      <button (click)="login()" class="btn-primary" type="submit">Sign in</button>
+    </form>
+    <div class="divider">
+      <div class="line"></div>
+      <span>Or continue with</span>
+      <div class="line"></div>
     </div>
-    <div *ngIf="errorMsg.length">
-      <p *ngFor="let msg of errorMsg">{{ msg }}</p>
-    </div>
-    <button id="google-signin"> <img src="assets/google-logo.svg" alt=""> Log in with Google </button>
-    <span>or</span>
-    <div class="input-field">
-      <input [(ngModel)]="authRequest.email"  type="email" id="username" placeholder="name@gmail.com" class="form-control">
-      <label for="username">Username</label>
-    </div>
-    <div class="input-field">
-      <input [(ngModel)]="authRequest.password" type="password" id="password" placeholder="password">
-      <label for="password">Password</label>
-<!--      <img src="assets/show-eye.svg" alt="">-->
-    </div>
-    <a href="#" id="forgot-pass">Forgot Password</a>
-    <div>
-      <button (click)="login()"  type="button">
-        <em>&nbsp;Sign In</em>
+    <div class="social-buttons">
+      <button class="btn-social">
+        <img src="https://www.svgrepo.com/show/355037/google.svg" class="icon"> Google
       </button>
     </div>
     <div>
       Don't have an account?&nbsp;
-      <button (click)="register()" type="button">Register</button>
+      <button (click)="register()" style="color: white; background-color: green" type="button" class=" btn-social"> Register</button>
     </div>
-  </form>
-</section>
+  </div>
+  <div class="right-section">
+    <img [src]="image" class="image" alt="">
+  </div>
+</div>
