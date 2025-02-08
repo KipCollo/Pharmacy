@@ -5,7 +5,7 @@
       <p>Welcome back! Please enter your details</p>
     </div>
     <div *ngIf="errorMsg.length">
-      <p *ngFor="let msg of errorMsg">{{msg}}</p>
+      <p *ngFor="let msg of errorMsg">{{ msg }}</p>
     </div>
     <button id="google-signin"> <img src="assets/google-logo.svg" alt=""> Log in with Google </button>
     <span>or</span>
@@ -16,7 +16,7 @@
     <div class="input-field">
       <input [(ngModel)]="authRequest.password" type="password" id="password" placeholder="password">
       <label for="password">Password</label>
-      <img src="assets/show-eye.svg" alt="">
+<!--      <img src="assets/show-eye.svg" alt="">-->
     </div>
     <a href="#" id="forgot-pass">Forgot Password</a>
     <div>
