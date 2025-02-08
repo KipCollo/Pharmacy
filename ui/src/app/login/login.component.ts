@@ -4,8 +4,6 @@ import {FormsModule, NgModel} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../services/services/authentication.service";
-import {AuthenticationResponse} from "../services/models/authentication-response";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {TokenService} from "../services/token/token.service";
 
 @Component({
@@ -21,6 +19,7 @@ import {TokenService} from "../services/token/token.service";
 })
 export class LoginComponent {
 
+  image = "../public/login.jpg";
   authRequest: AuthenticationRequest = {email: '', password:''};
   errorMsg:Array<string> =[];
 
