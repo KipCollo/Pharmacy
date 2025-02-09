@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name="Medicine")
 public class Medicine {
@@ -27,6 +29,10 @@ public class Medicine {
    private int medicineId;
    private String name;
    private String description;
+   private String imageName;
+   private String imageType;
+   @Lob
+   private byte[] imageDate;
    private MedicineType type;
    @Column(nullable = false)
    private String manufacturer;

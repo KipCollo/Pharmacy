@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,8 +46,8 @@ public class MedicineService {
                .orElseThrow();
    }
 
-   public String createMedicine(MedicineRequest request) {
-       var medicine = repository.save(mapper.toMedicine(request));
+   public String createMedicine(MedicineRequest medicineRequest, MultipartFile imageFile) {
+       var medicine = repository.save(mapper.toMedicine(medicineRequest));
        return "Medicine added with ID:: " + medicine.getMedicineId();
    }
 
