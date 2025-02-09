@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,8 +32,9 @@ public class MedicineController {
    }
 
    @PostMapping
-   public ResponseEntity<String> createMedicine(@RequestBody MedicineRequest request) {
-       return ResponseEntity.ok(service.createMedicine(request));
+   public ResponseEntity<String> createMedicine(@RequestPart MedicineRequest medicine,
+                                                @RequestPart MultipartFile imageFile) {
+       return ResponseEntity.ok(service.createMedicine(medicine,imageFile));
    }
 
    @DeleteMapping("/{medicineId}")
