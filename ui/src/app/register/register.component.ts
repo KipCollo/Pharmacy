@@ -10,8 +10,8 @@ import {AuthenticationService} from "../services/services/authentication.service
   standalone: true,
   imports: [
     FormsModule,
-    NgForOf,
-    NgIf
+    NgIf,
+    NgForOf
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'

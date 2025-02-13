@@ -23,6 +23,9 @@ export class LoginComponent {
   authRequest: AuthenticationRequest = {email: '', password:''};
   errorMsg:Array<string> =[];
 
+  // Client-side validation
+  emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
   constructor(private router: Router,
               private authService: AuthenticationService,
               private tokenService: TokenService
