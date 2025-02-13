@@ -35,10 +35,7 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
   private final JwtService jwtService;
 
-    // @Value("${application.security.mailing.frontend.activation-url}")
-     private String activationUrl ="http://localhost:4200/activate-account";
-
-   public void register(RegistrationRequest request) throws MessagingException {
+    public void register(RegistrationRequest request) throws MessagingException {
       var userRole = roleRepository.findByName("USER")
               .orElseThrow(()-> new IllegalArgumentException("ROLE USER was not initialised"));
 
@@ -59,8 +56,10 @@ public class AuthenticationService {
 
    private void sendValidationEmail(Customer user) throws MessagingException {
        var newToken = generateAndSaveActivationToken(user);
+       // @Value("${application.security.mailing.frontend.activation-url}")
+       String activationUrl = "http://localhost:4200/activate-account";
        emailService.send(
-               user.getEmail(), user.fullname(),EmailTemplate.ACTIVATE_ACCOUNT,activationUrl,newToken,"Account Activation"
+               user.getEmail(), user.fullname(),EmailTemplate.ACTIVATE_ACCOUNT, activationUrl,newToken,"Account Activation"
        );
 
    }

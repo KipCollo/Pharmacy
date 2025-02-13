@@ -2,7 +2,7 @@
   <div class="activate-message" *ngIf="isOkay else activationError">
     <h2>Activation successful!</h2>
     <p>Your account has been successfully activated</p>
-    <button (click)="redirectToLogin()"></button>
+    <button (click)="redirectToLogin()">Go To Login</button>
   </div>
 </div>
 <ng-template #activationError>

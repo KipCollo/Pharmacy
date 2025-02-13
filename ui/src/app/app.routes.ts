@@ -11,5 +11,6 @@ export const routes: Routes = [
   {path: 'register',component: RegisterComponent},
   {path: 'activate-account',component: ActivateAccountComponent},
   {path:'medicine',component: MedicineComponent},
-  {path:'menu', component: MenuComponent}
+  {path:'menu', component: MenuComponent},
+  {path:'home',component: HomeComponent}
 ]

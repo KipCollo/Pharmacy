@@ -30,7 +30,7 @@ export class ActivateAccountComponent {
   }
 
   redirectToLogin() {
-
+    this.router.navigate(['login'])
   }
 
   private confirmAccount(token: string) {
