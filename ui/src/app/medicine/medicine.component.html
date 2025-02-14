@@ -1,13 +1,21 @@
-<!--&lt;!&ndash;<p>Medicine</p>&ndash;&gt;-->
-<!--&lt;!&ndash;<div>&ndash;&gt;-->
-<!--&lt;!&ndash;  <span *ngFor="let medicine of medicineRespone.content">{{medicine.name}}</span>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--<div class="product-grid">-->
-<!--  <div class="product" *ngFor="let product of products">-->
-<!--    <img [src]="product.image" alt="{{ product.name }}" class="product-image">-->
-<!--    <div class="product-info">-->
-<!--      <h3 class="product-name">{{ product.name }}</h3>-->
-<!--      <p class="product-price">${{ product.price }}</p>-->
+<!--<p>Medicine</p>-->
+<!--<div>-->
+<!--  <span *ngFor="let medicine of medicineRespone.content">{{medicine.name}}</span>-->
+<!--</div>-->
+<div class="product-grid">
+  <div class="product" *ngFor="let product of products">
+    <img alt="{{ product.name }}" class="product-image">
+    <div class="product-info">
+      <h3 class="product-name">{{ product.name }}</h3>
+      <p class="product-price">${{ product.price }}</p>
+    </div>
+  </div>
+</div>
+<!--<div class="py-10 h-[90vh]">-->
+<!--  <main class="max-w-7xl px-4 sm:px-6 lg:px-8 pb-10">-->
+<!--    <div class="flex justify-between border-gray-200 pb-6 pt-24">-->
+<!--      <h1 class="text-4xl font-bold text-white">Products</h1>-->
 <!--    </div>-->
-<!--  </div>-->
+
+<!--  </main>-->
 <!--</div>-->

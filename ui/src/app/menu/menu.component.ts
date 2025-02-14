@@ -12,18 +12,18 @@ import {RouterLink} from "@angular/router";
 })
 export class MenuComponent implements OnInit{
 
-  logout() {
-    const linkColor = document.querySelectorAll("nav-link");
-    linkColor.forEach(link => {
-      if (window.location.href.endsWith(link.getAttribute("href") || '')) {
-        link.classList.add('active');
-      }
+  // logout() {
+  //   const linkColor = document.querySelectorAll("nav-link");
+  //   linkColor.forEach(link => {
+  //     if (window.location.href.endsWith(link.getAttribute("href") || '')) {
+  //       link.classList.add('active');
+  //     }
       // link.addEventListener("click", () => {
       //   linkColor.forEach(l)
       //
       // };
-    })
-  }
+  //   })
+  // }
 
   ngOnInit(): void {
   }
