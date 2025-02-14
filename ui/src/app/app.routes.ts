@@ -5,6 +5,7 @@ import {RegisterComponent} from "./register/register.component";
 import {ActivateAccountComponent} from "./activate-account/activate-account.component";
 import {MedicineComponent} from "./medicine/medicine.component";
 import {MenuComponent} from "./menu/menu.component";
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -12,5 +13,6 @@ export const routes: Routes = [
   {path: 'activate-account',component: ActivateAccountComponent},
   {path:'medicine',component: MedicineComponent},
   {path:'menu', component: MenuComponent},
-  {path:'home',component: HomeComponent}
+  {path:'home',component: HomeComponent},
+  {path:'**', component: NotFoundComponent}
 ]

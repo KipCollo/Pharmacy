@@ -19,6 +19,11 @@ export class MedicineComponent implements OnInit {
   page =0;
   size=5;
 
+  products = [{id: 1, name: "Panadol", price: 20.20},
+                                              {id: 2, name: "Paracetamol",price: 30.00},
+                                              {id: 1, name: "Panadol", price: 20.20},
+    {id: 1, name: "Panadol", price: 20.20}]
+
   constructor(
     private router: Router,
     private medicineService: MedicineService
