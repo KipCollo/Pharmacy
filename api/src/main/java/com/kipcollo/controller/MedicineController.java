@@ -48,10 +48,10 @@ public class MedicineController {
        return ResponseEntity.accepted().build();
    }
 
-    @PutMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> updateCustomer(@RequestBody @Valid MedicineRequest medicine) {
-        service.updateMedicine(medicine);
-        return ResponseEntity.ok().build();
-    }
+   @PutMapping
+   @PreAuthorize("hasRole('ADMIN')")
+   public ResponseEntity<Void> updateCustomer(@RequestBody @Valid MedicineRequest medicine) {
+       service.updateMedicine(medicine);
+       return ResponseEntity.ok().build();
+   }
 }

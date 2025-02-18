@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {MedicineService} from "../services/services/medicine.service";
-import {PageResponseMedicineResponse} from "../services/models/page-response-medicine-response";
-import {NgForOf} from "@angular/common";
+
 import {FormsModule} from "@angular/forms";
 import {MedicineRequest} from "../services/models/medicine-request";
 
@@ -10,7 +9,7 @@ import {MedicineRequest} from "../services/models/medicine-request";
   selector: 'app-medicine',
   standalone: true,
   imports: [
-    NgForOf,
+   
     FormsModule
   ],
   templateUrl: './medicine.component.html',
@@ -18,9 +17,7 @@ import {MedicineRequest} from "../services/models/medicine-request";
 })
 export class MedicineComponent implements OnInit {
 
-  medicineRespone: PageResponseMedicineResponse ={}
-  page =0;
-  size=5;
+  
 
   medicineTypes = ['SYRUP', 'TABLETS', 'OINTMENTS'];
 
@@ -50,19 +47,9 @@ export class MedicineComponent implements OnInit {
         this.router.navigate(['/unauthorized']); // Redirect unauthorized users
       }
     }
-    this.findAllMedicine();
+   
   }
 
-  private findAllMedicine() {
-    this.medicineService.getAllMedicines({
-      page: this.page,
-      size: this.size
-    }).subscribe({
-      next: (medicines) => {
-        this.medicineRespone = medicines
-      }
-    })
-  }
 
   onSubmit() {
     this.medicineService.createMedicine({

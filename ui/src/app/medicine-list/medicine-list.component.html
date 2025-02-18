@@ -1,0 +1,19 @@
+
+<div class="product-grid">
+   <div class="product"  *ngFor="let medicine of medicineResponse.content">
+     <h3 class="product-name">{{ medicine.name }}</h3>
+     <p class="product-price">${{ medicine.price }}</p>
+     <img alt="{{ medicine.description }}" class="product-image">
+     <div class="product-info">
+   </div>
+ 
+ </div>
+ </div>
+ <!--<div class="py-10 h-[90vh]">-->
+ <!--  <main class="max-w-7xl px-4 sm:px-6 lg:px-8 pb-10">-->
+ <!--    <div class="flex justify-between border-gray-200 pb-6 pt-24">-->
+ <!--      <h1 class="text-4xl font-bold text-white">Products</h1>-->
+ <!--    </div>-->
+ 
+ <!--  </main>-->
+ <!--</div>-->
