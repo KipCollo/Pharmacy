@@ -1,15 +1,13 @@
-<!--<p>Medicine</p>-->
-<!--<div>-->
-<!--  <span *ngFor="let medicine of medicineRespone.content">{{medicine.name}}</span>-->
-<!--</div>-->
+
 <div class="product-grid">
-  <div class="product" *ngFor="let product of products">
-    <img alt="{{ product.name }}" class="product-image">
+  <div class="product"  *ngFor="let medicine of medicineRespone.content">
+    <h3 class="product-name">{{ medicine.name }}</h3>
+    <p class="product-price">${{ medicine.price }}</p>
+    <img alt="{{ medicine.description }}" class="product-image">
     <div class="product-info">
-      <h3 class="product-name">{{ product.name }}</h3>
-      <p class="product-price">${{ product.price }}</p>
-    </div>
   </div>
+
+</div>
 </div>
 <!--<div class="py-10 h-[90vh]">-->
 <!--  <main class="max-w-7xl px-4 sm:px-6 lg:px-8 pb-10">-->
@@ -19,3 +17,36 @@
 
 <!--  </main>-->
 <!--</div>-->
+<form (ngSubmit)="onSubmit()" #medicineForm="ngForm" class="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
+  <div class="mb-4">
+    <label class="block text-gray-700">Name:</label>
+    <input [(ngModel)]="medicine.name" name="name" required class="w-full p-2 border rounded-md" />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700">Description:</label>
+    <textarea [(ngModel)]="medicine.description" name="description" class="w-full p-2 border rounded-md"></textarea>
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700">Manufacturer:</label>
+    <input [(ngModel)]="medicine.manufacturer" name="manufacturer" required class="w-full p-2 border rounded-md" />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700">Expiry Date:</label>
+    <input [(ngModel)]="medicine.expiryDate" name="expiryDate" type="date" required class="w-full p-2 border rounded-md" />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700">Price:</label>
+    <input [(ngModel)]="medicine.price" name="price" type="number" required class="w-full p-2 border rounded-md" />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700">Stock Quantity:</label>
+    <input [(ngModel)]="medicine.stockQuantity" name="stockQuantity" type="number" required class="w-full p-2 border rounded-md" />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700">Type:</label>
+    <select [(ngModel)]="medicine.type" name="type" required class="w-full p-2 border rounded-md">
+      <option *ngFor="let type of medicineTypes" [value]="type">{{ type }}</option>
+    </select>
+  </div>
+  <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-md">Submit</button>
+</form>

@@ -8,17 +8,17 @@
 /*    color: #24a7e9;*/
 /*  }*/
 /*}*/
-.nav-link {
-  @apply text-gray-600 hover:text-black font-medium relative;
-}
-.nav-link.active {
-  @apply text-black;
-}
-.nav-link.active::after {
-  content: "";
-  @apply absolute bottom-0 left-0 w-full h-0.5 bg-blue-600;
-}
-.input-field {
-  @apply border rounded-md py-1 px-3 text-gray-700 focus:outline-none focus:ring focus:border-blue-400;
-}
+/*.nav-link {*/
+/*  @apply text-gray-600 hover:text-black font-medium relative;*/
+/*}*/
+/*.nav-link.active {*/
+/*  @apply text-black;*/
+/*}*/
+/*.nav-link.active::after {*/
+/*  content: "";*/
+/*  @apply absolute bottom-0 left-0 w-full h-0.5 bg-blue-600;*/
+/*}*/
+/*.input-field {*/
+/*  @apply border rounded-md py-1 px-3 text-gray-700 focus:outline-none focus:ring focus:border-blue-400;*/
+/*}*/
 

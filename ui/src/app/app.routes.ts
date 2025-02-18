@@ -6,6 +6,7 @@ import {ActivateAccountComponent} from "./activate-account/activate-account.comp
 import {MedicineComponent} from "./medicine/medicine.component";
 import {MenuComponent} from "./menu/menu.component";
 import {NotFoundComponent} from "./not-found/not-found.component";
+import {UnauthorizedComponent} from "./unauthorized/unauthorized.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -14,5 +15,6 @@ export const routes: Routes = [
   {path:'medicine',component: MedicineComponent},
   {path:'menu', component: MenuComponent},
   {path:'home',component: HomeComponent},
+  {path:'unauthorized',component: UnauthorizedComponent},
   {path:'**', component: NotFoundComponent}
 ]
