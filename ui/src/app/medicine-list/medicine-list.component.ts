@@ -11,7 +11,7 @@ import { MedicineResponse } from '../services/models';
   templateUrl: './medicine-list.component.html',
   styleUrl: './medicine-list.component.css'
 })
-export class MedicineListComponent implements OnInit{
+export class MedicineListComponent{
 
   medicineResponse: PageResponseMedicineResponse ={}
   page =0;

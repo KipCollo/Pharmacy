@@ -87,7 +87,7 @@ export class MedicineService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getMedicineById$Response(params: GetMedicineById$Params, context?: HttpContext): Observable<StrictHttpResponse<MedicineResponse>> {
+  getMedicineById$Response(params: string, context?: HttpContext | undefined): Observable<StrictHttpResponse<MedicineResponse>> {
     return getMedicineById(this.http, this.rootUrl, params, context);
   }
 
@@ -97,7 +97,7 @@ export class MedicineService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getMedicineById(params: GetMedicineById$Params, context?: HttpContext): Observable<MedicineResponse> {
+  getMedicineById(params: string, context?: HttpContext): Observable<MedicineResponse> {
     return this.getMedicineById$Response(params, context).pipe(
       map((r: StrictHttpResponse<MedicineResponse>): MedicineResponse => r.body)
     );

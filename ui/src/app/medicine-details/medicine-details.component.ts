@@ -22,12 +22,12 @@ export class MedicineDetailsComponent implements OnInit{
 
 
   ngOnInit(): void {
-    // const id = this.route.snapshot.paramMap.get('id');
-    // if (id) {
-    //   this.medicineService.getMedicineById(id).subscribe(data => {
-    //     this.medicine = data;
-    //   });
-    // }
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.medicineService.getMedicineById(id).subscribe(data => {
+        this.medicine = data;
+      });
+    }
   }
 
 

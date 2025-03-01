@@ -19,7 +19,7 @@ import {TokenService} from "../services/token/token.service";
 })
 export class LoginComponent {
 
-  image = "../public/login.jpg";
+  image = "../public/assets/login.jpg";
   authRequest: AuthenticationRequest = {email: '', password:''};
   errorMsg:Array<string> =[];
 

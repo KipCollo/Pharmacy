@@ -14,10 +14,10 @@ export interface GetMedicineById$Params {
   medicineId: number;
 }
 
-export function getMedicineById(http: HttpClient, rootUrl: string, params: GetMedicineById$Params, context?: HttpContext): Observable<StrictHttpResponse<MedicineResponse>> {
+export function getMedicineById(http: HttpClient, rootUrl: string, params: string, context?: HttpContext | undefined): Observable<StrictHttpResponse<MedicineResponse>> {
   const rb = new RequestBuilder(rootUrl, getMedicineById.PATH, 'get');
   if (params) {
-    rb.path('medicineId', params.medicineId, {});
+    rb.path('medicineId', {});
   }
 
   return http.request(
