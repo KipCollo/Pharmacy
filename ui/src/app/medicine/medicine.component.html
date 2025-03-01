@@ -9,6 +9,14 @@
     <textarea [(ngModel)]="medicine.description" name="description" class="w-full p-2 border rounded-md"></textarea>
   </div>
   <div class="mb-4">
+    <label class="block text-gray-700">Medicine Image:</label>
+    <input type="file" (change)="onFileSelected($event)" accept="image/*" class="w-full p-2 border rounded-md" />
+  </div>
+
+  <div class="mb-4" *ngIf="medicine.imageUrl">
+    <img [src]="medicine.imageUrl" alt="Medicine Image" class="w-32 h-32 object-cover rounded-md">
+  </div>
+  <div class="mb-4">
     <label class="block text-gray-700">Manufacturer:</label>
     <input [(ngModel)]="medicine.manufacturer" name="manufacturer" required class="w-full p-2 border rounded-md" />
   </div>
