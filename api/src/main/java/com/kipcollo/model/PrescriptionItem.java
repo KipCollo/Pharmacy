@@ -1,5 +1,6 @@
 package com.kipcollo.model;
 
+import com.kipcollo.products.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,6 @@ public class PrescriptionItem {
     @ManyToOne
     private Prescriptions prescriptions;
     @ManyToOne
-    private Medicine medicine;
+    private Product product;
     private Integer quantity;
 }

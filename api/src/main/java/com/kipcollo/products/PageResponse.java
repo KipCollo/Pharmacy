@@ -1,4 +1,4 @@
-package com.kipcollo.service;
+package com.kipcollo.products;
 
 import lombok.*;
 

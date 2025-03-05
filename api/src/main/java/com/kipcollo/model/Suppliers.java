@@ -1,5 +1,6 @@
 package com.kipcollo.model;
 
+import com.kipcollo.products.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,5 +23,5 @@ public class Suppliers {
     private String email;
     private String address;
     @OneToMany(mappedBy = "suppliers")
-    private List<Medicine> medicines;
+    private List<Product> products;
 }

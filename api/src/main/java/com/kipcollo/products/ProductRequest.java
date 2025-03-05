@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MedicineRequest {
+public class ProductRequest {
 
     private int medicineId;
     private String name;
@@ -19,5 +20,5 @@ public class MedicineRequest {
     private String manufacturer;
     private LocalDate expiryDate;
     private int stockQuantity;
-    private double price;
+    private BigDecimal price;
 }

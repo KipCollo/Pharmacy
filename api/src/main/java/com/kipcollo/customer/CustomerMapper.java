@@ -1,10 +1,6 @@
-package com.kipcollo.service;
+package com.kipcollo.customer;
 
-import com.kipcollo.dto.CustomerResponse;
 import org.springframework.stereotype.Service;
-
-import com.kipcollo.dto.CustomerRequest;
-import com.kipcollo.model.Customer;
 
 @Service
 public class CustomerMapper {

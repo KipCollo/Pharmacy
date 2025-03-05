@@ -1,4 +1,4 @@
-package com.kipcollo.model;
+package com.kipcollo.products;
 
 public enum MedicineType {
 

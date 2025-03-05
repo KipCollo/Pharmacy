@@ -1,4 +1,4 @@
-package com.kipcollo.service;
+package com.kipcollo.email;
 
 import lombok.Getter;
 

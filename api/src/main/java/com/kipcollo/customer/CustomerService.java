@@ -1,10 +1,9 @@
-package com.kipcollo.service;
+package com.kipcollo.customer;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import com.kipcollo.dto.CustomerRequest;
-import com.kipcollo.dto.CustomerResponse;
-import com.kipcollo.repository.CustomerRepository;
+
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 
@@ -12,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import com.kipcollo.model.Customer;
 
 
 import lombok.RequiredArgsConstructor;
@@ -88,4 +85,9 @@ public class CustomerService implements UserDetailsService{
            customer.setPassword(request.getPassword());
        }
    }
+
+    public Boolean existsById(int customerId) {
+       return repo.findById(customerId)
+               .isPresent();
+    }
 }
