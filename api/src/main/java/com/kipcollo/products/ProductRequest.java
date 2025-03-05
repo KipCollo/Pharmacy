@@ -1,16 +1,16 @@
-package com.kipcollo.dto;
+package com.kipcollo.products;
 
-import com.kipcollo.model.MedicineType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MedicineResponse {
+public class MedicineRequest {
 
     private int medicineId;
     private String name;

@@ -2,39 +2,39 @@
 <form (ngSubmit)="onSubmit()" #medicineForm="ngForm" class="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
   <div class="mb-4">
     <label class="block text-gray-700">Name:</label>
-    <input [(ngModel)]="medicine.name" name="name" required class="w-full p-2 border rounded-md" />
+    <input [(ngModel)]="product.name" name="name" required class="w-full p-2 border rounded-md" />
   </div>
   <div class="mb-4">
     <label class="block text-gray-700">Description:</label>
-    <textarea [(ngModel)]="medicine.description" name="description" class="w-full p-2 border rounded-md"></textarea>
+    <textarea [(ngModel)]="product.description" name="description" class="w-full p-2 border rounded-md"></textarea>
   </div>
   <div class="mb-4">
     <label class="block text-gray-700">Medicine Image:</label>
     <input type="file" (change)="onFileSelected($event)" accept="image/*" class="w-full p-2 border rounded-md" />
   </div>
 
-  <div class="mb-4" *ngIf="medicine.imageUrl">
-    <img [src]="medicine.imageUrl" alt="Medicine Image" class="w-32 h-32 object-cover rounded-md">
-  </div>
+  <!-- <div class="mb-4" *ngIf="product.imageUrl">
+    <img [src]="product.imageUrl" alt="Medicine Image" class="w-32 h-32 object-cover rounded-md">
+  </div> -->
   <div class="mb-4">
     <label class="block text-gray-700">Manufacturer:</label>
-    <input [(ngModel)]="medicine.manufacturer" name="manufacturer" required class="w-full p-2 border rounded-md" />
+    <input [(ngModel)]="product.manufacturer" name="manufacturer" required class="w-full p-2 border rounded-md" />
   </div>
   <div class="mb-4">
     <label class="block text-gray-700">Expiry Date:</label>
-    <input [(ngModel)]="medicine.expiryDate" name="expiryDate" type="date" required class="w-full p-2 border rounded-md" />
+    <input [(ngModel)]="product.expiryDate" name="expiryDate" type="date" required class="w-full p-2 border rounded-md" />
   </div>
   <div class="mb-4">
     <label class="block text-gray-700">Price:</label>
-    <input [(ngModel)]="medicine.price" name="price" type="number" required class="w-full p-2 border rounded-md" />
+    <input [(ngModel)]="product.price" name="price" type="number" required class="w-full p-2 border rounded-md" />
   </div>
   <div class="mb-4">
     <label class="block text-gray-700">Stock Quantity:</label>
-    <input [(ngModel)]="medicine.stockQuantity" name="stockQuantity" type="number" required class="w-full p-2 border rounded-md" />
+    <input [(ngModel)]="product.stockQuantity" name="stockQuantity" type="number" required class="w-full p-2 border rounded-md" />
   </div>
   <div class="mb-4">
     <label class="block text-gray-700">Type:</label>
-    <select [(ngModel)]="medicine.type" name="type" required class="w-full p-2 border rounded-md">
+    <select [(ngModel)]="product.type" name="type" required class="w-full p-2 border rounded-md">
       <option *ngFor="let type of medicineTypes" [value]="type">{{ type }}</option>
     </select>
   </div>

@@ -1,27 +1,24 @@
-package com.kipcollo.service;
+package com.kipcollo.products;
 
-import com.kipcollo.dto.MedicineRequest;
-import com.kipcollo.dto.MedicineResponse;
-import com.kipcollo.model.Medicine;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MedicineMapper {
-   public MedicineResponse fromMedicine(Medicine medicine) {
+   public MedicineResponse fromMedicine(Product product) {
        return new MedicineResponse(
-               medicine.getMedicineId(),
-               medicine.getName(),
-               medicine.getDescription(),
-               medicine.getType(),
-               medicine.getManufacturer(),
-               medicine.getExpiryDate(),
-               medicine.getStockQuantity(),
-               medicine.getPrice()
+               product.getMedicineId(),
+               product.getName(),
+               product.getDescription(),
+               product.getType(),
+               product.getManufacturer(),
+               product.getExpiryDate(),
+               product.getStockQuantity(),
+               product.getPrice()
        );
    }
 
-   public Medicine toMedicine(MedicineRequest medicineRequest) {
-       return Medicine.builder()
+   public Product toMedicine(MedicineRequest medicineRequest) {
+       return Product.builder()
                .medicineId(medicineRequest.getMedicineId())
                .name(medicineRequest.getName())
                .description(medicineRequest.getDescription())
