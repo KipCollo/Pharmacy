@@ -5,9 +5,10 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.kipcollo.model.Token;
+import com.kipcollo.auth.Roles;
 
 @Repository
-public interface TokenRepository extends JpaRepository<Token,Integer>{
- Optional<Token> findByToken(String token);
+public interface RoleRepository extends JpaRepository<Roles, Integer>{
+
+   Optional<Roles> findByName(String role);
 }

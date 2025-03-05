@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kipcollo.dto.MedicineRequest;
 import com.kipcollo.dto.MedicineResponse;
-import com.kipcollo.model.Medicine;
+import com.kipcollo.model.Product;
 import com.kipcollo.repository.MedicineRepository;
 
 import io.micrometer.common.util.StringUtils;
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MedicineService {
+public class ProductService {
 
    private final MedicineRepository repository;
    private final MedicineMapper mapper;
@@ -28,7 +28,7 @@ public class MedicineService {
 
    public PageResponse<MedicineResponse> getAllMedicine(int page,int size ) {
        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-       Page<Medicine> medicines = repository.findAllDisplayableMedicine(pageable);
+       Page<Product> medicines = repository.findAllDisplayableMedicine(pageable);
        List<MedicineResponse> medicineResponses = medicines.stream()
                .map(mapper::fromMedicine)
                .collect(Collectors.toList());
@@ -64,28 +64,28 @@ public class MedicineService {
            mergeMedicine(medicine,request);
        }
 
-   private void mergeMedicine(Medicine medicine, MedicineRequest request) {
+   private void mergeMedicine(Product product, MedicineRequest request) {
 
-       if (StringUtils.isNotBlank(String.valueOf(medicine.getMedicineId()))){
-           medicine.setMedicineId(request.getMedicineId());
+       if (StringUtils.isNotBlank(String.valueOf(product.getMedicineId()))){
+           product.setMedicineId(request.getMedicineId());
        }
-       if (StringUtils.isNotBlank(medicine.getName())){
-           medicine.setName(medicine.getName());
+       if (StringUtils.isNotBlank(product.getName())){
+           product.setName(product.getName());
        }
-       if (StringUtils.isNotBlank(medicine.getDescription())){
-           medicine.setDescription(request.getDescription());
+       if (StringUtils.isNotBlank(product.getDescription())){
+           product.setDescription(request.getDescription());
        }
-       if (StringUtils.isNotBlank(String.valueOf(medicine.getPrice()))){
-           medicine.setPrice(request.getPrice());
+       if (StringUtils.isNotBlank(String.valueOf(product.getPrice()))){
+           product.setPrice(request.getPrice());
        }
-       if (StringUtils.isNotBlank(String.valueOf(medicine.getStockQuantity()))){
-           medicine.setStockQuantity(request.getStockQuantity());
+       if (StringUtils.isNotBlank(String.valueOf(product.getStockQuantity()))){
+           product.setStockQuantity(request.getStockQuantity());
        }
-       if (StringUtils.isNotBlank(String.valueOf(medicine.getType()))){
-           medicine.setType(request.getType());
+       if (StringUtils.isNotBlank(String.valueOf(product.getType()))){
+           product.setType(request.getType());
        }
-       if (StringUtils.isNotBlank(String.valueOf(medicine.getManufacturer()))){
-           medicine.setManufacturer(medicine.getManufacturer());
+       if (StringUtils.isNotBlank(String.valueOf(product.getManufacturer()))){
+           product.setManufacturer(product.getManufacturer());
        }
 
    }

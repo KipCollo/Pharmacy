@@ -2,6 +2,7 @@ package com.kipcollo.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/customers")
 @RequiredArgsConstructor
-
+@Tag(name = "Customers APIs")
 public class CustomerController {
 
    private final CustomerService service;

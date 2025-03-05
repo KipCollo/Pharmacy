@@ -1,10 +1,5 @@
-package com.kipcollo.controller;
+package com.kipcollo.products;
 
-import com.kipcollo.dto.CustomerRequest;
-import com.kipcollo.dto.MedicineRequest;
-import com.kipcollo.dto.MedicineResponse;
-import com.kipcollo.service.MedicineService;
-import com.kipcollo.service.PageResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,17 +8,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Medicine")
+@Tag(name = "Medicine APIs")
 @RequestMapping("/api/medicines")
 public class MedicineController {
 
-   private final MedicineService service;
+   private final ProductService service;
 
-   @GetMapping("/all")
+   @GetMapping
    public ResponseEntity<PageResponse<MedicineResponse>> getAllMedicines(@RequestParam(name = "page",defaultValue = "0",required = false) int page,
                                                                          @RequestParam(name = "size", defaultValue = "10",required = false) int size) {
        return ResponseEntity.ok(service.getAllMedicine(page,size));
