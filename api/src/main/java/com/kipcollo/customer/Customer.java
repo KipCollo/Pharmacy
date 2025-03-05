@@ -47,8 +47,6 @@ public class Customer implements Principal,UserDetails{
    private String password;
    private String phone;
    private String location;
-   @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
-   private List<Orders> orders;
    private boolean accountLocked;
    private boolean enabled;
    @Column(updatable = false,nullable = false)

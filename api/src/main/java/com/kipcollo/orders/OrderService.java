@@ -5,7 +5,6 @@ import com.kipcollo.customer.CustomerMapper;
 import com.kipcollo.customer.CustomerService;
 import com.kipcollo.email.EmailService;
 import com.kipcollo.orderlines.OrderLineService;
-import com.kipcollo.payments.PaymentRequest;
 import com.kipcollo.products.ProductService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +22,7 @@ public class OrderService {
     private final OrderLineService orderLineService;
     private final CustomerService customerService;
     private final ProductService productService;
-    private final EmailService emailService;
-    private final CustomerMapper customerMapper;
+;
 
     public Integer createOrder(OrderRequest orderRequest) {
         //check the customer
@@ -39,14 +37,14 @@ public class OrderService {
         var paymentRequest = new PaymentRequest(
                 orderRequest.getTotalAmount(),
                 orderRequest.getPaymentMethod(),
-                order.getOrderId(),
+                order.getId(),
                 order.getReference(),
                 customer
         );
         //send confirmation to customer
 
 
-        return order.getOrderId();
+        return order.getId();
     }
 
     public List<OrderResponse> findAll() {

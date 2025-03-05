@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.kipcollo.exceptions.ProductPurchaseException;
-import com.kipcollo.service.FileStorageService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +21,6 @@ public class ProductService {
 
    private final ProductRepository repository;
    private final ProductMapper mapper;
-   private FileStorageService fileStorageService;
 
    public PageResponse<ProductResponse> getAllMedicine(int page, int size ) {
        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
@@ -48,9 +45,9 @@ public class ProductService {
                .orElseThrow();
    }
 
-   public String createMedicine(ProductRequest productRequest, MultipartFile imageFile) {
+   public String createMedicine(ProductRequest productRequest) {
        var medicine = repository.save(mapper.toProduct(productRequest));
-       return "Medicine added with ID:: " + medicine.getMedicineId();
+       return "Medicine added with ID:: " + medicine.getId();
    }
 
    public void deleteMedicine(Integer medicineId) {
@@ -65,8 +62,8 @@ public class ProductService {
 
    private void mergeMedicine(Product product, ProductRequest request) {
 
-       if (StringUtils.isNotBlank(String.valueOf(product.getMedicineId()))){
-           product.setMedicineId(request.getMedicineId());
+       if (StringUtils.isNotBlank(String.valueOf(product.getId()))){
+           product.setId(request.getMedicineId());
        }
        if (StringUtils.isNotBlank(product.getName())){
            product.setName(product.getName());
@@ -94,7 +91,7 @@ public class ProductService {
                .stream()
                .map(PurchaseProductRequest::getProductId)
                .toList();
-       var storedProducts = repository.findAllByIdInOrderId(productIds);
+       var storedProducts = repository.findByIdIn(productIds);
 
        if (productIds.size() != storedProducts.size()){
            throw new ProductPurchaseException("One or more products doesn't exist");
@@ -110,7 +107,7 @@ public class ProductService {
            var productRequest = storedRequest.get(i);
 
            if(product.getStockQuantity() < productRequest.getQuantity() ){
-               throw new ProductPurchaseException("Insufficient stock quantity for product with the id::" + product.getMedicineId());
+               throw new ProductPurchaseException("Insufficient stock quantity for product with the id::" + product.getId());
            }
 
            var newAvailableQuantity = product.getStockQuantity()- productRequest.getQuantity();

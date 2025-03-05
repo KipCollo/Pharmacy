@@ -6,14 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Medicine APIs")
-@RequestMapping("/api/medicines")
+@RequestMapping("/api/products")
 public class ProductController {
 
    private final ProductService service;
@@ -24,16 +23,15 @@ public class ProductController {
        return ResponseEntity.ok(service.getAllMedicine(page,size));
    }
 
-   @GetMapping("/{medicineId}")
-   public ResponseEntity<ProductResponse> getMedicineById(@PathVariable Integer medicineId) {
-       return ResponseEntity.ok(service.getMedicineById(medicineId));
+   @GetMapping("/{id}")
+   public ResponseEntity<ProductResponse> getMedicineById(@PathVariable Integer id) {
+       return ResponseEntity.ok(service.getMedicineById(id));
    }
 
    @PostMapping
-   @PreAuthorize("hasRole('ADMIN')")
-   public ResponseEntity<String> createMedicine(@RequestPart ProductRequest medicine,
-                                                @RequestPart MultipartFile imageFile) {
-       return ResponseEntity.ok(service.createMedicine(medicine,imageFile));
+   //@PreAuthorize("hasRole('ADMIN')")
+   public ResponseEntity<String> createMedicine(@RequestBody ProductRequest medicine ){
+       return ResponseEntity.ok(service.createMedicine(medicine));
    }
 
    @PostMapping("/purchase")
@@ -41,10 +39,10 @@ public class ProductController {
        return ResponseEntity.ok(service.purchaseProduct(purchase));
    }
 
-   @DeleteMapping("/{medicineId}")
+   @DeleteMapping("/{id}")
    @PreAuthorize("hasRole('ADMIN')")
-   public ResponseEntity<Void> deleteMedicine(@PathVariable Integer medicineId) {
-       service.deleteMedicine(medicineId);
+   public ResponseEntity<Void> deleteMedicine(@PathVariable Integer id) {
+       service.deleteMedicine(id);
        return ResponseEntity.accepted().build();
    }
 

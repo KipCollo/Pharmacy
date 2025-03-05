@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 public class ProductMapper {
    public ProductResponse fromProduct(Product product) {
        return new ProductResponse(
-               product.getMedicineId(),
+               product.getId(),
                product.getName(),
                product.getDescription(),
                product.getType(),
@@ -19,7 +19,7 @@ public class ProductMapper {
 
    public Product toProduct(ProductRequest productRequest) {
        return Product.builder()
-               .medicineId(productRequest.getMedicineId())
+               .id(productRequest.getMedicineId())
                .name(productRequest.getName())
                .description(productRequest.getDescription())
                .type(productRequest.getType())
@@ -32,7 +32,7 @@ public class ProductMapper {
 
    public PurchaseProductResponse toPurchaseProductResponse(Product product,int quantity) {
        return new PurchaseProductResponse(
-               product.getMedicineId(),
+               product.getId(),
                product.getName(),
                product.getDescription(),
                product.getPrice(),
