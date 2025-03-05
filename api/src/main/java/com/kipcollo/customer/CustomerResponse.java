@@ -1,4 +1,4 @@
-package com.kipcollo.dto;
+package com.kipcollo.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

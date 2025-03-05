@@ -1,11 +1,12 @@
-package com.kipcollo.model;
+package com.kipcollo.orders;
 
+import com.kipcollo.customer.Customer;
+import com.kipcollo.orderlines.OrderLine;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

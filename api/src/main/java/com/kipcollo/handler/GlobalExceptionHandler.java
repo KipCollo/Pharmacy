@@ -1,5 +1,6 @@
 package com.kipcollo.handler;
 
+import com.kipcollo.exceptions.CustomerNotFoundException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,12 @@ public class GlobalExceptionHandler {
                         .businessErrorDescription(BusinessErrorCodes.ACCOUNT_DISABLED.getDescription())
                         .error(exp.getMessage())
                         .build());
+    }
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<String> handleException(CustomerNotFoundException exp){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(exp.getMessage());
     }
 
     @ExceptionHandler(BadCredentialsException.class)

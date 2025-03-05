@@ -1,7 +1,8 @@
-package com.kipcollo.model;
+package com.kipcollo.auth;
 
 import java.time.LocalDateTime;
 
+import com.kipcollo.customer.Customer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

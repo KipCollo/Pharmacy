@@ -1,11 +1,9 @@
-package com.kipcollo.repository;
+package com.kipcollo.customer;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import com.kipcollo.model.Customer;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer,Integer>{

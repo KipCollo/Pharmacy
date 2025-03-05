@@ -1,4 +1,4 @@
-package com.kipcollo.controller;
+package com.kipcollo.customer;
 
 import java.util.List;
 
@@ -6,10 +6,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.kipcollo.dto.CustomerRequest;
-import com.kipcollo.dto.CustomerResponse;
-import com.kipcollo.service.CustomerService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +26,11 @@ public class CustomerController {
    @GetMapping("/{customerId}")
    public ResponseEntity<CustomerResponse> getCustomer(@PathVariable("customerId") Integer customerId){
        return ResponseEntity.ok(service.getCustomerById(customerId));
+   }
+
+   @GetMapping("exists/{customerId}")
+   public ResponseEntity<Boolean> existsById(@PathVariable int customerId){
+       return ResponseEntity.ok(service.existsById(customerId));
    }
 
     @PostMapping

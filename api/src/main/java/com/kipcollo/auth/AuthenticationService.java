@@ -1,18 +1,12 @@
-package com.kipcollo.service;
+package com.kipcollo.auth;
 
 import com.kipcollo.configs.JwtService;
-import com.kipcollo.dto.AuthenticationRequest;
-import com.kipcollo.dto.AuthenticationResponse;
-import com.kipcollo.dto.RegistrationRequest;
-import com.kipcollo.model.Customer;
-import com.kipcollo.model.Token;
-import com.kipcollo.repository.CustomerRepository;
-import com.kipcollo.repository.RoleRepository;
-import com.kipcollo.repository.TokenRepository;
+import com.kipcollo.customer.Customer;
+import com.kipcollo.customer.CustomerRepository;
+import com.kipcollo.email.EmailService;
+import com.kipcollo.email.EmailTemplate;
 import jakarta.mail.MessagingException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,7 +53,7 @@ public class AuthenticationService {
        // @Value("${application.security.mailing.frontend.activation-url}")
        String activationUrl = "http://localhost:4200/activate-account";
        emailService.send(
-               user.getEmail(), user.fullname(),EmailTemplate.ACTIVATE_ACCOUNT, activationUrl,newToken,"Account Activation"
+               user.getEmail(), user.fullname(), EmailTemplate.ACTIVATE_ACCOUNT, activationUrl,newToken,"Account Activation"
        );
 
    }

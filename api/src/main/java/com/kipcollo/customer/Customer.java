@@ -1,4 +1,4 @@
-package com.kipcollo.model;
+package com.kipcollo.customer;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.kipcollo.orders.Orders;
+import com.kipcollo.auth.Roles;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

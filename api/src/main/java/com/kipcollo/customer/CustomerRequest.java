@@ -1,4 +1,4 @@
-package com.kipcollo.dto;
+package com.kipcollo.customer;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package com.kipcollo.dto;
+package com.kipcollo.auth;
 
 import lombok.Builder;
 import lombok.Getter;

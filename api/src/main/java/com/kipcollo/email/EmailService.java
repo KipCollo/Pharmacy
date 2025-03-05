@@ -1,4 +1,4 @@
-package com.kipcollo.service;
+package com.kipcollo.email;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -22,7 +22,7 @@ public class EmailService {
    private final SpringTemplateEngine templateEngine;
 
    @Async
-   public void send(String to,String userName,EmailTemplate emailTemplate,String confirmUrl,String activationCode, String subject)throws MessagingException {
+   public void send(String to, String userName, EmailTemplate emailTemplate, String confirmUrl, String activationCode, String subject)throws MessagingException {
        String templateName;
        if (emailTemplate == null) {
            templateName = "confirm-email";
