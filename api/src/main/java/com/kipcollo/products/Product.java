@@ -23,18 +23,13 @@ import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-@Table(name="Medicine")
 public class Product {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private int medicineId;
+   private int id;
    private String name;
    private String description;
-   private String imageName;
-   private String imageType;
-   @Lob
-   private byte[] imageDate;
    private MedicineType type;
    @Column(nullable = false)
    private String manufacturer;

@@ -16,8 +16,8 @@ public class OrderLineController {
 
     private final OrderLineService service;
 
-    @GetMapping("order/{order-id")
-    public ResponseEntity<List<OrderLineResponse>> findOrderById(@PathVariable("order-id") int orderId) {
+    @GetMapping("order/{orderId}")
+    public ResponseEntity<List<OrderLineResponse>> findOrderById(@PathVariable int orderId) {
         return ResponseEntity.ok(service.findAllByOrderId(orderId));
     }
 }

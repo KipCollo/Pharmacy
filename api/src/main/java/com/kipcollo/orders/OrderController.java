@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Tag(name = "Order APIs")
-@RestController("/api/products")
+@RestController
+@RequestMapping("/api/orders")
 @RequiredArgsConstructor
 public class OrderController {
 
@@ -24,7 +25,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.findAll());
     }
 
-    @GetMapping("{orderId")
+    @GetMapping("{orderId}")
     public ResponseEntity<OrderResponse> findById(@PathVariable int orderId){
         return ResponseEntity.ok(orderService.findBtId(orderId));
     }

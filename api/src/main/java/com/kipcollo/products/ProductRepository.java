@@ -17,5 +17,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             """)
     Page<Product> findAllDisplayableMedicine(Pageable pageable);
 
-    List<Product> findAllByIdInOrderId(List<Integer> productIds);
+    List<Product> findByIdIn(List<Integer> productIds);
 }

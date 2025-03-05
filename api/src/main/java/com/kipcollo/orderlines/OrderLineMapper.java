@@ -12,7 +12,7 @@ public class OrderLineMapper {
                 .quantity(orderLineRequest.getQuantity())
                 .orders(
                         Orders.builder()
-                                .orderId(orderLineRequest.getOrderId())
+                                .id(orderLineRequest.getOrderId())
                                 .build()
                 )
                 .build();
