@@ -1,6 +1,7 @@
-package com.kipcollo.model;
+package com.kipcollo.prescriptions;
 
 import com.kipcollo.customer.Customer;
+import com.kipcollo.model.Doctor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,12 +23,13 @@ public class Prescriptions {
     @Id
     @GeneratedValue
     private Integer id;
-    @ManyToOne
-    private Customer customer;
+    private String email;
+    private String imageURL;
+    private PrescriptionStatus status;
+//    @ManyToOne
+//    private Customer customer;
     private LocalDate dateIssued;
-    @OneToMany
-    private List<PrescriptionItem> prescriptionItems;
-    @ManyToOne
-    @JoinColumn
-    private Doctor doctor;
+//    @ManyToOne
+//    @JoinColumn
+//    private Doctor doctor;
 }

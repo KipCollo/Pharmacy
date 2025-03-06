@@ -34,8 +34,7 @@ public class Orders {
     private LocalDateTime localDateTime;
     @OneToMany(mappedBy = "orders")
     private List<OrderLine> orderLines;
-    @Version
-    private long version;
+    private int prescriptionId;
     @CreatedDate
     @Column(updatable = false,nullable = false)
     private LocalDateTime createdAt;

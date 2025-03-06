@@ -1,5 +1,6 @@
 package com.kipcollo.model;
 
+import com.kipcollo.prescriptions.Prescriptions;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
