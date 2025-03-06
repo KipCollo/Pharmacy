@@ -14,10 +14,27 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderProcessingService processingService;
 
     @PostMapping
     public ResponseEntity<Integer> createOrder(@RequestBody OrderRequest orderRequest){
         return ResponseEntity.ok(orderService.createOrder(orderRequest));
+    }
+
+    //create order from approved prescriptions
+    @PostMapping("/create")
+    public ResponseEntity<?> createPrescriptionOrder(@RequestParam int prescriptionId){
+        Orders orders = processingService.createPrescriptionOrder(prescriptionId);
+        return ResponseEntity.ok("Order created successfully");
+    }
+
+    //Track order by returning orderLines and their statuses
+    @GetMapping("{id}/status")
+    public ResponseEntity<?> getOrderStatus(@PathVariable int id){
+        Orders orders = processingService.getOrderStatus(id);
+
+        //Return Detailed order lines statuses for tracking
+        return ResponseEntity.ok(orders.getOrderLines());
     }
 
     @GetMapping

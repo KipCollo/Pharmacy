@@ -1,4 +1,4 @@
-package com.kipcollo.model;
+package com.kipcollo.prescriptions;
 
 import com.kipcollo.products.Product;
 import jakarta.persistence.*;

@@ -16,6 +16,8 @@ public class OrderLine {
     @Id
     @GeneratedValue
     private int orderLineId;
+    @Enumerated(EnumType.STRING)
+    private OrderLineStatus status;
     @ManyToOne
     @JoinColumn
     private Orders orders;
