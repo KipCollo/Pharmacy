@@ -1,8 +1,8 @@
 package com.kipcollo.auth;
 
 import com.kipcollo.configs.JwtService;
-import com.kipcollo.customer.Customer;
-import com.kipcollo.customer.CustomerRepository;
+import com.kipcollo.customer.Users;
+import com.kipcollo.customer.UsersRepository;
 import com.kipcollo.email.EmailService;
 import com.kipcollo.email.EmailTemplate;
 import jakarta.mail.MessagingException;
@@ -23,7 +23,7 @@ public class AuthenticationService {
 
   private final RoleRepository roleRepository;
   private final PasswordEncoder passwordEncoder;
-  private final CustomerRepository customerRepository;
+  private final UsersRepository usersRepository;
   private final TokenRepository tokenRepository;
   private final EmailService emailService;
   private final AuthenticationManager authenticationManager;
@@ -33,7 +33,7 @@ public class AuthenticationService {
       var userRole = roleRepository.findByName("USER")
               .orElseThrow(()-> new IllegalArgumentException("ROLE USER was not initialised"));
 
-       Customer user =Customer
+       Users user = Users
                .builder()
                .firstName(request.getFirstName())
                .lastName(request.getLastName())
@@ -44,11 +44,11 @@ public class AuthenticationService {
                .roles(List.of(userRole))
                .build();
 
-       customerRepository.save(user);
+       usersRepository.save(user);
        sendValidationEmail(user);
    }
 
-   private void sendValidationEmail(Customer user) throws MessagingException {
+   private void sendValidationEmail(Users user) throws MessagingException {
        var newToken = generateAndSaveActivationToken(user);
        // @Value("${application.security.mailing.frontend.activation-url}")
        String activationUrl = "http://localhost:4200/activate-account";
@@ -57,13 +57,13 @@ public class AuthenticationService {
        );
 
    }
-   private String generateAndSaveActivationToken(Customer user) {
+   private String generateAndSaveActivationToken(Users user) {
        String generatedToken =generateAndActivateCode(6);
        var token = Token.builder()
                .token(generatedToken)
                .createdAt(LocalDateTime.now())
                .expiresAt(LocalDateTime.now().plusMinutes(15))
-               .customer(user)
+               .users(user)
                .build();
 
        tokenRepository.save(token);
@@ -92,7 +92,7 @@ public class AuthenticationService {
        );
 
        var claims = new HashMap<String,Object>();
-        var user = ((Customer)auth.getPrincipal());
+        var user = ((Users)auth.getPrincipal());
         claims.put("fullname",user.fullname());
         var jwtToken = jwtService.generateToken(claims,user);
        return AuthenticationResponse.builder().token(jwtToken).build();
@@ -101,13 +101,13 @@ public class AuthenticationService {
     public void activateAccount(String token) throws MessagingException {
        Token saveToken = tokenRepository.findByToken(token).orElseThrow(()-> new RuntimeException("Token not found"));
        if (LocalDateTime.now().isAfter(saveToken.getExpiresAt())){
-           sendValidationEmail(saveToken.getCustomer());
+           sendValidationEmail(saveToken.getUsers());
            throw new RuntimeException("Token is expired,new Tokwn has been sent..");
        }
-       var user = customerRepository.findById(saveToken.getCustomer().getCustomerId())
+       var user = usersRepository.findById(saveToken.getUsers().getCustomerId())
                .orElseThrow(()-> new RuntimeException("Customer not found"));
        user.setEnabled(true);
-       customerRepository.save(user);
+       usersRepository.save(user);
        saveToken.setValidatedAt(LocalDateTime.now());
        tokenRepository.save(saveToken);
     }

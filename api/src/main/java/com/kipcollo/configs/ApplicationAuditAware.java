@@ -1,6 +1,6 @@
 package com.kipcollo.configs;
 
-import com.kipcollo.customer.Customer;
+import com.kipcollo.customer.Users;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,7 +16,7 @@ public class ApplicationAuditAware implements AuditorAware<Integer> {
             return Optional.empty();
         }
 
-        Customer customer = (Customer) authentication.getPrincipal();
-        return Optional.of(customer.getCustomerId());
+        Users users = (Users) authentication.getPrincipal();
+        return Optional.of(users.getCustomerId());
     }
 }

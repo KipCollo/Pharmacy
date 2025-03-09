@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {MedicineService} from "../services/services/medicine.service";
 
 import {FormsModule} from "@angular/forms";
-import {MedicineRequest} from "../services/models/medicine-request";
 import {NgForOf} from "@angular/common";
+import {ProductRequest} from "../services/models/product-request";
+import {MedicineApIsService} from "../services/services/medicine-ap-is.service";
 
 @Component({
   selector: 'app-medicine',
@@ -23,7 +23,7 @@ export class MedicineComponent implements OnInit{
 
   medicineTypes = ['SYRUP', 'TABLETS', 'OINTMENTS'];
 
-  medicine: MedicineRequest = {
+  product: ProductRequest = {
     description: '',
     expiryDate: '',
     manufacturer: '',
@@ -37,7 +37,7 @@ export class MedicineComponent implements OnInit{
 
   constructor(
     private router: Router,
-    private medicineService: MedicineService
+    private medicineService: MedicineApIsService
   ) {
   }
 
@@ -87,7 +87,7 @@ export class MedicineComponent implements OnInit{
 
 
     this.medicineService.createMedicine({
-      body: this.medicine
+      body: this.product
     }).subscribe()
 
   }

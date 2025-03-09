@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import {AuthenticationRequest} from "../services/models/authentication-request";
 import {FormsModule, NgModel} from "@angular/forms";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {Router} from "@angular/router";
-import {AuthenticationService} from "../services/services/authentication.service";
 import {TokenService} from "../services/token/token.service";
+import {AuthenticationApIsService} from "../services/services/authentication-ap-is.service";
 
 @Component({
   selector: 'app-login',
@@ -13,13 +13,13 @@ import {TokenService} from "../services/token/token.service";
     FormsModule,
     NgForOf,
     NgIf,
+    NgOptimizedImage,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
 
-  image = "../public/assets/login.jpg";
   authRequest: AuthenticationRequest = {email: '', password:''};
   errorMsg:Array<string> =[];
 
@@ -27,7 +27,7 @@ export class LoginComponent {
   emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   constructor(private router: Router,
-              private authService: AuthenticationService,
+              private authService: AuthenticationApIsService,
               private tokenService: TokenService
               )
               {

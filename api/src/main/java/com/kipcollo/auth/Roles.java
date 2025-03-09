@@ -3,7 +3,7 @@ package com.kipcollo.auth;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.kipcollo.customer.Customer;
+import com.kipcollo.customer.Users;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -35,7 +35,7 @@ public class Roles {
    private String name;
    @ManyToMany(mappedBy = "roles")
    @JsonIgnore
-   private List<Customer> customers;
+   private List<Users> users;
    @Column(updatable = false,nullable = false)
    @CreatedDate
    private LocalDateTime createdDate;

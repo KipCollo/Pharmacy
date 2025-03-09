@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForOf} from "@angular/common";
-import { MedicineService } from '../services/services/medicine.service';
-import { PageResponseMedicineResponse } from '../services/models/page-response-medicine-response';
-import { MedicineResponse } from '../services/models';
+import { PageResponseProductResponse} from '../services/models';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpTokenInterceptor } from '../services/interceptor/http-token.interceptor';
+import {MedicineApIsService} from "../services/services/medicine-ap-is.service";
 
 @Component({
   selector: 'app-medicine-list',
@@ -22,12 +21,12 @@ import { HttpTokenInterceptor } from '../services/interceptor/http-token.interce
 })
 export class MedicineListComponent{
 
-  medicineResponse: PageResponseMedicineResponse ={}
+  medicineResponse: PageResponseProductResponse ={}
   page =0;
   size=5;
 
   constructor(
-    private medicineService: MedicineService
+    private medicineService: MedicineApIsService
   ) {
   }
 
@@ -40,8 +39,8 @@ export class MedicineListComponent{
       page: this.page,
       size: this.size
     }).subscribe({
-      next: (medicine) => {
-        this.medicineResponse = medicine
+      next: (product) => {
+        this.medicineResponse = product
       }
     })
   }

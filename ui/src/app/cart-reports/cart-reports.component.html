@@ -1,0 +1,47 @@
+<div class="container">
+  <h2>Cart Reports</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+    <!-- Carts Started -->
+    <div class="chart-container bg-white p-4 rounded-lg shadow-md">
+      <h3 class="text-lg font-semibold mb-2">Carts Started</h3>
+      <canvas baseChart
+              [data]="cartsStartedData"
+              [type]="chartType"
+              [options]="chartOptions">
+      </canvas>
+    </div>
+
+    <!-- Carts Abandoned -->
+    <div class="chart-container bg-white p-4 rounded-lg shadow-md">
+      <h3 class="text-lg font-semibold mb-2">Carts Abandoned</h3>
+      <canvas baseChart
+              [data]="cartsAbandonedData"
+              [type]="chartType"
+              [options]="chartOptions">
+      </canvas>
+    </div>
+
+    <!-- Carts Placed -->
+    <div class="chart-container bg-white p-4 rounded-lg shadow-md">
+      <h3 class="text-lg font-semibold mb-2">Carts Placed</h3>
+      <canvas baseChart
+              [data]="cartsPlacedData"
+              [type]="chartType"
+              [options]="chartOptions">
+      </canvas>
+    </div>
+
+    <!-- Carts Recovered -->
+    <div class="chart-container bg-white p-4 rounded-lg shadow-md">
+      <h3 class="text-lg font-semibold mb-2">Carts Recovered</h3>
+      <canvas baseChart
+              [data]="cartsRecoveredData"
+              [type]="chartType"
+              [options]="chartOptions">
+      </canvas>
+    </div>
+  </div>
+
+</div>
+

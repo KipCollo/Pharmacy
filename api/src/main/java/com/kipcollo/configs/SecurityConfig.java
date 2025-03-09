@@ -1,6 +1,6 @@
 package com.kipcollo.configs;
 
-import com.kipcollo.customer.CustomerService;
+import com.kipcollo.customer.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -35,7 +35,7 @@ import java.util.Collections;
 public class SecurityConfig {
 
    private final JwtFilter jwtAuthFilter;
-   private final CustomerService userDetailsService;
+   private final UserService userDetailsService;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{

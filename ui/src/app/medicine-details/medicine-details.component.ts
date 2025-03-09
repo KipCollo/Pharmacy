@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MedicineService } from '../services/services';
-import { MedicineResponse } from '../services/models';
 import { CurrencyPipe } from '@angular/common';
+import {ProductResponse} from "../services/models/product-response";
+import {MedicineApIsService} from "../services/services/medicine-ap-is.service";
 
 @Component({
   selector: 'app-medicine-details',
@@ -13,21 +13,21 @@ import { CurrencyPipe } from '@angular/common';
 })
 export class MedicineDetailsComponent implements OnInit{
 
-  medicine: MedicineResponse ={};
+  medicine: ProductResponse ={};
 
   constructor(
     private route: ActivatedRoute,
-    private medicineService: MedicineService
+    private medicineService: MedicineApIsService
   ) {}
 
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.medicineService.getMedicineById(id).subscribe(data => {
-        this.medicine = data;
-      });
-    }
+    // const id = this.route.snapshot.paramMap.get('id');
+    // if (id) {
+    //   this.medicineService.getMedicineById(id).subscribe(data => {
+    //     this.medicine = data;
+    //   });
+    // }
   }
 
 
