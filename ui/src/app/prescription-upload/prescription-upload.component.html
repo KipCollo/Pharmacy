@@ -1,0 +1,30 @@
+<div class="p-6">
+  <h2 class="text-2xl font-bold mb-4">Prescription Upload</h2>
+
+  <!-- Upload Prescription Section -->
+  <div class="mb-6 border p-4 rounded-lg">
+    <input type="file" (change)="onFileSelected($event)" class="border p-2">
+    <button (click)="uploadPrescription()" class="bg-blue-500 text-white px-4 py-2 ml-2">
+      Upload Prescription
+    </button>
+  </div>
+
+  <!-- List of Uploaded Prescriptions -->
+  <h3 class="text-xl font-semibold mb-3">Your Prescriptions</h3>
+  <div *ngIf="prescriptions.length === 0" class="text-gray-500">No prescriptions uploaded yet.</div>
+
+  <div *ngFor="let prescription of prescriptions" class="border p-4 rounded-lg mb-3 flex items-center">
+    <img [src]="prescription.imageUrl" class="w-20 h-20 rounded-md mr-4" alt="Prescription Image">
+    <span class="font-medium">Status:
+      <span [ngClass]="{
+        'text-yellow-500': prescription.status === 'Pending',
+        'text-green-500': prescription.status === 'Approved',
+        'text-red-500': prescription.status === 'Rejected'
+      }">
+        {{ prescription.status }}
+      </span>
+    </span>
+  </div>
+</div>
+
+

@@ -1,0 +1,18 @@
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow">
+  <h2 class="text-2xl font-bold mb-4">Track Your Orders</h2>
+
+  <div *ngIf="!orders.length" class="text-gray-500">No orders placed yet.</div>
+
+  <div *ngFor="let order of orders" class="border p-4 rounded-lg my-3">
+    <p><strong>Order ID:</strong> {{ order.id }}</p>
+    <p><strong>Status:</strong>
+      <span [ngClass]="{
+        'text-yellow-500': order.status === 'Pending',
+        'text-blue-500': order.status === 'Processing',
+        'text-indigo-500': order.status === 'Shipped',
+        'text-green-500': order.status === 'Delivered'
+      }">{{ order.status }}</span>
+    </p>
+  </div>
+</div>
+
