@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import {CustomerRequest} from "../services/models/customer-request";
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
-import {AuthenticationService} from "../services/services/authentication.service";
+import {AuthenticationApIsService} from "../services/services/authentication-ap-is.service";
+import {UserRequest} from "../services/models/user-request";
 
 @Component({
   selector: 'app-register',
@@ -18,11 +18,11 @@ import {AuthenticationService} from "../services/services/authentication.service
 })
 export class RegisterComponent {
 
-  customer: CustomerRequest ={firstName: '',lastName: '',email: '',password: ''}
+  customer: UserRequest ={firstName: '',lastName: '',email: '',password: ''}
   errorMsg: Array<string> =[]
 
   constructor(private router: Router,
-              private authService: AuthenticationService) {
+              private authService: AuthenticationApIsService) {
   }
 
   register(){
@@ -30,7 +30,7 @@ export class RegisterComponent {
     this.authService.register({
       body: this.customer
     }).subscribe({
-      next: (res) =>{
+      next: () =>{
         this.router.navigate(["activate-account"]);
       },
       error: (err) => {

@@ -60,17 +60,21 @@
 <!--        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-3 5.197" />-->
 <!--      </svg>-->
 <!--    </button>-->
-<!--    <img src="assets/profile.png" class="w-8 h-8 rounded-full border">-->
+<!--    <img src="../public/login.jpg" class="w-8 h-8 rounded-full border">-->
 <!--  </div>-->
 <!--</nav>-->
 
-<nav>
-   <a routerLink="/home">Home</a>
-   <a routerLink="/login" *ngIf="!isAuthenticated()">Login</a>
-   <a routerLink="/register" *ngIf="!isAuthenticated()">Register</a>
-   <a routerLink="/admin" *ngIf="isAuthenticated()">Admin Dashboard</a>
-   <a routerLink="/doctor" *ngIf="isAuthenticated()">Doctor Dashboard</a>
-   <a routerLink="/customer" *ngIf="isAuthenticated()">Customer Dashboard</a>
-   <button (click)="logout()" *ngIf="isAuthenticated()">Logout</button>
- </nav>
- 
+<!--<nav>-->
+<!--   <a routerLink="/home">Home</a>-->
+<!--   <a routerLink="/login" *ngIf="!isAuthenticated()">Login</a>-->
+<!--   <a routerLink="/register" *ngIf="!isAuthenticated()">Register</a>-->
+<!--   <a routerLink="/admin" *ngIf="isAuthenticated()">Admin Dashboard</a>-->
+<!--   <a routerLink="/doctor" *ngIf="isAuthenticated()">Doctor Dashboard</a>-->
+<!--   <a routerLink="/users" *ngIf="isAuthenticated()">Customer Dashboard</a>-->
+<!--   <button (click)="logout()" *ngIf="isAuthenticated()">Logout</button>-->
+<!-- </nav>-->
+<div class="flex h-screen">
+  <app-side-chat class="w-16"></app-side-chat>
+  <app-chat-list class="w-1/4"></app-chat-list>
+  <app-chat-window class="flex-1"></app-chat-window>
+</div>

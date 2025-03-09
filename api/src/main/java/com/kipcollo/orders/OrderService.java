@@ -1,9 +1,6 @@
 package com.kipcollo.orders;
 
-import com.kipcollo.customer.Customer;
-import com.kipcollo.customer.CustomerMapper;
-import com.kipcollo.customer.CustomerService;
-import com.kipcollo.email.EmailService;
+import com.kipcollo.customer.UserService;
 import com.kipcollo.orderlines.OrderLineService;
 import com.kipcollo.products.ProductService;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,13 +17,13 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final OrderLineService orderLineService;
-    private final CustomerService customerService;
+    private final UserService userService;
     private final ProductService productService;
 ;
 
     public Integer createOrder(OrderRequest orderRequest) {
         //check the customer
-        var customer = customerService.getCustomerById(orderRequest.getCustomerId());
+        var customer = userService.getCustomerById(orderRequest.getCustomerId());
 
         //purchase product
         var purchasedProducts = productService.purchaseProduct(orderRequest.getProducts());

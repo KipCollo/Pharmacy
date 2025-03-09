@@ -2,7 +2,7 @@ package com.kipcollo.auth;
 
 import java.time.LocalDateTime;
 
-import com.kipcollo.customer.Customer;
+import com.kipcollo.customer.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,5 +29,5 @@ public class Token {
    private LocalDateTime validatedAt;
    @ManyToOne
    @JoinColumn(name = "customerId", nullable = false)
-   private Customer customer;
+   private Users users;
 }

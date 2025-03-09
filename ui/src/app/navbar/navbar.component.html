@@ -1,0 +1,17 @@
+<nav class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+  <div class="text-lg font-bold">Google Store</div>
+  <ul class="hidden md:flex space-x-6">
+    <li><a href="#" class="hover:text-gray-600">Pixel</a></li>
+    <li><a href="#" class="hover:text-gray-600">Nest</a></li>
+    <li><a href="#" class="hover:text-gray-600">Fitbit</a></li>
+    <li><a href="#" class="hover:text-gray-600">Accessories</a></li>
+  </ul>
+  <div class="flex space-x-4">
+    <a *ngIf="isLoggedIn" routerLink="/cart" class="border px-4 py-2 rounded-md">Cart</a>
+    <a *ngIf="!isLoggedIn" routerLink="/login" class="bg-blue-500 text-white px-4 py-2 rounded">Login / Register</a>
+    <button *ngIf="isLoggedIn" (click)="logout()" class="bg-red-500 text-white px-4 py-2 rounded ml-4">Logout</button>
+
+
+  </div>
+</nav>
+

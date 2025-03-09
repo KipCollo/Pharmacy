@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
-import {AuthenticationService} from "../services/services/authentication.service";
 import {CodeInputModule} from "angular-code-input";
 import {NgIf} from "@angular/common";
+import {AuthenticationApIsService} from "../services/services/authentication-ap-is.service";
 
 @Component({
   selector: 'app-activate-account',
@@ -22,7 +22,7 @@ export class ActivateAccountComponent {
   submitted = false;
 
   constructor(private router: Router,
-              private authService: AuthenticationService) {
+              private authService: AuthenticationApIsService) {
   }
 
   onCodeCompleted(token: string) {

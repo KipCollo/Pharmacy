@@ -1,6 +1,6 @@
 package com.kipcollo.payments;
 
-import com.kipcollo.customer.CustomerResponse;
+import com.kipcollo.customer.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +17,5 @@ public class PaymentRequest {
     private PaymentMethod paymentMethod;
     private int orderId;
     private String orderReference;
-    private CustomerResponse customer;
+    private UserResponse customer;
 }

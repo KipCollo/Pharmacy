@@ -1,0 +1,25 @@
+<!--<nav class="bg-white shadow-md p-4 flex justify-between items-center">-->
+<!--  <div class="text-lg font-bold text-gray-800">Metorik Dashboard</div>-->
+<!--  <div class="space-x-4">-->
+<!--    <a href="#" class="text-gray-600 hover:text-blue-500">Dashboard</a>-->
+<!--    <a href="#" class="text-gray-600 hover:text-blue-500">Orders</a>-->
+<!--    <a href="#" class="text-gray-600 hover:text-blue-500">Customers</a>-->
+<!--    <a href="#" class="text-gray-600 hover:text-blue-500">Reports</a>-->
+<!--  </div>-->
+<!--  <div class="relative">-->
+<!--    <button class="flex items-center space-x-2">-->
+<!--      <span class="text-gray-600">Admin</span>-->
+<!--      <img class="w-8 h-8 rounded-full" src="https://via.placeholder.com/40" alt="Profile">-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</nav>-->
+<div *ngFor="let prescription of prescriptions" class="border p-4 rounded-lg mb-3 flex items-center">
+  <img [src]="prescription.imageUrl" class="w-20 h-20 rounded-md mr-4" alt="Prescription Image">
+  <span class="font-medium mr-4">Status: {{ prescription.status }}</span>
+  <button (click)="approvePrescription(prescription.id)" class="bg-green-500 text-white px-4 py-2 mr-2">
+    Approve
+  </button>
+  <button (click)="rejectPrescription(prescription.id)" class="bg-red-500 text-white px-4 py-2">
+    Reject
+  </button>
+</div>

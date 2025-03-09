@@ -1,6 +1,5 @@
 package com.kipcollo.orders;
 
-import com.kipcollo.customer.Customer;
 import com.kipcollo.orderlines.OrderLine;
 import com.kipcollo.payments.PaymentMethod;
 import jakarta.persistence.*;
