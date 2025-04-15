@@ -12,6 +12,7 @@ import { CustomersApIsService } from './services/customers-ap-is.service';
 import { AuthenticationApIsService } from './services/authentication-ap-is.service';
 import { PaymentControllerService } from './services/payment-controller.service';
 import { OrderApIsService } from './services/order-ap-is.service';
+import { CartControllerService } from './services/cart-controller.service';
 import { OrderLineControllerService } from './services/order-line-controller.service';
 
 /**
@@ -28,6 +29,7 @@ import { OrderLineControllerService } from './services/order-line-controller.ser
     AuthenticationApIsService,
     PaymentControllerService,
     OrderApIsService,
+    CartControllerService,
     OrderLineControllerService,
     ApiConfiguration
   ],

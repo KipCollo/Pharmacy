@@ -10,12 +10,15 @@ import { RequestBuilder } from '../../request-builder';
 
 import { ProductRequest } from '../../models/product-request';
 
-export interface UpdateCustomer$Params {
-      body: ProductRequest
+export interface UpdateMedicine$Params {
+      body: {
+'medicine'?: ProductRequest;
+'image'?: Blob;
+}
 }
 
-export function updateCustomer(http: HttpClient, rootUrl: string, params: UpdateCustomer$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, updateCustomer.PATH, 'put');
+export function updateMedicine(http: HttpClient, rootUrl: string, params: UpdateMedicine$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  const rb = new RequestBuilder(rootUrl, updateMedicine.PATH, 'put');
   if (params) {
     rb.body(params.body, 'application/json');
   }
@@ -30,4 +33,4 @@ export function updateCustomer(http: HttpClient, rootUrl: string, params: Update
   );
 }
 
-updateCustomer.PATH = '/api/products';
+updateMedicine.PATH = '/api/products';

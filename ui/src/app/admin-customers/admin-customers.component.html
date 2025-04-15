@@ -1,0 +1,97 @@
+<div class="flex">
+  <main class="flex-1 p-6 bg-gray-100 min-h-screen">
+    <h1 class="text-2xl font-bold mb-4">Customer Analytics</h1>
+
+    <!-- ANALYTICS OVERVIEW -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="bg-white p-4 rounded-lg shadow-md">
+        <h2 class="text-lg font-semibold">Total Customers</h2>
+        <p class="text-2xl font-bold">{{ totalCustomers }}</p>
+      </div>
+
+      <div class="bg-white p-4 rounded-lg shadow-md">
+        <h2 class="text-lg font-semibold">Total Revenue</h2>
+        <p class="text-2xl font-bold">KSH {{ totalRevenue | number: '1.0-2' }}</p>
+      </div>
+
+      <div class="bg-white p-4 rounded-lg shadow-md">
+        <h2 class="text-lg font-semibold">Average Sales</h2>
+        <p class="text-2xl font-bold">KSH {{ averageLTV | number: '1.0-2' }}</p>
+      </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white p-4 rounded-lg shadow-md max-w-xl mx-auto">
+        <h2 class="text-lg font-semibold">Order Trends</h2>
+        <canvas baseChart
+                [data]="orderChartData"
+                [options]="chartOptions"
+                [type]="'line'"
+                class="w-full h-64">
+        </canvas>
+      </div>
+
+      <div class="bg-white p-4 rounded-lg shadow-md max-w-xl mx-auto">
+        <h2 class="text-lg font-semibold">Revenue Trends</h2>
+        <canvas baseChart
+                [data]="revenueChartData"
+                [options]="chartOptions"
+                [type]="'bar'"
+                class="w-full h-64">
+        </canvas>
+      </div>
+    </div>
+
+
+    <!-- CUSTOMER LIST -->
+    <h2 class="text-xl font-semibold mt-6">Customer List</h2>
+    <div class="bg-white p-4 rounded-lg shadow-md mt-2">
+      <table class="w-full text-left border-collapse">
+        <thead>
+        <tr class="border-b">
+          <th class="p-2">Customer</th>
+          <th class="p-2">Contact Details</th>
+          <th class="p-2">Location</th>
+          <th class="p-2">Total Spent</th>
+          <th class="p-2">Role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let customer of customers" class="border-b">
+          <td class="p-2 font-semibold flex items-center">
+              <span class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center mr-2">
+                {{ getInitials(customer.firstName, customer.lastName) }}
+              </span>
+            {{ customer.firstName }} {{ customer.lastName }}
+          </td>
+
+          <td class="p-2">
+            <a href="mailto:{{ customer.email }}" class="text-blue-500 hover:underline">{{ customer.email }}</a><br>
+            <span class="text-gray-500">{{ customer.phone }}</span>
+          </td>
+
+          <td class="p-2">{{ customer.location || 'N/A' }}</td>
+
+          <td class="p-2 font-bold">
+            KES {{ customer.customerId | number: '1.0-2' }}
+          </td>
+
+          <td class="p-2 font-semibold">
+            <div *ngFor="let role of customer.roles">
+                <span class="px-2 py-1 rounded text-white text-xs"
+                      [ngClass]="{
+                        'bg-green-500': role.name === 'ADMIN',
+                        'bg-blue-500': role.name === 'USER',
+                        'bg-yellow-500': role.name === 'DOCTOR'
+                      }">
+                  {{ role.name }}
+                </span>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>

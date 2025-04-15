@@ -15,6 +15,7 @@ public class ProductRequest {
 
     private int medicineId;
     private String name;
+    private byte[] image;
     private String description;
     private MedicineType type;
     private String manufacturer;

@@ -1,0 +1,51 @@
+
+<div class="container mx-auto p-4">
+  <!-- Search Bar -->
+  <div class="mb-4 flex justify-between">
+    <input
+      type="text"
+      placeholder="Search product..."
+      class="p-2 border rounded w-1/3"
+      (input)="onSearch($event)"    />
+  </div>
+
+  <!-- Products Grid -->
+  <div class="grid grid-cols-4 gap-4">
+    <div
+      *ngFor="let product of filteredProducts()"
+      class="bg-white p-4 shadow rounded-lg"
+    >
+      <img [src]="'data:image/jpeg;base64,' + product.image"
+           alt="{{ product.name }}"
+           class="product-image w-full h-48 object-cover rounded-md mb-4">
+      <!-- Price and Quantity -->
+      <div class="flex justify-between items-center mb-2">
+        <span class="product-quantity text-sm text-gray-600">Qty: {{ product.stockQuantity }}</span>
+        <span class="product-price text-base font-medium text-green-600">${{ product.price }}</span>
+      </div>
+
+      <!-- Short Description -->
+      <p class="product-description text-sm text-gray-700">
+        {{ (product.description || '') | slice:0:10 }}{{ (product.description?.length || 0) > 100 ? '...' : '' }}
+      </p>
+
+      <!-- Add to Cart Button -->
+      <!-- Add to Cart Button -->
+      <button (click)="addToCart()" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded flex items-center space-x-2">
+        <span>Add to Cart</span>
+      </button>
+    </div>
+
+  <!-- Pagination -->
+  <div class="flex justify-center mt-4">
+    <button
+      *ngFor="let page of [].constructor(totalPages()); let i = index"
+      class="px-3 py-1 mx-1 border rounded"
+      [class.bg-blue-500]="i === currentPage()"
+      (click)="changePage(i)"
+    >
+      {{ i + 1 }}
+    </button>
+  </div>
+</div>
+</div>

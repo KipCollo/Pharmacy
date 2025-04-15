@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.kipcollo.exceptions.ProductPurchaseException;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ public class ProductService {
    private final ProductRepository repository;
    private final ProductMapper mapper;
 
+   @Transactional
    public PageResponse<ProductResponse> getAllMedicine(int page, int size ) {
        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
        Page<Product> medicines = repository.findAllDisplayableMedicine(pageable);
@@ -45,6 +47,7 @@ public class ProductService {
                .orElseThrow();
    }
 
+   @Transactional
    public String createMedicine(ProductRequest productRequest) {
        var medicine = repository.save(mapper.toProduct(productRequest));
        return "Medicine added with ID:: " + medicine.getId();
@@ -67,6 +70,9 @@ public class ProductService {
        }
        if (StringUtils.isNotBlank(product.getName())){
            product.setName(product.getName());
+       }
+       if (request.getImage() != null) {
+           product.setImage(request.getImage());
        }
        if (StringUtils.isNotBlank(product.getDescription())){
            product.setDescription(request.getDescription());

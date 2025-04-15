@@ -1,2 +1,14 @@
-<router-outlet />
+<!-- NAVBAR (Visible only if NOT in Admin) -->
+<header *ngIf="!isAdminPage()">
+  <app-navbar></app-navbar>
+</header>
 
+<!-- MAIN CONTENT -->
+<main class="flex-1 overflow-auto">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- FOOTER (Visible only if NOT in Admin) -->
+<footer *ngIf="!isAdminPage()" class="bg-gray-900 text-white py-6 text-center">
+  <p>© 2025 KipCollo. All Rights Reserved.</p>
+</footer>

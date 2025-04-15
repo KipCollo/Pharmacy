@@ -1,42 +1,75 @@
+<div class="max-w-3xl mx-auto mt-8 bg-white shadow-lg rounded-lg p-8 text-sm">
+  <h2 class="text-xl font-semibold text-gray-700 mb-6">Add New Product</h2>
 
-<form (ngSubmit)="onSubmit()" #medicineForm="ngForm" class="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
-  <div class="mb-4">
-    <label class="block text-gray-700">Name:</label>
-    <input [(ngModel)]="product.name" name="name" required class="w-full p-2 border rounded-md" />
-  </div>
-  <div class="mb-4">
-    <label class="block text-gray-700">Description:</label>
-    <textarea [(ngModel)]="product.description" name="description" class="w-full p-2 border rounded-md"></textarea>
-  </div>
-  <div class="mb-4">
-    <label class="block text-gray-700">Medicine Image:</label>
-    <input type="file" (change)="onFileSelected($event)" accept="image/*" class="w-full p-2 border rounded-md" />
-  </div>
+  <form (ngSubmit)="uploadProduct()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Medicine Name -->
+    <div class="relative">
+      <label for="name" class="block font-semibold text-gray-700 mb-2">Medicine Name</label>
+      <input type="text" [(ngModel)]="product.name" name="name" class="border p-3 rounded-lg w-full" placeholder="Enter Medicine Name" required />
+    </div>
 
-  <!-- <div class="mb-4" *ngIf="product.imageUrl">
-    <img [src]="product.imageUrl" alt="Medicine Image" class="w-32 h-32 object-cover rounded-md">
-  </div> -->
-  <div class="mb-4">
-    <label class="block text-gray-700">Manufacturer:</label>
-    <input [(ngModel)]="product.manufacturer" name="manufacturer" required class="w-full p-2 border rounded-md" />
-  </div>
-  <div class="mb-4">
-    <label class="block text-gray-700">Expiry Date:</label>
-    <input [(ngModel)]="product.expiryDate" name="expiryDate" type="date" required class="w-full p-2 border rounded-md" />
-  </div>
-  <div class="mb-4">
-    <label class="block text-gray-700">Price:</label>
-    <input [(ngModel)]="product.price" name="price" type="number" required class="w-full p-2 border rounded-md" />
-  </div>
-  <div class="mb-4">
-    <label class="block text-gray-700">Stock Quantity:</label>
-    <input [(ngModel)]="product.stockQuantity" name="stockQuantity" type="number" required class="w-full p-2 border rounded-md" />
-  </div>
-  <div class="mb-4">
-    <label class="block text-gray-700">Type:</label>
-    <select [(ngModel)]="product.type" name="type" required class="w-full p-2 border rounded-md">
-      <option *ngFor="let type of medicineTypes" [value]="type">{{ type }}</option>
-    </select>
-  </div>
-  <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-md">Submit</button>
-</form>
+    <!-- Manufacturer -->
+    <div class="relative">
+      <label for="manufacturer" class="block font-semibold text-gray-700 mb-2">Manufacturer</label>
+      <input type="text" [(ngModel)]="product.manufacturer" name="manufacturer" class="border p-3 rounded-lg w-full" placeholder="Enter Manufacturer" />
+    </div>
+
+    <!-- Expiry Date -->
+    <div class="relative">
+      <label for="expiryDate" class="block font-semibold text-gray-700 mb-2">Expiry Date</label>
+      <input
+        type="date"
+        [(ngModel)]="product.expiryDate"
+        name="expiryDate"
+        id="expiryDate"
+        class="border p-3 rounded-lg w-full"
+        required
+        title="Enter the expiry date of the product"
+      />
+      <div class="absolute top-0 right-0 text-gray-500 text-sm mt-2 mr-4">
+        <span class="cursor-pointer" title="Enter the expiry date of the product">ℹ️</span>
+      </div>
+    </div>
+
+    <!-- Product Type -->
+    <div class="relative">
+      <label for="type" class="block font-semibold text-gray-700 mb-2">Product Type</label>
+      <select [(ngModel)]="product.type" name="type" class="border p-3 rounded-lg w-full" required>
+        <option value="" disabled selected>Select Type</option>
+        <option value="SYRUP">Syrup</option>
+        <option value="TABLETS">Tablets</option>
+        <option value="OINTMENTS">Ointments</option>
+      </select>
+    </div>
+
+    <!-- Price -->
+    <div class="relative">
+      <label for="price" class="block font-semibold text-gray-700 mb-2">Price (KSh)</label>
+      <input type="number" [(ngModel)]="product.price" name="price" class="border p-3 rounded-lg w-full" placeholder="Enter Price" required min="1" />
+    </div>
+
+    <!-- Stock Quantity -->
+    <div class="relative">
+      <label for="stockQuantity" class="block font-semibold text-gray-700 mb-2">Stock Quantity</label>
+      <input type="number" [(ngModel)]="product.stockQuantity" name="stockQuantity" class="border p-3 rounded-lg w-full" placeholder="Enter Quantity" required min="1" />
+    </div>
+
+    <!-- Description (full width) -->
+    <div class="relative col-span-2">
+      <label for="description" class="block font-semibold text-gray-700 mb-2">Description</label>
+      <textarea [(ngModel)]="product.description" name="description" class="border p-3 rounded-lg w-full" rows="4" placeholder="Enter Description"></textarea>
+    </div>
+
+    <!-- Image Upload (full width) -->
+    <div class="relative col-span-2">
+      <label for="image" class="block font-semibold text-gray-700 mb-2">Upload Image</label>
+      <input type="file" (change)="onFileSelected($event)" class="border p-3 rounded-lg w-full" />
+    </div>
+
+    <!-- Buttons -->
+    <div class="col-span-2 flex justify-end gap-4 mt-6">
+      <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg">Upload Product</button>
+      <button type="button" class="bg-gray-600 text-white px-6 py-3 rounded-lg" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

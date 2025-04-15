@@ -26,7 +26,8 @@ public class UsersMapper {
                 users.getPhone(),
                 users.getEmail(),
                 users.getPassword(),
-                users.getLocation()
+                users.getLocation(),
+                users.getRoles()
 
         );
     }

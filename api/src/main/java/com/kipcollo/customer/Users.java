@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.kipcollo.auth.Roles;
+import com.kipcollo.auth.Token;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -48,6 +49,8 @@ public class Users implements Principal,UserDetails{
    private String location;
    private boolean accountLocked;
    private boolean enabled;
+   @OneToMany(mappedBy = "users",cascade = CascadeType.ALL, orphanRemoval = true)
+   private List<Token> tokens;
    @Column(updatable = false,nullable = false)
    @CreatedDate
    private LocalDateTime createdDate;

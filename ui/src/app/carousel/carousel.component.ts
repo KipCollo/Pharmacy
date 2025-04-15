@@ -1,32 +1,45 @@
-import {AfterViewInit, Component} from '@angular/core';
-import {NgForOf} from "@angular/common";
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {NgForOf, NgOptimizedImage} from "@angular/common";
 import Swiper from "swiper";
 import {Navigation} from "swiper/modules";
+import {MedicineApIsService} from "../services/services/medicine-ap-is.service";
+
+import {PageResponseProductResponse} from "../services/models/page-response-product-response";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-carousel',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    NgOptimizedImage,
+    RouterLink
   ],
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.css'
 })
-export class CarouselComponent implements AfterViewInit {
-  products: any[] = [1,2,3,4,5,6,7,8,9,10];
+export class CarouselComponent implements AfterViewInit ,OnInit{
+  products: PageResponseProductResponse= {};
 
-  // ngOnInit(): void {
-  //   this.productService.getProducts().subscribe(data => {
-  //     this.products = data.slice(0, 5); // Fetch only first 5 products
-  //   });
-  // }
+  constructor(
+    private medicineService: MedicineApIsService
+  ) {
+  }
+
+  ngOnInit(): void {
+      this.medicineService.getAllMedicines().subscribe({
+        next: (product) => {
+          this.products = product//.slice(0, 5); // Fetch only first 5 products
+        }
+      })
+    }
 
   ngAfterViewInit() {
     new Swiper('.swiper-container', {
       modules: [Navigation],
       loop: true,
-      slidesPerView: 7,
-      spaceBetween: 20,
+      slidesPerView: 9,
+      spaceBetween: 3,
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',

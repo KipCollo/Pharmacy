@@ -24,7 +24,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     if (token){
       const authRequest = req.clone({
         headers: new HttpHeaders({
-          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJmdWxsbmFtZSI6ImNvbGxvIGNvbGxvIiwic3ViIjoiY29sbGluc0BnbWFpbC5jb20iLCJpYXQiOjE3NDA4NjQzNTIsImV4cCI6MTc0MDg2NTIxNiwiYXV0aG9yaXRpZXMiOlsiVVNFUiJdfQ.i-FMIFJvzVWiFKudmpoHQH9kFalXyPY09m7V6FNEWDMvdnZQM5DJNY8XZUnjLnPu1LibTENxltQ2Vej0m5uSAw'
+          Authorization: `Bearer ${token}`
         })
       })
       console.log('Token found');
@@ -34,7 +34,10 @@ export class HttpTokenInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-   
+
   }
 }
+
+
+
 

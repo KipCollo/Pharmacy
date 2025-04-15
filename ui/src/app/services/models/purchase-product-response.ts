@@ -4,6 +4,7 @@
 
 export interface PurchaseProductResponse {
   description?: string;
+  image?: string;
   name?: string;
   price?: number;
   productId?: number;

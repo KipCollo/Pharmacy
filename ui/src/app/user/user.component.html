@@ -1,77 +1,66 @@
-<div class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+<div class="w-96 mx-auto bg-white shadow-lg rounded-lg p-6">
   <div class="flex items-center justify-between border-b pb-4">
-    <!-- User Info (Name + Email) -->
-    <div>
-      <h2 class="text-2xl font-bold">{{ user.name || 'Your Name' }}</h2>
-      <p class="text-gray-500">{{ user.email }}</p>
-    </div>
-
     <!-- Profile Picture -->
-    <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-300">
-      <img *ngIf="user.profilePicture; else defaultPic" [src]="user.profilePicture" class="w-full h-full object-cover">
+    <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-300">
+<!--      <img *ngIf="user.profilePicture; else defaultPic" [src]="user.profilePicture" class="w-full h-full object-cover">-->
       <ng-template #defaultPic>
         <img src="../public/login.jpg" class="w-full h-full object-cover">
       </ng-template>
+    </div>
+
+    <!-- User Info -->
+    <div class="text-right">
+      <h2 class="text-lg font-bold">{{ user.firstName || 'Your Name' }}</h2>
+      <p class="text-gray-500 text-sm">{{ user.email }}</p>
     </div>
   </div>
 
   <!-- Profile Section -->
   <div class="mt-4">
-    <h3 class="text-xl font-semibold mb-2">Profile Information</h3>
-    <p><strong>Phone:</strong> {{ user.phone || 'Not provided' }}</p>
-    <p><strong>Address:</strong> {{ user.address || 'Not provided' }}</p>
-    <a routerLink="/profile" class="mt-2 inline-block bg-blue-500 text-white px-4 py-2 rounded">Update Profile</a>
+    <h3 class="text-md font-semibold">Profile Information</h3>
+    <p class="text-sm"><strong>First Name:</strong> {{ user.firstName || 'Not provided' }}</p>
+    <p class="text-sm"><strong>Last Name:</strong> {{ user.lastName || 'Not provided' }}</p>
+    <p class="text-sm"><strong>Email:</strong> {{ user.email || 'Not provided' }}</p>
+    <p class="text-sm"><strong>DOB:</strong> {{ user.dateOfBirth || 'Not provided' }}</p>
+    <p class="text-sm"><strong>Phone Number:</strong> {{ user.phone || 'Not provided' }}</p>
+    <p class="text-sm"><strong>Location:</strong> {{ user.location || 'Not provided' }}</p>
+    <p class="text-sm"><strong>Password:</strong> {{ user.password || 'Not provided' }}</p>
+    <a routerLink="/profile" class="mt-2 block text-center bg-blue-500 text-white px-3 py-1 rounded text-sm">Update Profile</a>
   </div>
 
-  <!-- Dashboard Sections -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-    <!-- Orders Carousel -->
-    <div class="bg-gray-100 p-4 rounded-lg">
-      <h3 class="text-xl font-semibold mb-2">Order History</h3>
+<!--  &lt;!&ndash; Dashboard Sections &ndash;&gt;-->
+<!--  <div class="mt-4 space-y-4">-->
+<!--    &lt;!&ndash; Order History &ndash;&gt;-->
+<!--    <div class="bg-gray-100 p-3 rounded-md">-->
+<!--      <h3 class="text-sm font-semibold">Order History</h3>-->
+<!--      <div *ngIf="user.orders?.length > 0; else noOrders">-->
+<!--        <div *ngFor="let order of user.orders" class="text-xs text-gray-600">-->
+<!--          <p><strong>ID:</strong> {{ order.id }}</p>-->
+<!--          <p><strong>Status:</strong> {{ order.status }}</p>-->
+<!--          <p><strong>Date:</strong> {{ order.date | date }}</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <ng-template #noOrders>-->
+<!--        <p class="text-gray-500 text-xs">No orders placed yet.</p>-->
+<!--      </ng-template>-->
+<!--    </div>-->
 
-      <div *ngIf="user.orders?.length > 0; else noOrders">
-<!--        <swiper-->
-<!--          [spaceBetween]="10"-->
-<!--          [slidesPerView]="1"-->
-<!--          [navigation]="true"-->
-<!--          [pagination]="{ clickable: true }"-->
-<!--          class="swiper-container"-->
-<!--        >-->
-          <ng-container *ngFor="let order of user.orders">
-            <ng-template swiperSlide>
-              <div class="border p-4 rounded-lg bg-white">
-                <p><strong>Order ID:</strong> {{ order.id }}</p>
-                <p><strong>Status:</strong> {{ order.status }}</p>
-                <p><strong>Date:</strong> {{ order.date | date }}</p>
-              </div>
-            </ng-template>
-          </ng-container>
-<!--        </swiper>-->
-      </div>
-
-      <ng-template #noOrders>
-        <p class="text-gray-600">No orders placed yet.</p>
-      </ng-template>
-    </div>
-
-    <!-- Recent Conversations -->
-    <div class="bg-gray-100 p-4 rounded-lg">
-      <h3 class="text-xl font-semibold mb-2">Recent Conversations</h3>
-      <div *ngIf="user.conversations?.length > 0; else noChats">
-        <div *ngFor="let chat of user.conversations" class="border p-3 rounded-lg mb-2 bg-white">
-          <p><strong>{{ chat.with }}</strong></p>
-          <p class="text-gray-500 text-sm">{{ chat.lastMessage }}</p>
-          <a [routerLink]="['/chat', chat.id]" class="text-blue-500">View Chat</a>
-        </div>
-      </div>
-      <ng-template #noChats>
-        <p class="text-gray-600">No recent chats.</p>
-      </ng-template>
-    </div>
-  </div>
-
+<!--    &lt;!&ndash; Recent Conversations &ndash;&gt;-->
+<!--    <div class="bg-gray-100 p-3 rounded-md">-->
+<!--      <h3 class="text-sm font-semibold">Recent Conversations</h3>-->
+<!--      <div *ngIf="user.conversations?.length > 0; else noChats">-->
+<!--        <div *ngFor="let chat of user.conversations" class="text-xs text-gray-600 mb-2">-->
+<!--          <p><strong>{{ chat.with }}</strong></p>-->
+<!--          <p class="text-gray-500">{{ chat.lastMessage }}</p>-->
+<!--          <a [routerLink]="['/chat', chat.id]" class="text-blue-500 text-xs">View Chat</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <ng-template #noChats>-->
+<!--        <p class="text-gray-500 text-xs">No recent chats.</p>-->
+<!--      </ng-template>-->
+<!--    </div>-->
+<!--  </div>-->
 
   <!-- Logout Button -->
-  <button (click)="logout()" class="mt-4 bg-red-500 text-white px-4 py-2 rounded">Logout</button>
+  <button (click)="logout()" class="mt-4 w-full bg-red-500 text-white py-2 rounded text-sm">Logout</button>
 </div>
-

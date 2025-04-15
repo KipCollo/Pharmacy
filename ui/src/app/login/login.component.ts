@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthenticationRequest} from "../services/models/authentication-request";
 import {FormsModule, NgModel} from "@angular/forms";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {Router} from "@angular/router";
 import {TokenService} from "../services/token/token.service";
 import {AuthenticationApIsService} from "../services/services/authentication-ap-is.service";
+import {jwtDecode} from "jwt-decode";
 
 @Component({
   selector: 'app-login',
@@ -18,33 +19,48 @@ import {AuthenticationApIsService} from "../services/services/authentication-ap-
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
-  authRequest: AuthenticationRequest = {email: '', password:''};
-  errorMsg:Array<string> =[];
-
-  // Client-side validation
-  emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  authRequest: AuthenticationRequest = {email: '', password: ''};
+  errorMsg: Array<string> = [];
+  isLoggedIn = false; // Track login state
 
   constructor(private router: Router,
               private authService: AuthenticationApIsService,
               private tokenService: TokenService
-              )
-              {
+  ) {
+  }
+
+  ngOnInit() {
+    // Subscribe to token changes to update UI instantly
+    this.tokenService.token$.subscribe((token) => {
+      this.isLoggedIn = !!token;
+    });
   }
 
   login() {
-    this.errorMsg =[];
+    this.errorMsg = [];
     this.authService.authenticate({
       body: this.authRequest
     }).subscribe({
-      next: (res) =>{
+      next: (res) => {
         this.tokenService.token = res.token as string;
-        this.router.navigate(['medicine-list']);
+
+        const user = this.decodeToken(this.tokenService.token);
+        const roles: string[] = user.authorities || []; // Get roles
+
+        if (roles.includes('ADMIN')) {
+          this.router.navigate(['/admin']);
+        }
+        else if (roles.includes('USER')){
+          this.router.navigate(['/home']);
+        } else {
+          this.router.navigate(['/login']);
+        }
       },
       error: (err) => {
         console.log(err);
-        if(err.error.validationErrors){
+        if (err.error.validationErrors) {
           this.errorMsg = err.error.validationErrors;
         } else {
           this.errorMsg.push(err.error.error);
@@ -54,6 +70,15 @@ export class LoginComponent {
   }
 
   register() {
-      this.router.navigate(['register']);
+    this.router.navigate(['register']);
+  }
+
+  private decodeToken(token: string): any {
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      console.error('Invalid token:', error);
+      return null;
+    }
   }
 }

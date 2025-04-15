@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pharmacy
+  labels:
+    app:
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:
+  template:
+    metadata:
+      name: pharmacy
+      labels:
+        app:
+    spec:
+      containers:
+        - name: pharmacy-ui
+          image: nginx
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      restartPolicy: Always
+      

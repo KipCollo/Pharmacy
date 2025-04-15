@@ -1,0 +1,21 @@
+<nav class="bg-gray-800 text-white w-64 min-h-screen p-4">
+  <ul>
+    <li *ngFor="let item of menuItems">
+      <div
+        class="menu-item"
+        (click)="item.subMenu.length ? toggleSubMenu(item) : null"
+      >
+        <i [class]="item.icon"></i> {{ item.name }}
+      </div>
+
+      <!-- Submenu -->
+      <ul *ngIf="item.subMenu && item.isOpen">
+        <li *ngFor="let sub of item.subMenu">
+          <a [routerLink]="sub.link">{{ sub.name }}</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+</nav>
+

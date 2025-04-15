@@ -10,12 +10,12 @@ import { RequestBuilder } from '../../request-builder';
 
 import { UserRequest } from '../../models/user-request';
 
-export interface UpdateCustomer1$Params {
+export interface UpdateCustomer$Params {
       body: UserRequest
 }
 
-export function updateCustomer1(http: HttpClient, rootUrl: string, params: UpdateCustomer1$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, updateCustomer1.PATH, 'put');
+export function updateCustomer(http: HttpClient, rootUrl: string, params: UpdateCustomer$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  const rb = new RequestBuilder(rootUrl, updateCustomer.PATH, 'put');
   if (params) {
     rb.body(params.body, 'application/json');
   }
@@ -30,4 +30,4 @@ export function updateCustomer1(http: HttpClient, rootUrl: string, params: Updat
   );
 }
 
-updateCustomer1.PATH = '/api/customers';
+updateCustomer.PATH = '/api/customers';

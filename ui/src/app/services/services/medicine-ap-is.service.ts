@@ -24,8 +24,8 @@ import { ProductResponse } from '../models/product-response';
 import { PurchaseProductResponse } from '../models/purchase-product-response';
 import { purchaseProducts } from '../fn/medicine-ap-is/purchase-products';
 import { PurchaseProducts$Params } from '../fn/medicine-ap-is/purchase-products';
-import { updateCustomer } from '../fn/medicine-ap-is/update-customer';
-import { UpdateCustomer$Params } from '../fn/medicine-ap-is/update-customer';
+import { updateMedicine } from '../fn/medicine-ap-is/update-medicine';
+import { UpdateMedicine$Params } from '../fn/medicine-ap-is/update-medicine';
 
 @Injectable({ providedIn: 'root' })
 export class MedicineApIsService extends BaseService {
@@ -58,27 +58,27 @@ export class MedicineApIsService extends BaseService {
     );
   }
 
-  /** Path part for operation `updateCustomer()` */
-  static readonly UpdateCustomerPath = '/api/products';
+  /** Path part for operation `updateMedicine()` */
+  static readonly UpdateMedicinePath = '/api/products';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `updateCustomer()` instead.
+   * To access only the response body, use `updateMedicine()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  updateCustomer$Response(params: UpdateCustomer$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return updateCustomer(this.http, this.rootUrl, params, context);
+  updateMedicine$Response(params: UpdateMedicine$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return updateMedicine(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `updateCustomer$Response()` instead.
+   * To access the full response (for headers, for example), `updateMedicine$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  updateCustomer(params: UpdateCustomer$Params, context?: HttpContext): Observable<void> {
-    return this.updateCustomer$Response(params, context).pipe(
+  updateMedicine(params: UpdateMedicine$Params, context?: HttpContext): Observable<void> {
+    return this.updateMedicine$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
@@ -92,7 +92,7 @@ export class MedicineApIsService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createMedicine$Response(params: CreateMedicine$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  createMedicine$Response(params?: CreateMedicine$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
     return createMedicine(this.http, this.rootUrl, params, context);
   }
 
@@ -102,7 +102,7 @@ export class MedicineApIsService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createMedicine(params: CreateMedicine$Params, context?: HttpContext): Observable<string> {
+  createMedicine(params?: CreateMedicine$Params, context?: HttpContext): Observable<string> {
     return this.createMedicine$Response(params, context).pipe(
       map((r: StrictHttpResponse<string>): string => r.body)
     );

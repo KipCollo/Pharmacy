@@ -1,14 +1,61 @@
-<aside class="w-64 bg-gray-900 text-white min-h-screen p-4">
+<aside class="w-64 bg-gray-800 text-white min-h-screen p-4">
+  <!-- Profile Section (Profile at the top with details below) -->
+  <div class="flex items-center space-x-4 mb-6 bg-gray-700 p-4 rounded-lg shadow-md hover:bg-gray-600">
+    <!-- Default or Profile Image -->
+    <img
+      class="w-12 h-12 rounded-full object-cover"
+      [src]="profileImage || 'https://via.placeholder.com/150?text=No+Profile+Image'"
+      alt="User Profile"
+    />
+    <div class="flex flex-col">
+      <h2 class="text-lg font-semibold text-red-400">{{ userName || 'John Doe' }}</h2>
+      <p class="text-sm text-red-300">{{ userRole || 'User' }}</p>
+    </div>
+
+    <!-- Dropdown Toggle -->
+    <div class="relative">
+      <button
+        (click)="toggleProfileDropdown()"
+        class="text-gray-200 focus:outline-none"
+        [attr.aria-expanded]="profileDropdownOpen ? 'true' : 'false'"
+      >
+        <i class="fas fa-caret-down"></i>
+      </button>
+
+      <!-- Dropdown Menu -->
+      <div
+        *ngIf="profileDropdownOpen"
+        class="absolute right-0 mt-2 w-32 bg-gray-800 text-white rounded-md shadow-lg"
+      >
+        <ul>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 text-sm hover:bg-gray-700"
+              (click)="logout()"
+            >
+              Log Out
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <h1 class="text-xl font-bold mb-4">Records Shopup</h1>
+
+  <!-- Navigation Menu -->
   <nav>
     <ul class="space-y-3">
-      <li><a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"><span>📊</span> <span>Dashboard</span></a></li>
-      <li><a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"><span>📄</span> <span>Reports</span></a></li>
-      <li><a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"><span>🛍️</span> <span>Orders</span></a></li>
-      <li><a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"><span>💳</span> <span>Subscriptions</span></a></li>
-      <li><a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"><span>👥</span> <span>Customers</span></a></li>
-      <li class="bg-gray-700 p-2 rounded-md"><a  routerLink="/cart-reports" class="flex items-center space-x-2"><span></span> <span>Cart </span></a></li>
+      <li *ngFor="let item of menuItems">
+        <a
+          [routerLink]="item.link"
+          class="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+        >
+          <span [innerHTML]="item.icon"></span>
+          <span>{{ item.name }}</span>
+        </a>
+      </li>
     </ul>
   </nav>
 </aside>
-

@@ -5,6 +5,7 @@
 export interface ProductResponse {
   description?: string;
   expiryDate?: string;
+  image?: string;
   manufacturer?: string;
   name?: string;
   price?: number;

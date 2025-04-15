@@ -5,6 +5,7 @@
 export interface ProductRequest {
   description?: string;
   expiryDate?: string;
+  image?: string;
   manufacturer?: string;
   medicineId?: number;
   name?: string;

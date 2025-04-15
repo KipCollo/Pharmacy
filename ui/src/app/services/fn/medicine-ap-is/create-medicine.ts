@@ -11,10 +11,13 @@ import { RequestBuilder } from '../../request-builder';
 import { ProductRequest } from '../../models/product-request';
 
 export interface CreateMedicine$Params {
-      body: ProductRequest
+      body?: {
+'product': ProductRequest;
+'image': Blob;
+}
 }
 
-export function createMedicine(http: HttpClient, rootUrl: string, params: CreateMedicine$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+export function createMedicine(http: HttpClient, rootUrl: string, params?: CreateMedicine$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
   const rb = new RequestBuilder(rootUrl, createMedicine.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');

@@ -13,6 +13,7 @@ public class PurchaseProductResponse {
 
     private int productId;
     private String name;
+    private byte[] image;
     private String description;
     private BigDecimal price;
     private double quantity;

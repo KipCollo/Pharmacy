@@ -1,33 +1,40 @@
-<section class="p-6 bg-gray-100">
-  <div class="container mx-auto">
-    <div *ngIf="!isLoggedIn; else cartContent" class="text-center">
-      <p class="text-lg font-semibold mb-4">Please log in to view your cart</p>
-      <a routerLink="/login" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Login</a>
-      <a routerLink="/register" class="bg-green-500 text-white px-4 py-2 rounded">Register</a>
-    </div>
+<!-- Floating Cart Sidebar from Right -->
+<div class="fixed inset-0 z-50 flex justify-end">
 
-    <ng-template #cartContent>
-      <h2 class="text-2xl font-bold mb-4">Your Cart</h2>
-      <div *ngIf="cartItems.length > 0; else emptyCart">
-        <div *ngFor="let item of cartItems" class="bg-white p-4 rounded shadow mb-2">
-          <p class="font-semibold">{{ item.name }}</p>
-          <p>Price: {{ item.price | currency }}</p>
+  <!-- Background Overlay with reduced opacity to allow the background to be visible -->
+  <div class="absolute inset-0 bg-black bg-opacity-20 backdrop-blur-sm z-40"></div>
+
+  <!-- Cart Panel with smaller size, falling inside the back part -->
+  <div class="relative w-full sm:w-3/4 md:w-1/3 lg:w-1/4 h-full bg-white shadow-lg rounded-l-lg p-6 overflow-y-auto z-50">
+
+    <!-- Close Button -->
+    <button (click)="closeCart.emit()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-xl">✖</button>
+
+    <h2 class="text-2xl font-bold text-center mb-4">Your Cart</h2>
+
+    <!-- Main Content -->
+    <ng-container *ngIf="cartItems.length > 0; else emptyCart">
+      <div *ngFor="let item of cartItems" class="bg-gray-100 p-4 rounded-md shadow-sm mb-3 flex justify-between">
+        <div>
+          <p class="font-semibold">{{ item.id }}</p>
+          <p class="text-sm text-gray-600">Price: {{ item.id | currency }}</p>
         </div>
+        <button (click)="removeFromCart(item.id!)" class="text-red-500">Remove</button>
       </div>
-      <ng-template #emptyCart>
-        <p class="text-gray-600">Your cart is empty.</p>
-      </ng-template>
+
+      <div class="mt-4 text-right font-bold">
+        Total: {{ calculateTotalPrice() || 0 | currency }}
+      </div>
+
+      <button (click)="placeOrder()" class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 mt-4 rounded">
+        Checkout
+      </button>
+    </ng-container>
+
+    <!-- Empty Cart Message -->
+    <ng-template #emptyCart>
+      <p class="text-gray-600 text-center mt-10">Your cart is empty.</p>
     </ng-template>
 
-    <div class="p-4">
-      <h2 class="text-lg font-bold mb-2">Your Cart</h2>
-      <div *ngFor="let item of cartItems" class="flex justify-between p-2 border">
-        <span>{{ item.name }}</span>
-        <button (click)="removeFromCart(item.id)" class="text-red-500">Remove</button>
-      </div>
-      <button (click)="placeOrder()" class="bg-green-500 text-white px-4 py-2 mt-2">Checkout</button>
-    </div>
-
   </div>
-</section>
-
+</div>

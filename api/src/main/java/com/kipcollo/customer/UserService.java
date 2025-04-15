@@ -1,5 +1,6 @@
 package com.kipcollo.customer;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,7 @@ public class UserService implements UserDetailsService{
    @Override
    @Transactional
    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-       return (UserDetails) repo.findByEmail(userEmail)
+       return repo.findByEmail(userEmail)
                .orElseThrow(()-> new UsernameNotFoundException("User not found!"));
    }
 
@@ -37,7 +38,7 @@ public class UserService implements UserDetailsService{
    }
 
     public String createCustomer(UserRequest request) {
-      Users users = repo.save(mapper.toCustomer(request));
+      repo.save(mapper.toCustomer(request));
       return "Customer Created with ID:: ";
     }
 
@@ -89,4 +90,18 @@ public class UserService implements UserDetailsService{
        return repo.findById(customerId)
                .isPresent();
     }
+
+    public UserResponse getCustomerByEmail(String email) {
+       return repo.findByEmail(email)
+               .map(mapper::fromCustomer)
+               .orElseThrow(() -> new RuntimeException("Customer not found"));
+    }
+
+    public List<UserReport> getCustomerReport(LocalDateTime startDate, LocalDateTime endDate) {
+        if (startDate == null || endDate == null) {
+            return repo.findAllCustomers();
+        }
+        return repo.findCustomersBetweenDates(startDate, endDate);
+    }
+
 }

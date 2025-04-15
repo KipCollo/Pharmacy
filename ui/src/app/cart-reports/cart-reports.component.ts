@@ -1,51 +1,50 @@
 import { Component } from '@angular/core';
 import {Chart, ChartData, ChartOptions, ChartType, registerables} from "chart.js";
 import {BaseChartDirective} from "ng2-charts";
+import {SidebarComponent} from "../sidebar/sidebar.component";
 
 Chart.register(...registerables)
 @Component({
   selector: 'app-cart-reports',
   standalone: true,
-  imports: [
-    BaseChartDirective
-  ],
+    imports: [
+        BaseChartDirective,
+        SidebarComponent
+    ],
   templateUrl: './cart-reports.component.html',
   styleUrl: './cart-reports.component.css'
 })
 export class CartReportsComponent {
 
+
   chartOptions: ChartOptions = {
     responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top'
+      },
+      title: {
+        display: true,
+        text: 'Cart Status Report'
+      }
+    }
   };
 
   chartType: ChartType = 'bar';
 
-  // Data for charts
-  cartsStartedData: ChartData<'bar'> = {
-    labels: ['Carts Started'],
+  cartStatusChartData: ChartData<'bar'> = {
+    labels: ['Started', 'Abandoned', 'Placed', 'Recovered'],
     datasets: [
-      { data: [13], label: 'Started Carts', backgroundColor: 'blue' }
+      {
+        label: 'Cart Statuses',
+        data: [13, 8, 5, 0], // You can update these dynamically later
+        backgroundColor: ['blue', 'red', 'green', 'purple']
+      }
     ]
   };
 
-  cartsAbandonedData: ChartData<'bar'> = {
-    labels: ['Carts Abandoned'],
-    datasets: [
-      { data: [8], label: 'Abandoned Carts', backgroundColor: 'red' }
-    ]
-  };
-
-  cartsPlacedData: ChartData<'bar'> = {
-    labels: ['Carts Placed'],
-    datasets: [
-      { data: [5], label: 'Placed Carts', backgroundColor: 'green' }
-    ]
-  };
-
-  cartsRecoveredData: ChartData<'bar'> = {
-    labels: ['Carts Recovered'],
-    datasets: [
-      { data: [0], label: 'Recovered Carts', backgroundColor: 'purple' }
-    ]
-  };
+  ngOnInit(): void {
+    // Later you can fetch stats from backend here and update `cartStatusChartData.data`
+  }
 }

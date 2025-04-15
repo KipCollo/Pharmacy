@@ -1,25 +1,87 @@
-<!--<nav class="bg-white shadow-md p-4 flex justify-between items-center">-->
-<!--  <div class="text-lg font-bold text-gray-800">Metorik Dashboard</div>-->
-<!--  <div class="space-x-4">-->
-<!--    <a href="#" class="text-gray-600 hover:text-blue-500">Dashboard</a>-->
-<!--    <a href="#" class="text-gray-600 hover:text-blue-500">Orders</a>-->
-<!--    <a href="#" class="text-gray-600 hover:text-blue-500">Customers</a>-->
-<!--    <a href="#" class="text-gray-600 hover:text-blue-500">Reports</a>-->
-<!--  </div>-->
-<!--  <div class="relative">-->
-<!--    <button class="flex items-center space-x-2">-->
-<!--      <span class="text-gray-600">Admin</span>-->
-<!--      <img class="w-8 h-8 rounded-full" src="https://via.placeholder.com/40" alt="Profile">-->
-<!--    </button>-->
-<!--  </div>-->
-<!--</nav>-->
-<div *ngFor="let prescription of prescriptions" class="border p-4 rounded-lg mb-3 flex items-center">
-  <img [src]="prescription.imageUrl" class="w-20 h-20 rounded-md mr-4" alt="Prescription Image">
-  <span class="font-medium mr-4">Status: {{ prescription.status }}</span>
-  <button (click)="approvePrescription(prescription.id)" class="bg-green-500 text-white px-4 py-2 mr-2">
-    Approve
-  </button>
-  <button (click)="rejectPrescription(prescription.id)" class="bg-red-500 text-white px-4 py-2">
-    Reject
-  </button>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+
+  <!-- Net Revenue Line Chart -->
+  <div class="bg-white p-4 shadow rounded w-full h-96">
+    <div class="flex items-center mb-3">
+      <span [ngClass]="{ 'text-green-500': isRevenueUp, 'text-red-500': !isRevenueUp }" class="mr-2">
+        <i [ngClass]="{ 'fa-arrow-up': isRevenueUp, 'fa-arrow-down': !isRevenueUp }"></i>
+      </span>
+      <h2 class="text-lg font-bold">Net Revenue</h2>
+    </div>
+    <canvas baseChart
+            [data]="revenueChartData"
+            [type]="revenueChartType">
+    </canvas>
+  </div>
+
+  <!-- Profit Doughnut Chart -->
+  <div class="bg-white p-4 shadow rounded w-full h-96">
+    <div class="flex items-center mb-3">
+      <span [ngClass]="{ 'text-green-500': isProfitUp, 'text-red-500': !isProfitUp }" class="mr-2">
+        <i [ngClass]="{ 'fa-arrow-up': isProfitUp, 'fa-arrow-down': !isProfitUp }"></i>
+      </span>
+      <h2 class="text-lg font-bold">Profit Percentage</h2>
+    </div>
+    <canvas baseChart
+            [data]="profitChartData"
+            [type]="profitChartType">
+    </canvas>
+  </div>
+
+  <!-- Orders Bar Chart -->
+  <div class="bg-white p-4 shadow rounded w-full h-96">
+    <div class="flex items-center mb-3">
+      <span [ngClass]="{ 'text-green-500': isOrdersUp, 'text-red-500': !isOrdersUp }" class="mr-2">
+        <i [ngClass]="{ 'fa-arrow-up': isOrdersUp, 'fa-arrow-down': !isOrdersUp }"></i>
+      </span>
+      <h2 class="text-lg font-bold">Orders</h2>
+    </div>
+    <canvas baseChart
+            [data]="ordersChartData"
+            [type]="ordersChartType">
+    </canvas>
+  </div>
+
+  <!-- Carts Radar Chart -->
+  <div class="bg-white p-4 shadow rounded w-full h-96">
+    <div class="flex items-center mb-3">
+      <span [ngClass]="{ 'text-green-500': isCartsUp, 'text-red-500': !isCartsUp }" class="mr-2">
+        <i [ngClass]="{ 'fa-arrow-up': isCartsUp, 'fa-arrow-down': !isCartsUp }"></i>
+      </span>
+      <h2 class="text-lg font-bold">Carts</h2>
+    </div>
+    <canvas baseChart
+            [data]="cartsChartData"
+            [type]="cartsChartType">
+    </canvas>
+  </div>
+
+  <!-- Customers Doughnut Chart -->
+  <div class="bg-white p-4 shadow rounded w-full h-96">
+    <div class="flex items-center mb-3">
+      <span [ngClass]="{ 'text-green-500': isCustomersUp, 'text-red-500': !isCustomersUp }" class="mr-2">
+        <i [ngClass]="{ 'fa-arrow-up': isCustomersUp, 'fa-arrow-down': !isCustomersUp }"></i>
+      </span>
+      <h2 class="text-lg font-bold">Customers</h2>
+    </div>
+    <canvas baseChart
+            [data]="customersChartData"
+            [type]="customersChartType">
+    </canvas>
+  </div>
+
+  <!-- New Medicine Arrivals Bar Chart -->
+  <div class="bg-white p-4 shadow rounded w-full h-96">
+    <div class="flex items-center mb-3">
+      <span [ngClass]="{ 'text-green-500': isMedicineArrivalsUp, 'text-red-500': !isMedicineArrivalsUp }" class="mr-2">
+        <i [ngClass]="{ 'fa-arrow-up': isMedicineArrivalsUp, 'fa-arrow-down': !isMedicineArrivalsUp }"></i>
+      </span>
+      <h2 class="text-lg font-bold">New Medicine Arrivals</h2>
+    </div>
+    <canvas baseChart
+            [data]="medicineArrivalsChartData"
+            [type]="medicineArrivalsChartType">
+    </canvas>
+  </div>
+
 </div>

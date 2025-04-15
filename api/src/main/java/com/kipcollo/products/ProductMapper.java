@@ -10,6 +10,7 @@ public class ProductMapper {
                product.getName(),
                product.getDescription(),
                product.getType(),
+               product.getImage(),
                product.getManufacturer(),
                product.getExpiryDate(),
                product.getStockQuantity(),
@@ -23,6 +24,7 @@ public class ProductMapper {
                .name(productRequest.getName())
                .description(productRequest.getDescription())
                .type(productRequest.getType())
+               .image(productRequest.getImage())
                .manufacturer(productRequest.getManufacturer())
                .expiryDate(productRequest.getExpiryDate())
                .stockQuantity(productRequest.getStockQuantity())
@@ -34,6 +36,7 @@ public class ProductMapper {
        return new PurchaseProductResponse(
                product.getId(),
                product.getName(),
+               product.getImage(),
                product.getDescription(),
                product.getPrice(),
                quantity

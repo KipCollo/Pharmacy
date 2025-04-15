@@ -1,6 +1,6 @@
 package com.kipcollo.products;
 
-import com.kipcollo.model.Suppliers;
+//import com.kipcollo.model.Suppliers;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
+@Table(name = "medicine")
 public class Product {
 
    @Id
@@ -31,16 +32,18 @@ public class Product {
    private String name;
    private String description;
    private MedicineType type;
-   @Column(nullable = false)
+   @Lob
+   private byte[] image;
+   @Column(nullable = false) 
    private String manufacturer;
    private LocalDate expiryDate;
    @Column(nullable = false)
    private int stockQuantity;
    @Column(nullable = false)
    private BigDecimal price;
-   @ManyToOne
-   @JoinColumn(name = "supplierId")
-   private Suppliers suppliers;
+//   @ManyToOne
+//   @JoinColumn(name = "supplierId")
+//   private Suppliers suppliers;
    @Column(updatable = false,nullable = false)
    @CreatedDate
    private LocalDateTime createdDate;

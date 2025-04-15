@@ -22,30 +22,43 @@ import {PrescriptionUploadComponent} from "./prescription-upload/prescription-up
 import {OrderTrackingComponent} from "./order-tracking/order-tracking.component";
 import {AdminOrdersComponent} from "./admin-orders/admin-orders.component";
 import {ProfileComponent} from "./profile/profile.component";
+import {ProductsComponent} from "./products/products.component";
+import {AdminCustomersComponent} from "./admin-customers/admin-customers.component";
+import {ReportsComponent} from "./reports/reports.component";
+import {CustomersReportComponent} from "./customers-report/customers-report.component";
+import {OrdersReportComponent} from "./orders-report/orders-report.component";
+import {InventoryComponent} from "./inventory/inventory.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent},
   {path: 'register',component: RegisterComponent},
   {path: 'activate-account',component: ActivateAccountComponent},
-  {path: 'medicine-list', component: MedicineListComponent},
-  {path: 'medicine-details', component: MedicineDetailsComponent},
   {path: 'about' ,component: AboutComponent},
   {path: 'contact', component: ContactComponent},
-  {path:'medicine',component: MedicineComponent},
+  {path: 'product', component: MedicineListComponent},
+  {path: 'product/:id', component: MedicineDetailsComponent},
+  {path: 'medicine',component: MedicineComponent},
   {path: 'order',component:OrderTrackingComponent},
-  {path:'admin-order', component: AdminOrdersComponent},
   {path: 'prescriptions',component: PrescriptionUploadComponent},
-  {path: 'cart',component: CartComponent},// canActivate: [AuthGuard]},
-  {path:'admin', component: AdminComponent},//, canActivate:[AuthGuard],data: { roles: ['ADMIN'] }},
   {path: 'doctor', component: DoctorComponent,canActivate:[AuthGuard],data: { roles: ['DOCTOR'] }},
-  {path: 'user', component: UserComponent},//canActivate:[AuthGuard],data: { roles: ['USER'] }},
+  //{path: 'user', component: UserComponent},//canActivate:[AuthGuard],data: { roles: ['USER'] }},
   {path: 'profile',component: ProfileComponent},
   {path:'menu', component: MenuComponent},
+  {path: 'cart',component: CartComponent},
+  {path: 'inventory', component: InventoryComponent},
   {path:'home',component: HomeComponent},
+  { path: 'reports', component: ReportsComponent },
   {path:'unauthorized',component: UnauthorizedComponent},
-  {path:'adminp',component: AdminPanelComponent},
-  { path: 'cart-reports', component: CartReportsComponent },
-  {path:'', component: HomeComponent},
+  { path:'admin', component: AdminComponent, canActivate:[AuthGuard],data: { roles: ['ADMIN'] }, children: [
+      { path: 'dashboard', component: AdminPanelComponent },
+      { path: 'orders', component: AdminOrdersComponent },
+      { path: 'customers', component: AdminCustomersComponent },
+      { path: 'orders-report', component: OrdersReportComponent },
+      { path: 'cart-reports', component: CartReportsComponent},
+      { path: 'customers-report', component: CustomersReportComponent },
+      { path: 'admin-orders', component: AdminOrdersComponent},
+    ]},
+  {path:'', component: HomeComponent, pathMatch: 'full'},
   {path:'**', component: NotFoundComponent}
 
 ]

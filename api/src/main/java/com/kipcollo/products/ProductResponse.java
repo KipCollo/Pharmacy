@@ -14,6 +14,7 @@ public class ProductResponse {
     private String name;
     private String description;
     private MedicineType type;
+    private byte[] image;
     private String manufacturer;
     private LocalDate expiryDate;
     private int stockQuantity;
