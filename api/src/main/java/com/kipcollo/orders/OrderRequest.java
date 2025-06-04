@@ -1,5 +1,6 @@
 package com.kipcollo.orders;
 
+import com.kipcollo.customer.Users;
 import com.kipcollo.dto.PurchaseRequest;
 import com.kipcollo.payments.PaymentMethod;
 import com.kipcollo.products.PurchaseProductRequest;
@@ -18,6 +19,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderRequest {
+
+    private Orders order;
+
     private int orderId;
     @NotBlank(message = "Customer Should be present")
     @NotNull(message = "Customer should be present")
@@ -26,7 +30,7 @@ public class OrderRequest {
     private PaymentMethod paymentMethod;
     @NotNull(message = "Customer should be present")
     @NotBlank(message="Customer should be present")
-    private int customerId;
+    private Users customers;
     @Positive(message = "Amount should be positive")
     private BigDecimal totalAmount;
     @NotEmpty(message = "You should purchase at least one product")

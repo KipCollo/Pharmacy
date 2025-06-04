@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kipcollo.auth.Roles;
 import com.kipcollo.auth.Token;
 import jakarta.persistence.*;
@@ -50,6 +51,7 @@ public class Users implements Principal,UserDetails{
    private boolean accountLocked;
    private boolean enabled;
    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL, orphanRemoval = true)
+   @JsonManagedReference
    private List<Token> tokens;
    @Column(updatable = false,nullable = false)
    @CreatedDate

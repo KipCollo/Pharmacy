@@ -11,7 +11,7 @@ public class CartMapper {
         return Cart.builder()
                 .id(request.getId())
                 .userId(request.getUserId())
-                .stockQuantity(request.getStockQuantity())
+                .product(request.getProduct())
                 .ordered(request.isOrdered())
                 .build();
     }
@@ -20,9 +20,9 @@ public class CartMapper {
         return new CartResponse(
                 cart.getId(),
                 cart.getUserId(),
-                cart.getProductId(),
-                cart.getStockQuantity(),
-                cart.isOrdered()
+                cart.getProduct(),
+                cart.isOrdered(),
+                cart.getStatus()
         );
     }
 }

@@ -1,5 +1,6 @@
 package com.kipcollo.cart;
 
+import com.kipcollo.products.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,6 @@ public class CartRequest {
 
     private int id;
     private int userId;
-    private int productId;
-    private int stockQuantity;
+    private Product product;
     private boolean ordered;
 }

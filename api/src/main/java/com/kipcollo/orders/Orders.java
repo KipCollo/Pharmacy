@@ -1,7 +1,9 @@
 package com.kipcollo.orders;
 
+import com.kipcollo.customer.Users;
 import com.kipcollo.orderlines.OrderLine;
 import com.kipcollo.payments.PaymentMethod;
+import com.kipcollo.products.Product;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -29,7 +31,10 @@ public class Orders {
     private BigDecimal totalAmount;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
-    private int customerId;
+    @ManyToOne
+    private Users customers;
+    @ManyToMany
+    private List<Product> products;
     private LocalDateTime localDateTime;
     @OneToMany(mappedBy = "orders")
     private List<OrderLine> orderLines;
@@ -39,4 +44,8 @@ public class Orders {
     private LocalDateTime createdAt;
     @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
+
+    public Integer getCustomerId() {
+        return customers != null? customers.getCustomerId(): null;
+    }
 }

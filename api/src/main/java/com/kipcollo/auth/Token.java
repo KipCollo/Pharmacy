@@ -2,6 +2,7 @@ package com.kipcollo.auth;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.kipcollo.customer.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,5 +30,6 @@ public class Token {
    private LocalDateTime validatedAt;
    @ManyToOne
    @JoinColumn(name = "customerId", nullable = false)
+   @JsonBackReference
    private Users users;
 }

@@ -1,9 +1,9 @@
 package com.kipcollo.cart;
 
+import com.kipcollo.products.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,8 +19,8 @@ public class Cart{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int userId;
-    private int productId;
-    private int stockQuantity;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Product product;
     private boolean ordered;
     @Enumerated(EnumType.STRING)
     private CartStatus status;

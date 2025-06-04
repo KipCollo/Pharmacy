@@ -7,8 +7,7 @@ public class OrderMapper {
 
     public Orders toOrder(OrderRequest request){
         return Orders.builder()
-                .id(request.getOrderId())
-                .customerId(request.getCustomerId())
+                .customers(request.getCustomers())
                 .reference(request.getReference())
                 .paymentMethod(request.getPaymentMethod())
                 .totalAmount(request.getTotalAmount())
@@ -19,9 +18,13 @@ public class OrderMapper {
         return new OrderResponse(
                 order.getId(),
                 order.getReference(),
-                order.getCustomerId(),
+                order.getCustomers(),
+                order.getProducts(),
                 order.getPaymentMethod(),
-                order.getTotalAmount()
+                order.getTotalAmount(),
+                order.getLocalDateTime(),
+                order.getCreatedAt(),
+                order.getLastModifiedDate()
         );
     }
 }

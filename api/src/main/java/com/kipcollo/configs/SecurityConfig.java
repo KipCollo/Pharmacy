@@ -1,5 +1,7 @@
 package com.kipcollo.configs;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.kipcollo.customer.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -102,5 +104,6 @@ public class SecurityConfig {
       source.registerCorsConfiguration("/**", config);
       return new CorsFilter(source);
    }
+
 
 }
