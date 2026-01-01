@@ -1,26 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pharmacy
-  labels:
-    app:
+  name: pharmacy-ui
+  namespace: pharmacy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app:
+      app: pharmacy-ui
   template:
     metadata:
       name: pharmacy
+      namespace: pharmacy
       labels:
-        app:
+        app: pharmacy-ui
     spec:
       containers:
         - name: pharmacy-ui
-          image: nginx
+          image: kipcollo/pharmacy:2.0.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
               protocol: TCP
       restartPolicy: Always
-      
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: pharmacy-ui-svc
+  namespace: pharmacy
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80

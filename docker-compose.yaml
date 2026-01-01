@@ -1,0 +1,25 @@
+name: pharmacy
+services:
+  pharmacy-ui:
+    container_name: pharmacy-ui
+    image: kipcollo:ui
+    ports:
+      - "80:80"
+  pharmacy-api:
+    container_name: pharmacy-api
+    image: kipcollo
+    ports:
+      - "8080:8080"
+  database:
+    container_name: postgres-db
+    image: postgres
+    ports:
+      - "5430:5430"
+  mail:
+    container_name: maildev
+    image: maildev
+    ports:
+      - "1025:1025"
+
+volumes:
+  db:

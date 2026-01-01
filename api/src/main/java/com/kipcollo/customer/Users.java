@@ -34,7 +34,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 
 @Entity
-@Table(name="users")
+@Table(name="users",schema = "public")
 public class Users implements Principal,UserDetails{
 
    @Id
@@ -43,6 +43,9 @@ public class Users implements Principal,UserDetails{
    private String firstName;
    private String lastName;
    private LocalDate dateOfBirthDate;
+   @Lob
+   @Basic(fetch = FetchType.LAZY)
+   private byte[] profilePicture;
    @Column(unique = true)
    private String email;
    private String password;

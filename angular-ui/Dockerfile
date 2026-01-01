@@ -1,4 +1,4 @@
-FROM node
+FROM node AS builder
 LABEL authors="collins"
 
 WORKDIR /app
@@ -9,6 +9,14 @@ RUN npm install
 
 COPY . .
 
+RUN ng build
+
 EXPOSE 4200
 
-CMD ["npm", "run", "serve"]
+FROM nginx
+
+WORKDIR www
+
+COPY --from=builder . .
+
+EXPOSE 80

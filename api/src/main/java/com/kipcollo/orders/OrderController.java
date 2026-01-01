@@ -25,7 +25,7 @@ public class OrderController {
     @PostMapping("/create")
     public ResponseEntity<?> createPrescriptionOrder(@RequestParam int prescriptionId){
         Orders orders = processingService.createPrescriptionOrder(prescriptionId);
-        return ResponseEntity.ok("Order created successfully");
+        return ResponseEntity.ok("Order created successfully at::" + orders.getCreatedAt());
     }
 
     //Track order by returning orderLines and their statuses

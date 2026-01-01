@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pharmacy-api
+  namespace: pharmacy
+spec:
+  selector:
+    matchLabels:
+      app: pharmacy-api
+  template:
+    metadata:
+      name: pharmacy-api
+      namespace: pharmacy
+      labels:
+        app: pharmacy-api
+    spec:
+      containers:
+        - name: pharmacy-api
+          image: kipcollo/pharmacy:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: pharmacy-api-svc
+  namespace: pharmacy
+spec:
+  type: ClusterIP
+  selector:
+    app: pharmacy-api
+  ports:
+    - port: 8080
+      targetPort: 8080
