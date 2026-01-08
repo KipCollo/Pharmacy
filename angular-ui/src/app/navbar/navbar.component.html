@@ -1,82 +1,81 @@
-<nav class="bg-white shadow-md py-4 px-6 flex items-center justify-between w-full">
-
-  <!-- Left: Brand -->
-  <div class="flex-shrink-0">
-    <a routerLink="/" class="text-lg font-bold text-blue-600">KIPCOLLO PHARMACY</a>
-  </div>
-
-  <!-- Center: Navigation Links -->
-  <ul class="hidden md:flex gap-x-6 items-center mx-auto">
-    <li *ngIf="isLoggedIn">
-      <a routerLink="prescriptions" class="hover:text-gray-600">Prescription Upload</a>
-    </li>
-    <li><a routerLink="product" class="hover:text-gray-600">Products</a></li>
-    <li><a routerLink="about" class="hover:text-gray-600">About Us</a></li>
-    <li><a routerLink="contact" class="hover:text-gray-600">Contact Us</a></li>
-    <li><a routerLink="menu" class="hover:text-gray-600">Help</a></li>
-  </ul>
-
-  <!-- Right Side (Cart + Account) -->
-  <div class="flex gap-x-6 items-center mt-4 md:mt-0 ml-auto relative">
-    <!-- Cart -->
-    <div class="flex flex-col items-center cursor-pointer" (click)="openCart()">
-      <span class="text-2xl">🛒</span>
-      <span class="text-sm font-medium">Cart</span>
-      <span *ngIf="cart.length > 0" class="text-xs font-bold text-red-600">({{ cart.length }})</span>
+<nav class="bg-white shadow-md py-4 px-6 flex justify-center w-full">
+  <div class="flex items-center gap-x-6 w-full max-w-6xl">
+    <!-- Left: Brand -->
+    <div class="flex-shrink-0">
+      <a routerLink="/" class="text-lg font-bold text-blue-600">
+        KIPCOLLO PHARMACY
+      </a>
     </div>
 
-    <!-- Account Dropdown -->
-    <div class="relative account-dropdown flex flex-col items-center cursor-pointer">
-      <!-- Icon Trigger -->
-      <div (click)="toggleAccountDropdown()" class="flex flex-col items-center">
-        <span class="text-2xl">👤</span>
-        <span class="text-sm font-medium">Account</span>
-      </div>
-
-      <!-- Dropdown Content -->
-      <div
-        *ngIf="isAccountOpen"
-        class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-40"
+    <!-- Search Bar -->
+    <div class="hidden md:flex flex-1 max-w-xl items-center border rounded-full overflow-hidden">
+      <input
+        type="text"
+        placeholder="Search for medicines..."
+        class="flex-1 px-4 py-2 text-sm outline-none"
+      />
+      <button
+        class="px-5 py-2 bg-cyan-500 text-white text-sm font-medium hover:bg-cyan-600 transition"
       >
-        <!-- If logged in -->
-        <ng-container *ngIf="isLoggedIn; else guestOptions">
-          <a
-            (click)="goToProfile()"
-            class="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
-          >
-            My Account
-          </a>
-          <button
-            (click)="logout()"
-            class="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-600"
-          >
-            Logout
-          </button>
-        </ng-container>
-
-        <!-- If not logged in -->
-        <ng-template #guestOptions>
-          <a
-            routerLink="/login"
-            class="block px-4 py-2 hover:bg-gray-100 text-sm text-blue-600"
-          >
-            Sign In
-          </a>
-          <a
-            routerLink="/register"
-            class="block px-4 py-2 hover:bg-gray-100 text-sm text-blue-600"
-          >
-            Sign Up
-          </a>
-        </ng-template>
-      </div>
+        Search
+      </button>
     </div>
 
 
-    <!-- Cart Modal -->
-<app-cart
-  *ngIf="isCartOpen"
-  class="fixed top-20 right-0 w-3/4 h-[90vh] bg-white shadow-lg rounded-l-lg z-50 overflow-y-auto"
-  (closeCart)="closeCart()"
-></app-cart>
 
+    <!-- Right Side: Cart + Account -->
+    <div class="flex gap-x-6 items-center">
+      <!-- Cart -->
+      <div class="flex flex-col items-center cursor-pointer" (click)="openCart()">
+        <span class="text-2xl">🛒</span>
+        <span class="text-sm font-medium">Cart</span>
+        <span *ngIf="cart.length > 0" class="text-xs font-bold text-red-600">
+          ({{ cart.length }})
+        </span>
+      </div>
+
+      <!-- Account Dropdown -->
+      <div class="relative flex flex-col items-center cursor-pointer">
+        <div (click)="toggleAccountDropdown()" class="flex flex-col items-center">
+          <span class="text-2xl">👤</span>
+          <span class="text-sm font-medium">Account</span>
+        </div>
+
+        <div
+          *ngIf="isAccountOpen"
+          class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-40"
+        >
+          <ng-container *ngIf="isLoggedIn; else guestOptions">
+            <a
+              (click)="goToProfile()"
+              class="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
+            >
+              My Account
+            </a>
+            <button
+              (click)="logout()"
+              class="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-600"
+            >
+              Logout
+            </button>
+          </ng-container>
+
+          <ng-template #guestOptions>
+            <a
+              routerLink="/login"
+              class="block px-4 py-2 hover:bg-gray-100 text-sm text-blue-600"
+            >
+              Sign In
+            </a>
+            <a
+              routerLink="/register"
+              class="block px-4 py-2 hover:bg-gray-100 text-sm text-blue-600"
+            >
+              Sign Up
+            </a>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

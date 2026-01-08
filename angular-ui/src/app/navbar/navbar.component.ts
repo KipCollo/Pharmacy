@@ -5,6 +5,7 @@ import {jwtDecode} from "jwt-decode";
 import {TokenService} from "../services/token/token.service";
 import {UserComponent} from "../user/user.component";
 import {CartComponent} from "../cart/cart.component";
+import { NavbarLinksComponent } from '../navbar-links/navbar-links.component';
 import {CartControllerService} from "../services/services/cart-controller.service";
 
 @Component({
@@ -14,7 +15,8 @@ import {CartControllerService} from "../services/services/cart-controller.servic
     NgIf,
     RouterLink,
     UserComponent,
-    CartComponent
+    CartComponent,
+    NavbarLinksComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
@@ -81,6 +83,7 @@ export class NavbarComponent implements OnInit{
   isAccountOpen = false;
 
   toggleAccountDropdown() {
+    console.log("Account clicked..")
     this.isAccountOpen = !this.isAccountOpen;
   }
 

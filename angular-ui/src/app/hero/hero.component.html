@@ -1,14 +1,16 @@
 <section
-  class="relative bg-cover bg-center bg-no-repeat text-center text-white py-24 px-6 transition-all duration-1000"
+  class="relative bg-cover bg-center bg-no-repeat text-center text-white w-3/4 mx-auto my-12 rounded-3xl overflow-hidden transition-all duration-1000"
   [style.backgroundImage]="'url(' + currentImage + ')'"
 >
-  <div class="bg-black bg-opacity-50 absolute inset-0"></div>
+  <!-- Dark overlay -->
+  <div class="bg-black bg-opacity-50 absolute inset-0 rounded-3xl"></div>
 
-  <div class="relative z-10 animate__animated animate__fadeInUp">
+  <!-- Content -->
+  <div class="relative z-10 flex flex-col justify-center items-center py-24 px-6 animate__animated animate__fadeInUp">
     <h1 class="text-4xl font-bold">
       The center of your <span class="text-green-400">helpful home.</span>
     </h1>
-    <p class="text-gray-200 mt-4">
+    <p class="text-gray-200 mt-4 max-w-xl">
       Soon things will be brighter. Best wishes as you recover.
     </p>
     <button
@@ -19,3 +21,4 @@
     </button>
   </div>
 </section>
+

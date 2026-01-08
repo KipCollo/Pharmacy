@@ -7,12 +7,26 @@ import {GridComponent} from "./grid/grid.component";
 import {FooterComponent} from "./footer/footer.component";
 import {FeatureComponent} from "./feature/feature.component";
 import {CarouselComponent} from "./carousel/carousel.component";
+import { AnnouncementBarComponent } from './announcement-bar/announcement-bar.component';
 import {NgIf} from "@angular/common";
+import { NavbarLinksComponent } from "./navbar-links/navbar-links.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LoginComponent, NavbarComponent, HeroComponent, GridComponent, FooterComponent, FeatureComponent, CarouselComponent, NgIf],
+  imports: [
+    RouterOutlet,
+    LoginComponent,
+    NavbarComponent,
+    AnnouncementBarComponent,
+    HeroComponent,
+    GridComponent,
+    FooterComponent,
+    FeatureComponent,
+    CarouselComponent,
+    NgIf,
+    NavbarLinksComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

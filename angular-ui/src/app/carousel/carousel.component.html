@@ -1,7 +1,7 @@
-<section class="py-4 px-4">
+<section class="py-2 px-2">
   <!-- Title Section -->
   <div class="text-center mb-4">
-    <h2 class="text-xl font-semibold text-gray-800">New Arrivals</h2>
+    <h2 class="text-xl font-semibold text-blue-600">New Arrivals</h2>
   </div>
 
   <!-- Carousel Section -->
@@ -10,7 +10,7 @@
       <a
         *ngFor="let product of products.content"
         [routerLink]="['/product', product.productId]"
-        class="swiper-slide bg-gray-100 rounded-md overflow-hidden h-52 block"
+        class="swiper-slide bg-gray-100 rounded-md overflow-hidden block w-50 aspect-square mx-2"
       >
         <img
           [attr.loading]="'lazy'"

@@ -1,6 +1,8 @@
 <!-- NAVBAR (Visible only if NOT in Admin) -->
 <header *ngIf="!isAdminPage()">
+  <app-announcement-bar></app-announcement-bar>
   <app-navbar></app-navbar>
+  <app-navbar-links></app-navbar-links>
 </header>
 
 <!-- MAIN CONTENT -->
@@ -9,6 +11,7 @@
 </main>
 
 <!-- FOOTER (Visible only if NOT in Admin) -->
-<footer *ngIf="!isAdminPage()" class="bg-gray-900 text-white py-6 text-center">
-  <p>© 2025 KipCollo. All Rights Reserved.</p>
+<footer *ngIf="!isAdminPage()" >
+  <app-footer></app-footer>
 </footer>
+

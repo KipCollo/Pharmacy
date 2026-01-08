@@ -8,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './announcement-bar.component.css'
 })
 export class AnnouncementBarComponent {
+  message = 'Happy New Year! | Explore unbeatable offers | Free delivery on selected items 🎉';
 
 }

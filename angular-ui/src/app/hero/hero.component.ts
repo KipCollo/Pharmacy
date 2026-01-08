@@ -13,7 +13,7 @@ import {RouterLink} from "@angular/router";
 export class HeroComponent implements OnInit,OnDestroy {
 
   images: string[] = [
-    '..app/public/hero.jpg',
+    '../public/hero.jpg',
     '../public/hero1.jpg',
     '../public/hero2.jpg',
   ];

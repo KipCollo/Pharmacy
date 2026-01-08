@@ -1,0 +1,25 @@
+.announcement-wrapper {
+  width: 100%;
+  overflow: hidden;
+  background-color:#173777;
+  color: #fff;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.announcement-text {
+  white-space: nowrap;
+  padding-left: 100%;
+  font-size: 1rem;
+  animation: scroll-left 15s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

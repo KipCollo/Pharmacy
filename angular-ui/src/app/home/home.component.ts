@@ -6,19 +6,21 @@ import {FooterComponent} from "../footer/footer.component";
 import {GridComponent} from "../grid/grid.component";
 import {HeroComponent} from "../hero/hero.component";
 import {NavbarComponent} from "../navbar/navbar.component";
+import { MedicineListComponent } from "../medicine-list/medicine-list.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
     imports: [
-        RouterOutlet,
-        CarouselComponent,
-        FeatureComponent,
-        FooterComponent,
-        GridComponent,
-        HeroComponent,
-        NavbarComponent
-    ],
+    RouterOutlet,
+    CarouselComponent,
+    FeatureComponent,
+    FooterComponent,
+    GridComponent,
+    HeroComponent,
+    NavbarComponent,
+    MedicineListComponent
+],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
