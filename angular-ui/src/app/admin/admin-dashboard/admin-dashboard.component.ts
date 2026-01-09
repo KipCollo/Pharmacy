@@ -15,8 +15,8 @@ import { BaseChartDirective } from "ng2-charts";
     BaseChartDirective,
     NgClass
   ],
-  templateUrl: './admin-panel.component.html',
-  styleUrls: ['./admin-panel.component.css']
+  templateUrl: './admin-dashboard.component.html',
+  styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminPanelComponent {
 

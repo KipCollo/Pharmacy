@@ -1,0 +1,27 @@
+/* Admin Layout - Fullscreen and Flexbox */
+.admin-layout {
+  display: flex;
+  height: 100vh; /* Make the layout cover the full viewport height */
+}
+
+/* Main Content Styles - Occupy the remaining space */
+.admin-content {
+  padding: 1.5rem;
+  background-color: #fff;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Adjust for smaller screens (optional) */
+@media (max-width: 768px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .admin-content {
+    margin-left: 0; /* Content takes full width on small screens */
+  }
+}

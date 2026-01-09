@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgClass, NgForOf} from "@angular/common";
-import {AdminPanelComponent} from "../admin-dashboard/admin-panel.component";
+import {AdminPanelComponent} from "../admin-dashboard/admin-dashboard.component";
 import {SidebarComponent} from "../sidebar/sidebar.component";
 import {ChartConfiguration, ChartData} from "chart.js";
 import {BaseChartDirective} from "ng2-charts";
@@ -21,8 +21,8 @@ import {RouterOutlet} from "@angular/router";
     NgClass,
     RouterOutlet
   ],
-  templateUrl: './admin.component.html',
-  styleUrl: './admin.component.css'
+  templateUrl: './admin-panel.component.html',
+  styleUrl: './admin-panel.component.css'
 })
 export class AdminComponent{
 

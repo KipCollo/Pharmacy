@@ -2,11 +2,8 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full max-w-7xl px-4">
 
     <ng-container *ngFor="let medicine of filterProducts()">
-      <div
-        *ngIf="shouldDisplay(medicine)"
-        class="bg-white p-4 shadow rounded-lg flex flex-col relative cursor-pointer"
-        (click)="viewDetails(medicine)"
-      >
+      <div *ngIf="shouldDisplay(medicine)" class="bg-white p-4 shadow rounded-lg flex flex-col relative cursor-pointer"
+        (click)="viewDetails(medicine)">
 
         <!-- Product Info -->
         <div class="product-card flex flex-col flex-1">
@@ -15,11 +12,8 @@
           </h3>
 
           <div class="w-full h-48 flex items-center justify-center overflow-hidden rounded-md mb-4">
-            <img
-              [src]="'data:image/jpeg;base64,' + medicine.image"
-              alt="{{ medicine.name }}"
-              class="object-cover max-h-48 max-w-full"
-            />
+            <img [src]="'data:image/jpeg;base64,' + medicine.image" alt="{{ medicine.name }}"
+              class="object-cover max-h-48 max-w-full" />
           </div>
 
           <div class="flex justify-between items-center mb-2">
@@ -40,38 +34,22 @@
         <!-- Action Buttons -->
         <div class="mt-2 flex justify-between items-center">
           <!-- Add to Cart -->
-          <button
-            (click)="addToCart(medicine); $event.stopPropagation()"
-            class="p-2 rounded-full text-blue-600 hover:bg-blue-600 hover:text-white transition"
-            title="Add to Cart"
-          >
+          <button (click)="addToCart(medicine); $event.stopPropagation()"
+            class="p-2 rounded-full text-blue-600 hover:bg-blue-600 hover:text-white transition" title="Add to Cart">
             🛒
           </button>
 
           <!-- Wishlist -->
-          <button
-            (click)="addToWishlist(medicine); $event.stopPropagation()"
-            class="p-2 rounded-full transition"
+          <button (click)="addToWishlist(medicine); $event.stopPropagation()" class="p-2 rounded-full transition"
             [ngClass]="
               isWishlisted(medicine)
                 ? 'text-red-500'
                 : 'text-gray-400 hover:text-red-500'
-            "
-            title="Wishlist"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              viewBox="0 0 24 24"
-              [attr.fill]="isWishlisted(medicine) ? 'currentColor' : 'none'"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21.682 4.318 12.682a4.5 4.5 0 010-6.364z"
-              />
+            " title="Wishlist">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24"
+              [attr.fill]="isWishlisted(medicine) ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21.682 4.318 12.682a4.5 4.5 0 010-6.364z" />
             </svg>
           </button>
         </div>
@@ -79,5 +57,12 @@
       </div>
     </ng-container>
 
+
   </div>
+  <!-- Show More Button -->
+  <div class="mt-10 mb-4 flex justify-center w-full"> <button *ngIf="canLoadMore()" (click)="loadMore()"
+      class="w-100 py-3 text-black font-semibold rounded-lg hover:bg-blue-700 hover:text-white transition flex items-center justify-center hover:cursor-pointer">
+      <span *ngIf="!loadingMore">Show More...</span> <span *ngIf="loadingMore"
+        class="animate-spin border-2 border-t-2 border-white rounded-full w-5 h-5"></span> </button> </div>
+
 </div>
