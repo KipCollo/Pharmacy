@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {DecimalPipe, NgClass, NgForOf} from "@angular/common";
 import {SidebarComponent} from "../sidebar/sidebar.component";
-import {UserResponse} from "../services/models/user-response";
-import {CustomersApIsService} from "../services/services/customers-ap-is.service";
+import {UserResponse} from "../../services/models/user-response";
+import {CustomersApIsService} from "../../services/services/customers-ap-is.service";
 import {BaseChartDirective} from "ng2-charts";
 import {ChartConfiguration} from "chart.js";
 

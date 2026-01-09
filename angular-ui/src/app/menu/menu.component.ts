@@ -2,7 +2,7 @@ import { NgIf } from '@angular/common';
 import {Component, OnInit} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {AuthenticationApIsService} from "../services/services/authentication-ap-is.service";
-import {SidebarComponent} from "../sidebar/sidebar.component";
+import {SidebarComponent} from "../admin/sidebar/sidebar.component";
 import {ChatListComponent} from "../chat-list/chat-list.component";
 import {ChatWindowComponent} from "../chat-window/chat-window.component";
 import {SideChatComponent} from "../side-chat/side-chat.component";

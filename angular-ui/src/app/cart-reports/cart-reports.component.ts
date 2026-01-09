@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Chart, ChartData, ChartOptions, ChartType, registerables} from "chart.js";
 import {BaseChartDirective} from "ng2-charts";
-import {SidebarComponent} from "../sidebar/sidebar.component";
+import {SidebarComponent} from "../admin/sidebar/sidebar.component";
 import {CartControllerService} from "../services/services/cart-controller.service";
 
 Chart.register(...registerables)

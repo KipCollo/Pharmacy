@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
-import { ProductResponse } from '../services/models/product-response';
+import { ProductResponse } from '../../services/models/product-response';
 import { CommonModule, CurrencyPipe, NgClass } from '@angular/common';
-import { MedicineApIsService } from '../services/services/medicine-ap-is.service';
+import { MedicineApIsService } from '../../services/services/medicine-ap-is.service';
 import { FormsModule, NgModel } from '@angular/forms';
 
 @Component({
