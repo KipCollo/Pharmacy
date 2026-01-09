@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 
 @Component({
@@ -15,6 +15,9 @@ import { NgClass, NgForOf, NgIf } from '@angular/common';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
+
+
+constructor(private router: Router) {}
 
   // These values should ideally come from your backend service
   profileImage: string | null = null; // Will be null if no profile image is set
@@ -35,14 +38,37 @@ export class SidebarComponent {
   }
 
   menuItems = [
-    { name: 'Dashboard', link: '/admin/dashboard', icon: '📊', subMenu: [], isOpen: false },
-    { name: 'Reports', link: '/admin/reports', icon: '📄', subMenu: [], isOpen: false },
-    { name: 'Orders', link: '/admin/admin-orders', icon: '🛍️', subMenu: [], isOpen: false },
-    { name: 'Subscriptions', link: '/admin/customers-report', icon: '💳', subMenu: [], isOpen: false },
-    { name: 'Customers', link: '/admin/customers', icon: '👥', subMenu: [], isOpen: false },
-    { name: 'Products', link: '/admin/medicine', icon: '💊', subMenu: [], isOpen: false },
-    { name: 'Cart',link: '/admin/cart-reports', icon: '🛒', isOpen: false}
-  ];
+  { name: 'Dashboard', link: '/admin/dashboard', icon: '📊' },
+  { name: 'Reports', link: '/admin/reports', icon: '📄' },
+  { name: 'Orders', link: '/admin/admin-orders', icon: '🛍️' },
+  { name: 'Subscriptions', link: '/admin/customers-report', icon: '💳' },
+  { name: 'Customers', link: '/admin/customers', icon: '👥' },
+
+  {
+    name: 'Products',
+    icon: '💊',
+    isOpen: false,
+    subMenu: [
+      { name: 'All Products', link: '/admin/medicine', icon: '📦' },
+      { name: 'Add Product', link: '/admin/medicine/add', icon: '➕' },
+      { name: 'Expired Products', link: '/admin/medicine/expired', icon: '⏰' },
+      { name: 'Out of Stock', link: '/admin/medicine/out-of-stock', icon: '🚫' }
+    ]
+  },
+
+  { name: 'Cart', link: '/admin/cart-reports', icon: '🛒' }
+];
+
+
+onProductsClick(item: any) {
+  // Navigate to ALL PRODUCTS first
+  this.router.navigate(['/admin/medicine']);
+
+  // Then open dropdown
+  item.isOpen = true;
+}
+
+
 
   toggleSubMenu(item: any) {
     item.isOpen = !item.isOpen;

@@ -1,3 +1,10 @@
 @import "tailwindcss";
 @import 'swiper/css';
 @import 'swiper/css/navigation';
+
+.spinner-border {
+  border-top-color: #3490dc;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}

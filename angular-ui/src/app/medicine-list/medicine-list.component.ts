@@ -144,10 +144,32 @@ export class MedicineListComponent implements OnInit {
     });
   }
 
+//   addToWishlist(medicine: ProductResponse) {
+//   const userId = this.getUserId();
+//   if (!userId) {
+//     alert('Please log in to add to wishlist');
+//     this.promptLogin();
+//     return;
+//   }
+
+//   const cartItem = {
+//       body: {
+//         userId,
+//         productId: medicine.productId
+//       }
+//     };
+
+//   this.cartService.addCart(cartItem).subscribe({
+//     next: () => alert('Added to wishlist!'),
+//     error: (err) => console.error('Failed to add to wishlist:', err)
+//   });
+// }
+
 
   viewDetails(medicine: ProductResponse) {
-    this.selectedMedicine = medicine;
-  }
+  if (!medicine.productId) return;
+  this.router.navigate(['/product', medicine.productId]);
+}
 
   onUpdate(medicine: ProductResponse) {
     this.selectedMedicine = medicine;
@@ -175,4 +197,60 @@ export class MedicineListComponent implements OnInit {
   promptLogin() {
     this.router.navigate(['/login']);  // Redirect to login page
   }
+
+  loadingMore = false;
+
+  loadMore() {
+  if (!this.canLoadMore() || this.loadingMore) return;
+  this.loadingMore = true;
+  
+  this.page++;
+  this.medicineService.getAllMedicines({ page: this.page, size: this.size }).subscribe({
+    next: (product) => {
+      this.medicineResponse.content = [
+        ...(this.medicineResponse.content || []),
+        ...(product.content || [])
+      ];
+      this.totalPages = product.totalPages ?? 0;
+    },
+    error: (err) => console.error(err),
+    complete: () => this.loadingMore = false
+  });
+}
+
+canLoadMore(): boolean {
+  return this.page + 1 < this.totalPages;
+}
+
+isExpired(medicine: ProductResponse): boolean {
+  if (!medicine.expiryDate) return false;
+  return new Date(medicine.expiryDate) < new Date();
+}
+
+isUnavailable(medicine: ProductResponse): boolean {
+  return (medicine.stockQuantity ?? 0) <= 0;
+}
+
+shouldDisplay(medicine: ProductResponse): boolean {
+  return !this.isExpired(medicine) && !this.isUnavailable(medicine);
+}
+
+wishlist = new Set<number>();
+
+addToWishlist(medicine: ProductResponse) {
+  const id = medicine.productId;
+  if (!id) return;
+
+  if (this.wishlist.has(id)) {
+    this.wishlist.delete(id);
+  } else {
+    this.wishlist.add(id);
+  }
+}
+
+isWishlisted(medicine: ProductResponse): boolean {
+  return !!medicine.productId && this.wishlist.has(medicine.productId);
+}
+
+
 }

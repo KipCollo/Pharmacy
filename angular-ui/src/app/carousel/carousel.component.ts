@@ -34,6 +34,8 @@ export class CarouselComponent implements AfterViewInit ,OnInit{
       })
     }
 
+    
+
   ngAfterViewInit() {
     new Swiper('.swiper-container', {
       modules: [Navigation],

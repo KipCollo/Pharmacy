@@ -28,6 +28,7 @@ import {ReportsComponent} from "./reports/reports.component";
 import {CustomersReportComponent} from "./customers-report/customers-report.component";
 import {OrdersReportComponent} from "./orders-report/orders-report.component";
 import {InventoryComponent} from "./inventory/inventory.component";
+import { AdminMedicineComponent } from './admin-medicine/admin-medicine.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -46,17 +47,23 @@ export const routes: Routes = [
   {path: 'cart',component: CartComponent},
   {path:'home',component: HomeComponent},
   {path:'unauthorized',component: UnauthorizedComponent},
-  { path:'admin', component: AdminComponent, canActivate:[AuthGuard],data: { roles: ['ADMIN'] }, children: [
-      { path: 'dashboard', component: AdminPanelComponent },
-      { path: 'customers', component: AdminCustomersComponent },
-      { path: 'reports', component: OrdersReportComponent },
-      {path: 'inventory', component: InventoryComponent},
-      {path: 'medicine',component: MedicineComponent},
-      { path: 'orders-report', component: OrdersReportComponent },
-      { path: 'cart-reports', component: CartReportsComponent},
-      { path: 'customers-report', component: CustomersReportComponent },
-      { path: 'admin-orders', component: AdminOrdersComponent},
-    ]},
+  { path:'admin', component: AdminComponent, canActivate:[AuthGuard], data: { roles: ['ADMIN'] }, children: [
+  { path: 'dashboard', component: AdminPanelComponent },
+  { path: 'customers', component: AdminCustomersComponent },
+  { path: 'reports', component: OrdersReportComponent },
+  { path: 'inventory', component: InventoryComponent },
+  // Products routes
+  { path: 'medicine', component: AdminMedicineComponent },
+  { path: 'medicine/add', component: MedicineComponent },
+  { path: 'medicine/expired', component: MedicineComponent },
+  { path: 'medicine/out-of-stock', component: MedicineComponent },
+  // Other reports
+  { path: 'orders-report', component: OrdersReportComponent },
+  { path: 'cart-reports', component: CartReportsComponent},
+  { path: 'customers-report', component: CustomersReportComponent },
+  { path: 'admin-orders', component: AdminOrdersComponent},
+]},
+
   {path:'', component: HomeComponent, pathMatch: 'full'},
   {path:'**', component: NotFoundComponent}
 

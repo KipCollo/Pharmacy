@@ -1,28 +1,24 @@
-<section class="py-2 px-2">
-  <!-- Title Section -->
-  <div class="text-center mb-4">
-    <h2 class="text-xl font-semibold text-blue-600">New Arrivals</h2>
+<section class="py-1 px-2">
+  <!-- Title -->
+  <div class="text-center mb-2">
+    <h2 class="text-lg font-semibold text-blue-600">New Arrivals</h2>
   </div>
 
-  <!-- Carousel Section -->
-  <div class="swiper-container">
-    <div class="swiper-wrapper">
-      <a
-        *ngFor="let product of products.content"
-        [routerLink]="['/product', product.productId]"
-        class="swiper-slide bg-gray-100 rounded-md overflow-hidden block w-50 aspect-square mx-2"
-      >
-        <img
-          [attr.loading]="'lazy'"
-          [src]="'data:image/jpeg;base64,' + product.image"
-          class="w-full h-full object-cover"
-          alt="Product"
-        />
-      </a>
-    </div>
+  <!-- Carousel -->
+  <div class="max-w-6xl mx-auto">
+    <div class="swiper-container new-arrivals-swiper">
+      <div class="swiper-wrapper">
 
-    <!-- Navigation Buttons -->
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
+        <a *ngFor="let product of products.content" [routerLink]="['/product', product.productId]"
+          class="swiper-slide w-32 h-32 bg-gray-100 rounded-full overflow-hidden flex items-center justify-center group">
+          <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-full">
+            <img loading="lazy" [src]="'data:image/jpeg;base64,' + product.image" alt="Product"
+              class="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-110" />
+          </div>
+        </a>
+
+
+      </div>
+    </div>
   </div>
 </section>

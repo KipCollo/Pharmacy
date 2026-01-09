@@ -1,0 +1,186 @@
+<div class="h-screen p-6 flex flex-col">
+   <h1 class="text-2xl font-bold mb-4">Inventory</h1>
+
+   <!-- Statistics -->
+<div class="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+  <!-- Total Products -->
+  <div class="border rounded-lg p-4 bg-white">
+    <p class="text-sm text-gray-500">Total Products</p>
+    <p class="text-2xl font-semibold text-gray-900">
+      {{ totalProducts }}
+    </p>
+  </div>
+
+  <!-- Expired Products -->
+  <div class="border rounded-lg p-4 bg-white">
+    <p class="text-sm text-gray-500">Expired Products</p>
+    <p class="text-2xl font-semibold text-orange-600">
+      {{ expiredProducts }}
+    </p>
+  </div>
+
+  <!-- Out of Stock -->
+  <div class="border rounded-lg p-4 bg-white">
+    <p class="text-sm text-gray-500">Out of Stock</p>
+    <p class="text-2xl font-semibold text-red-600">
+      {{ outOfStockProducts }}
+    </p>
+  </div>
+
+</div>
+
+
+   <!-- Search & Filters + Actions -->
+   <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+
+      <!-- LEFT: Search & Filters -->
+      <div class="flex flex-wrap items-center gap-3">
+
+         <!-- Search -->
+         <input type="text" placeholder="Search products..." [(ngModel)]="searchQuery"
+            class="border px-3 py-2 rounded w-full md:w-64" />
+
+         <!-- Date Range Filter -->
+         <button class="flex items-center gap-2 border px-3 py-2 rounded text-gray-700 hover:bg-gray-50">
+            <span class="text-sm">2 Feb – 14 Apr</span>
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+         </button>
+
+         <!-- Category Filter -->
+         <button class="flex items-center gap-2 border px-3 py-2 rounded text-gray-700 hover:bg-gray-50">
+            <span class="text-sm">Category</span>
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+         </button>
+
+         <!-- Supplier Filter -->
+         <button class="flex items-center gap-2 border px-3 py-2 rounded text-gray-700 hover:bg-gray-50">
+            <span class="text-sm">Supplier</span>
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+         </button>
+
+         <!-- Stock Level Filter -->
+         <button class="flex items-center gap-2 border px-3 py-2 rounded text-gray-700 hover:bg-gray-50">
+            <span class="text-sm">Stock Level</span>
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+         </button>
+
+      </div>
+
+      <!-- RIGHT: Actions -->
+      <div class="flex items-center gap-2">
+
+         <!-- Manage Table -->
+         <button class="flex items-center gap-2 border px-4 py-2 rounded text-gray-700 hover:bg-gray-50">
+            Manage Table
+         </button>
+
+         <!-- Add Product -->
+         <button class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Add Product
+         </button>
+
+      </div>
+
+   </div>
+
+
+
+   <!-- Table Container (fills remaining height) -->
+   <div class="flex-1 border border-gray-300 rounded-lg overflow-hidden">
+      <div class="h-full overflow-y-auto">
+         <table class="w-full text-left border-separate border-spacing-0">
+
+            <!-- Sticky Header -->
+            <thead class="bg-gray-200 sticky top-0 z-10">
+               <tr>
+                  <th class="px-4 py-2">Product</th>
+                  <th class="px-4 py-2">Category</th>
+                  <th class="px-4 py-2">Supplier</th>
+                  <th class="px-4 py-2">Quantity</th>
+                  <th class="px-4 py-2">Unit Price</th>
+                  <th class="px-4 py-2">Actions</th>
+               </tr>
+            </thead>
+
+            <tbody>
+               <tr *ngFor="let product of filteredProducts()"
+                  class="hover:bg-gray-50 border-b border-gray-300/70 last:border-b-0">
+                  <!-- Product -->
+                  <td class="px-4 py-1.5 flex items-center space-x-2">
+                     <img [src]="'data:image/jpeg;base64,' + product.image" class="w-10 h-10 object-cover rounded"
+                        alt="product" />
+                     <span>{{ product.name }}</span>
+                  </td>
+
+                  <!-- Category -->
+                  <td class="px-4 py-1.5">
+                     <span class="bg-gray-200 text-gray-700 text-opacity-70 px-2 py-0.5 rounded text-sm">
+                        {{ product.type || "-" }}
+                     </span>
+                  </td>
+
+                  <!-- Supplier -->
+                  <td class="px-4 py-1.5 text-gray-700">
+                     {{ product.manufacturer || "-" }}
+                  </td>
+
+                  <!-- Quantity -->
+                  <td class="px-4 py-1.5">
+                     <span [ngClass]="{
+                  'text-red-600 font-semibold': lowStock(product),
+                  'text-gray-800': !lowStock(product)
+                }">
+                        {{ product.stockQuantity }} unit
+                     </span>
+                     <span *ngIf="lowStock(product)" class="text-red-500">- Low</span>
+
+                     <div class="w-24 h-1 mt-1 bg-gray-200 rounded">
+                        <div class="h-1 rounded transition-all" [ngStyle]="{
+                    width: ((product.stockQuantity ?? 0) / 100 * 100) + '%',
+                    backgroundColor: lowStock(product) ? '#dc2626' : '#16a34a'
+                  }"></div>
+                     </div>
+                  </td>
+
+                  <!-- Unit Price -->
+                  <td class="px-4 py-1.5">KES {{ product.price }}</td>
+
+                  <!-- Actions -->
+                  <td class="px-4 py-1.5 relative">
+                     <button *ngIf="product.productId != null" (click)="toggleActions(product.productId)"
+                        class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">
+                        ⋮
+                     </button>
+
+                     <ul *ngIf="product.productId != null && actionsOpen[product.productId]"
+                        class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-20">
+                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="reorder(product)">
+                           Reorder
+                        </li>
+                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="auditStock(product)">
+                           Audit Stock
+                        </li>
+                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="createStockAlert(product)">
+                           Create Stock Alert
+                        </li>
+                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="stockHistory(product)">
+                           Stock History
+                        </li>
+                     </ul>
+                  </td>
+               </tr>
+            </tbody>
+
+         </table>
+      </div>
+   </div>
+</div>

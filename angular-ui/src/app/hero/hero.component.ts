@@ -13,9 +13,8 @@ import {RouterLink} from "@angular/router";
 export class HeroComponent implements OnInit,OnDestroy {
 
   images: string[] = [
-    '../public/hero.jpg',
-    '../public/hero1.jpg',
-    '../public/hero2.jpg',
+    'assets/hero.jpg',
+    'assets/hero2.jpg'
   ];
   currentImageIndex = 0;
   currentImage = this.images[0];

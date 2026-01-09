@@ -45,17 +45,51 @@
   <h1 class="text-xl font-bold mb-4">Records Shopup</h1>
 
   <!-- Navigation Menu -->
-  <nav>
-    <ul class="space-y-3">
-      <li *ngFor="let item of menuItems">
-        <a
-          [routerLink]="item.link"
-          class="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
-        >
-          <span [innerHTML]="item.icon"></span>
+<nav>
+  <ul class="space-y-2">
+
+    <li *ngFor="let item of menuItems">
+
+      <!-- Parent Item -->
+      <div
+        class="flex items-center justify-between p-2 rounded-md cursor-pointer hover:bg-gray-700"
+        (click)="item.subMenu ? toggleSubMenu(item) : null"
+        [routerLink]="!item.subMenu ? item.link : null"
+      >
+        <div class="flex items-center space-x-2">
+          <span class="text-lg">{{ item.icon }}</span>
           <span>{{ item.name }}</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+        </div>
+
+        <!-- Arrow for expandable menu -->
+        <span
+          *ngIf="item.subMenu"
+          class="transition-transform duration-200"
+          [ngClass]="{ 'rotate-90': item.isOpen }"
+        >
+          ▶
+        </span>
+      </div>
+
+      <!-- Sub Menu -->
+      <ul
+        *ngIf="item.subMenu && item.isOpen"
+        class="ml-6 mt-1 space-y-1"
+      >
+        <li *ngFor="let sub of item.subMenu">
+          <a
+            [routerLink]="sub.link"
+            class="flex items-center space-x-2 p-2 text-sm rounded-md hover:bg-gray-700"
+          >
+            <span>{{ sub.icon }}</span>
+            <span>{{ sub.name }}</span>
+          </a>
+        </li>
+      </ul>
+
+    </li>
+
+  </ul>
+</nav>
+
 </aside>

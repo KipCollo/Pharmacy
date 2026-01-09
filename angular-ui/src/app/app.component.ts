@@ -10,6 +10,7 @@ import {CarouselComponent} from "./carousel/carousel.component";
 import { AnnouncementBarComponent } from './announcement-bar/announcement-bar.component';
 import {NgIf} from "@angular/common";
 import { NavbarLinksComponent } from "./navbar-links/navbar-links.component";
+import { LoaderComponent } from "./shared/loader/loader.component";
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,8 @@ import { NavbarLinksComponent } from "./navbar-links/navbar-links.component";
     FeatureComponent,
     CarouselComponent,
     NgIf,
-    NavbarLinksComponent
+    NavbarLinksComponent,
+    LoaderComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
