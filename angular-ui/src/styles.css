@@ -8,3 +8,23 @@
   border-bottom-color: transparent;
   border-left-color: transparent;
 }
+
+.filter-btn {
+  @apply px-3 py-1.5 border rounded text-sm text-gray-600 hover:bg-gray-100;
+}
+
+.nav-item {
+  @apply flex items-center gap-3 px-3 py-2 rounded text-sm text-gray-400 hover:bg-gray-800 hover:text-white cursor-pointer;
+}
+
+.nav-item.active {
+  @apply bg-gray-800 text-white;
+}
+
+.icon {
+  @apply w-5 h-5 stroke-current fill-none;
+}
+
+.badge {
+  @apply bg-red-600 text-white text-xs px-2 py-0.5 rounded-full;
+}

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 
@@ -37,27 +37,34 @@ constructor(private router: Router) {}
     console.log('Logged out');
   }
 
-  menuItems = [
-  { name: 'Dashboard', link: '/admin/dashboard', icon: '📊' },
-  { name: 'Reports', link: '/admin/reports', icon: '📄' },
-  { name: 'Orders', link: '/admin/admin-orders', icon: '🛍️' },
-  { name: 'Subscriptions', link: '/admin/customers-report', icon: '💳' },
-  { name: 'Customers', link: '/admin/customers', icon: '👥' },
-
+menuItems = [
   {
-    name: 'Products',
-    icon: '💊',
-    isOpen: false,
-    subMenu: [
-      { name: 'All Products', link: '/admin/medicine', icon: '📦' },
-      { name: 'Add Product', link: '/admin/medicine/add', icon: '➕' },
-      { name: 'Expired Products', link: '/admin/medicine/expired', icon: '⏰' },
-      { name: 'Out of Stock', link: '/admin/medicine/out-of-stock', icon: '🚫' }
-    ]
+    section: 'main',
+    items: [
+      { label: 'Dashboard', icon: 'home', route: '/admin/dashboard' },
+      { label: 'Reports', icon: 'reports', route: '/admin/reports' },
+      { label: 'Orders', icon: 'orders', route: '/admin/admin-orders' },
+      { label: 'Inventory', icon: 'inventory', route: '/admin/medicine' },
+      { label: 'Payments', icon: 'payments', route: '/admin/payments' },
+      { label: 'Customers', icon: 'customers', route: '/admin/customers' },
+      {
+        label: 'Notifications',
+        icon: 'notifications',
+        badge: 7,
+        route: '/admin/notifications',
+      },
+    ],
   },
 
-  { name: 'Cart', link: '/admin/cart-reports', icon: '🛒' }
+  {
+    section: 'secondary',
+    items: [
+      { label: 'Help & Support', icon: 'help', route: '/admin/help' },
+      { label: 'Settings', icon: 'settings', route: '/admin/settings' },
+    ],
+  },
 ];
+
 
 
 onProductsClick(item: any) {
@@ -73,4 +80,29 @@ onProductsClick(item: any) {
   toggleSubMenu(item: any) {
     item.isOpen = !item.isOpen;
   }
+
+    collapsed = signal(false);
+
+  toggle() {
+    this.collapsed.update(v => !v);
+  }
+
+  getIconPath(icon: string): string {
+  const icons: Record<string, string> = {
+    home: 'M3 12l9-9 9 9',
+    reports: 'M9 17v-2m4 2V7m4 10v-4',
+    orders: 'M4 4h16v16H4z',
+    inventory: 'M20 7l-8-4-8 4v10l8 4 8-4z',
+    payments: 'M12 1v22',
+    customers: 'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2',
+    notifications:
+      'M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5',
+    help: 'M12 18h.01M12 6a4 4 0 00-4 4',
+    settings: 'M12 8v4l3 3',
+  };
+
+  return icons[icon];
+}
+
+
 }
