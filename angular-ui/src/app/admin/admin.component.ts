@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgClass, NgForOf} from "@angular/common";
-import {AdminPanelComponent} from "../admin-panel/admin-panel.component";
+import {AdminPanelComponent} from "../admin-dashboard/admin-panel.component";
 import {SidebarComponent} from "../sidebar/sidebar.component";
 import {ChartConfiguration, ChartData} from "chart.js";
 import {BaseChartDirective} from "ng2-charts";

@@ -13,7 +13,7 @@ import { AdminComponent } from './admin/admin.component';
 import { DoctorComponent } from './doctor/doctor.component';
 import { UserComponent } from './user/user.component';
 import { AuthGuard } from './auth.guard';
-import {AdminPanelComponent} from "./admin-panel/admin-panel.component";
+import {AdminPanelComponent} from "./admin-dashboard/admin-panel.component";
 import {CartReportsComponent} from "./cart-reports/cart-reports.component";
 import {AboutComponent} from "./about/about.component";
 import {ContactComponent} from "./contact/contact.component";
