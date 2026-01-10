@@ -23,8 +23,8 @@ import { AdminOrdersComponent } from "./admin/admin-orders/admin-orders.componen
 import { ProfileComponent } from "./profile/profile.component";
 import { ProductsComponent } from "./products/products.component";
 import { AdminCustomersComponent } from "./admin/admin-customers/admin-customers.component";
-import { ReportsComponent } from "./reports/reports.component";
-import { CustomersReportComponent } from "./customers-report/customers-report.component";
+import { ReportsComponent } from "./admin/reports/reports.component";
+import { CustomersReportComponent } from "./admin/customers-report/customers-report.component";
 import { OrdersReportComponent } from "./orders-report/orders-report.component";
 import { InventoryComponent } from "./inventory/inventory.component";
 import { AdminMedicineComponent } from './admin/admin-medicine/admin-medicine.component';

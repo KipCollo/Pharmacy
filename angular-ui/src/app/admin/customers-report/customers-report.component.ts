@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {CustomersApIsService} from "../services/services/customers-ap-is.service";
+import {CustomersApIsService} from "../../services/services/customers-ap-is.service";
 import {BaseChartDirective} from "ng2-charts";
 import {Chart} from "chart.js";
 import {FormsModule} from "@angular/forms";
