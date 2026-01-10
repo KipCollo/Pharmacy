@@ -56,6 +56,7 @@ export class AdminMedicineComponent {
   }
 
   // Action handlers
+  edit(product: ProductResponse){}
   reorder(product: ProductResponse) { console.log('Reorder', product); }
   auditStock(product: ProductResponse) { console.log('Audit Stock', product); }
   createStockAlert(product: ProductResponse) { console.log('Create Stock Alert', product); }

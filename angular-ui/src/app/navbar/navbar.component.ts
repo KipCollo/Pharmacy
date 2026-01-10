@@ -13,10 +13,7 @@ import {CartControllerService} from "../services/services/cart-controller.servic
   standalone: true,
   imports: [
     NgIf,
-    RouterLink,
-    UserComponent,
-    CartComponent,
-    NavbarLinksComponent
+    RouterLink
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
