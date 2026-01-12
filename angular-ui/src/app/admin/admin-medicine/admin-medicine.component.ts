@@ -7,7 +7,7 @@ import { FormsModule, NgModel } from '@angular/forms';
 @Component({
   selector: 'app-admin-medicine',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-medicine.component.html',
   styleUrl: './admin-medicine.component.css'
 })
@@ -16,7 +16,7 @@ export class AdminMedicineComponent {
   searchQuery = signal('');
   actionsOpen: { [id: number]: boolean } = {};
 
-  constructor(private medicineService: MedicineApIsService) {}
+  constructor(private medicineService: MedicineApIsService) { }
 
   ngOnInit() {
     this.loadProducts();
@@ -52,11 +52,26 @@ export class AdminMedicineComponent {
     const expiry = new Date(product.expiryDate);
     const now = new Date();
     const diffDays = (expiry.getTime() - now.getTime()) / (1000 * 3600 * 24);
-    return diffDays <= 2;
+    return diffDays;
+  
   }
 
+    isEditOpen = false;
+    selectedProduct: any = null;
+
+    closeEdit() {
+      this.isEditOpen = false;
+      this.selectedProduct = null;
+    }
+
   // Action handlers
-  edit(product: ProductResponse){}
+  //edit(product: ProductResponse){}
+  edit(product: any) {
+    // this.isActionsOpen = false; // if you have dropdown state
+    this.selectedProduct = product;
+    this.isEditOpen = true;
+  }
+
   reorder(product: ProductResponse) { console.log('Reorder', product); }
   auditStock(product: ProductResponse) { console.log('Audit Stock', product); }
   createStockAlert(product: ProductResponse) { console.log('Create Stock Alert', product); }
@@ -64,20 +79,19 @@ export class AdminMedicineComponent {
 
 
   get totalProducts(): number {
-  return this.products.length;
-}
+    return this.products.length;
+  }
 
-get outOfStockProducts(): number {
-  return this.products.filter(p => (p.stockQuantity ?? 0) === 0).length;
-}
+  get outOfStockProducts(): number {
+    return this.products.filter(p => (p.stockQuantity ?? 0) === 0).length;
+  }
 
-get expiredProducts(): number {
-  const today = new Date();
-  return this.products.filter(p =>
-    p.expiryDate && new Date(p.expiryDate) < today
-  ).length;
-}
-
+  get expiredProducts(): number {
+    const today = new Date();
+    return this.products.filter(p =>
+      p.expiryDate && new Date(p.expiryDate) < today
+    ).length;
+  }
 
 
 }

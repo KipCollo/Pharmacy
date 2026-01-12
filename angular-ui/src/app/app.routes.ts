@@ -13,7 +13,6 @@ import { AdminComponent } from './admin/admin-panel/admin-panel.component';
 import { DoctorComponent } from './doctor/doctor.component';
 import { UserComponent } from './user/user.component';
 import { AuthGuard } from './auth.guard';
-import { CartReportsComponent } from "./cart-reports/cart-reports.component";
 import { AboutComponent } from "./about/about.component";
 import { ContactComponent } from "./contact/contact.component";
 import { CartComponent } from "./cart/cart.component";
@@ -26,9 +25,9 @@ import { AdminCustomersComponent } from "./admin/admin-customers/admin-customers
 import { ReportsComponent } from "./admin/reports/reports.component";
 import { CustomersReportComponent } from "./admin/customers-report/customers-report.component";
 import { OrdersReportComponent } from "./orders-report/orders-report.component";
-import { InventoryComponent } from "./inventory/inventory.component";
 import { AdminMedicineComponent } from './admin/admin-medicine/admin-medicine.component';
 import { AdminPanelComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { CartReportsComponent } from './admin/cart-reports/cart-reports.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -52,7 +51,6 @@ export const routes: Routes = [
       { path: 'dashboard', component: AdminPanelComponent },
       { path: 'customers', component: AdminCustomersComponent },
       { path: 'reports', component: OrdersReportComponent },
-      { path: 'inventory', component: InventoryComponent },
       // Products routes
       { path: 'medicine', component: AdminMedicineComponent },
       { path: 'medicine/add', component: MedicineComponent },

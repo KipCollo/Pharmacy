@@ -112,7 +112,8 @@
             </thead>
 
             <tbody>
-               <tr *ngFor="let product of filteredProducts()"
+               @for (product of filteredProducts(); track product.productId) {
+               <tr
                   class="hover:bg-gray-50 border-b border-gray-300/70 last:border-b-0">
                   <!-- Product -->
                   <td class="px-4 py-1.5 flex items-center space-x-2">
@@ -179,6 +180,7 @@
                      </ul>
                   </td>
                </tr>
+            }
             </tbody>
 
          </table>
