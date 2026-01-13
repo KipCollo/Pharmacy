@@ -1,20 +1,22 @@
 import {Component, OnInit} from '@angular/core';
-import {DecimalPipe, NgClass, NgForOf} from "@angular/common";
+import {DatePipe, DecimalPipe, NgClass, NgForOf} from "@angular/common";
 import {SidebarComponent} from "../sidebar/sidebar.component";
 import {UserResponse} from "../../services/models/user-response";
 import {CustomersApIsService} from "../../services/services/customers-ap-is.service";
 import {BaseChartDirective} from "ng2-charts";
 import {ChartConfiguration} from "chart.js";
+import { FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-admin-customers',
   standalone: true,
   imports: [
     NgForOf,
-    SidebarComponent,
     NgClass,
     DecimalPipe,
-    BaseChartDirective
+    BaseChartDirective,
+    DatePipe,
+    FormsModule
   ],
   templateUrl: './admin-customers.component.html',
   styleUrl: './admin-customers.component.css'
@@ -97,5 +99,27 @@ export class AdminCustomersComponent implements OnInit{
     if (!firstName && !lastName) return 'N/A';
     return `${firstName?.charAt(0) ?? ''}${lastName?.charAt(0) ?? ''}`.toUpperCase();
   }
+
+
+  searchTerm = '';
+isPreviewOpen = false;
+selectedCustomer: any = null;
+
+filteredCustomers() {
+  const term = this.searchTerm.toLowerCase();
+
+  return this.customers.filter(c =>
+    (c.firstName ?? '').toLowerCase().includes(term) ||
+    (c.email ?? '').toLowerCase().includes(term)
+  );
+}
+
+
+openCustomerPreview(customer: any) {
+  this.selectedCustomer = customer;
+  this.isPreviewOpen = true;
+}
+
+
 
 }

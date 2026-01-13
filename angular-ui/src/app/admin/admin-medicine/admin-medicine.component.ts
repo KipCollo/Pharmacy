@@ -3,11 +3,13 @@ import { ProductResponse } from '../../services/models/product-response';
 import { CommonModule, CurrencyPipe, NgClass } from '@angular/common';
 import { MedicineApIsService } from '../../services/services/medicine-ap-is.service';
 import { FormsModule, NgModel } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MedicineComponent } from "../medicine/medicine.component";
 
 @Component({
   selector: 'app-admin-medicine',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MedicineComponent],
   templateUrl: './admin-medicine.component.html',
   styleUrl: './admin-medicine.component.css'
 })
@@ -16,7 +18,10 @@ export class AdminMedicineComponent {
   searchQuery = signal('');
   actionsOpen: { [id: number]: boolean } = {};
 
-  constructor(private medicineService: MedicineApIsService) { }
+  constructor(
+    private medicineService: MedicineApIsService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.loadProducts();
@@ -92,6 +97,21 @@ export class AdminMedicineComponent {
       p.expiryDate && new Date(p.expiryDate) < today
     ).length;
   }
+
+  addProduct(){
+    this.router.navigate(['admin/medicine/add'])
+  }
+
+  showAddProductModal = false;
+
+//   addProduct() {
+//   this.showAddProductModal = true;
+// }
+
+closeAddProduct() {
+  this.showAddProductModal = false;
+}
+
 
 
 }

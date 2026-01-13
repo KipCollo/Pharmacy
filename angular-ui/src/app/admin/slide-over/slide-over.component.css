@@ -1,0 +1,46 @@
+.panel-wrapper {
+  position: fixed;
+  top: 0; right: 0;
+  height: 100vh;
+  width: 100vw;
+  pointer-events: none; /* Allows clicking "through" to background when closed */
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+
+  &.is-open {
+    pointer-events: auto;
+    .backdrop { opacity: 1; }
+    .panel-container { transform: translateX(0); }
+  }
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.panel-container {
+  position: relative;
+  height: 100%;
+  background: white;
+  box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+  transform: translateX(100%); /* Start hidden off-screen */
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  
+  /* Dynamic Width Logic */
+  min-width: 400px; 
+  width: auto;           /* Allows expansion */
+  max-width: 85vw;       /* Prevents covering the whole screen */
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-body {
+  padding: 20px;
+  overflow-x: auto; /* Adds scroll if content exceeds max-width */
+  flex-grow: 1;
+}

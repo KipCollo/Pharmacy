@@ -3,7 +3,6 @@ import { LoginComponent } from "./login/login.component";
 import { HomeComponent } from "./home/home.component";
 import { RegisterComponent } from "./register/register.component";
 import { ActivateAccountComponent } from "./activate-account/activate-account.component";
-import { MedicineComponent } from "./medicine/medicine.component";
 import { MenuComponent } from "./menu/menu.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { UnauthorizedComponent } from "./unauthorized/unauthorized.component";
@@ -28,6 +27,7 @@ import { OrdersReportComponent } from "./orders-report/orders-report.component";
 import { AdminMedicineComponent } from './admin/admin-medicine/admin-medicine.component';
 import { AdminPanelComponent } from './admin/admin-dashboard/admin-dashboard.component';
 import { CartReportsComponent } from './admin/cart-reports/cart-reports.component';
+import { MedicineComponent } from './admin/medicine/medicine.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },

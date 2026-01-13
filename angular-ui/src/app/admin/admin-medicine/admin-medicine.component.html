@@ -2,34 +2,33 @@
    <h1 class="text-2xl font-bold mb-4">Inventory</h1>
 
    <!-- Statistics -->
-<div class="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+   <div class="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
 
-  <!-- Total Products -->
-  <div class="border rounded-lg p-4 bg-white">
-    <p class="text-sm text-gray-500">Total Products</p>
-    <p class="text-2xl font-semibold text-gray-900">
-      {{ totalProducts }}
-    </p>
-  </div>
+      <!-- Total Products -->
+      <div class="border rounded-lg p-4 bg-white">
+         <p class="text-sm text-gray-500">Total Products</p>
+         <p class="text-2xl font-semibold text-gray-900">
+            {{ totalProducts }}
+         </p>
+      </div>
 
-  <!-- Expired Products -->
-  <div class="border rounded-lg p-4 bg-white">
-    <p class="text-sm text-gray-500">Expired Products</p>
-    <p class="text-2xl font-semibold text-orange-600">
-      {{ expiredProducts }}
-    </p>
-  </div>
+      <!-- Expired Products -->
+      <div class="border rounded-lg p-4 bg-white">
+         <p class="text-sm text-gray-500">Expired Products</p>
+         <p class="text-2xl font-semibold text-orange-600">
+            {{ expiredProducts }}
+         </p>
+      </div>
 
-  <!-- Out of Stock -->
-  <div class="border rounded-lg p-4 bg-white">
-    <p class="text-sm text-gray-500">Out of Stock</p>
-    <p class="text-2xl font-semibold text-red-600">
-      {{ outOfStockProducts }}
-    </p>
-  </div>
+      <!-- Out of Stock -->
+      <div class="border rounded-lg p-4 bg-white">
+         <p class="text-sm text-gray-500">Out of Stock</p>
+         <p class="text-2xl font-semibold text-red-600">
+            {{ outOfStockProducts }}
+         </p>
+      </div>
 
-</div>
-
+   </div>
 
    <!-- Search & Filters + Actions -->
    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -84,14 +83,14 @@
          </button>
 
          <!-- Add Product -->
-         <button class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            Add Product
+         <button (click)="addProduct()"
+            class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 hover:cursor-pointer">
+            New Product
          </button>
 
       </div>
 
    </div>
-
 
 
    <!-- Table Container (fills remaining height) -->
@@ -113,8 +112,7 @@
 
             <tbody>
                @for (product of filteredProducts(); track product.productId) {
-               <tr
-                  class="hover:bg-gray-50 border-b border-gray-300/70 last:border-b-0">
+               <tr class="hover:bg-gray-50 border-b border-gray-300/70 last:border-b-0">
                   <!-- Product -->
                   <td class="px-4 py-1.5 flex items-center space-x-2">
                      <img [src]="'data:image/jpeg;base64,' + product.image" class="w-10 h-10 object-cover rounded"
@@ -180,10 +178,12 @@
                      </ul>
                   </td>
                </tr>
-            }
+               }
             </tbody>
 
          </table>
       </div>
    </div>
+
+
 </div>

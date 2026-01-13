@@ -1,27 +1,15 @@
-<!-- <app-slide-over
-  [open]="isEditOpen"
-  (close)="closeEdit()"
->
-  <!-- Edit Form -->
-  <!-- <div *ngIf="selectedProduct">
-    <h4 class="font-semibold mb-4">Edit Product</h4>
+@if (open) {
+      <div class="fixed inset-0 bg-black/30 z-40 transition-opacity" (click)="close.emit()"></div>
 
-    <label class="block text-sm mb-1">Product Name</label>
-    <input
-      type="text"
-      class="w-full border rounded px-3 py-2 mb-3"
-      [(ngModel)]="selectedProduct.name"
-    />
+      <div class="fixed top-0 right-0 z-50 h-full bg-white shadow-xl flex flex-col transition-transform duration-300"
+           [style.width]="width">
+        
+        <div class="flex items-center justify-between px-6 py-4 border-b">
+          <button class="text-gray-500 hover:text-gray-800 text-xl" (click)="close.emit()">✕</button>
+        </div>
 
-    <label class="block text-sm mb-1">Unit Price</label>
-    <input
-      type="number"
-      class="w-full border rounded px-3 py-2 mb-3"
-      [(ngModel)]="selectedProduct.price"
-    />
-
-    <button class="w-full bg-blue-600 text-white py-2 rounded">
-      Save Changes
-    </button>
-  </div> 
-</app-slide-over> -->
+        <div class="flex-1 overflow-y-auto p-8">
+          <ng-content></ng-content>
+        </div>
+      </div>
+    }

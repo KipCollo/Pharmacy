@@ -6,9 +6,11 @@
         <p>Please create an Account</p>
       </div>
 
-      <div *ngIf="errorMsg.length" class="mb-4">
-        <p *ngFor="let msg of errorMsg" class="text-red-600 font-semibold">{{ msg }}</p>
+      @if (errorMsg.length) {
+      <div class="mb-4">
+        @for (msg of errorMsg; track $index) { <p class="text-red-600 font-semibold">{{ msg }}</p>}
       </div>
+      }
 
       <div class="social-buttons">
         <div class="form-group">

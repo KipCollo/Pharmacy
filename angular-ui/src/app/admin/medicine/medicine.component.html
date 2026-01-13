@@ -1,0 +1,140 @@
+<!-- OVERLAY BACKDROP -->
+<div class="fixed inset-0 z-50 flex justify-end bg-black/30">
+
+  <!-- RIGHT DRAWER -->
+  <div class="w-full max-w-3xl max-h-[98vh] my-2 mx-2 bg-white shadow-xl flex flex-col rounded-lg">
+
+    <!-- HEADER (FIXED) -->
+    <div class="flex items-center justify-between px-6 py-4 border-b">
+      <h2 class="text-lg font-semibold text-gray-700">Add New Product</h2>
+      <button
+        class="text-gray-500 hover:text-gray-800 text-xl"
+        (click)="cancel()"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- SCROLLABLE CONTENT -->
+    <div class="flex-1 overflow-y-auto p-8 text-sm">
+      <form (ngSubmit)="uploadProduct()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Medicine Name -->
+        <div>
+          <label class="block font-semibold text-gray-700 mb-2">Medicine Name</label>
+          <input
+            type="text"
+            [(ngModel)]="product.name"
+            name="name"
+            class="border p-3 rounded-lg w-full"
+            required
+          />
+        </div>
+
+        <!-- Manufacturer -->
+        <div>
+          <label class="block font-semibold text-gray-700 mb-2">Manufacturer</label>
+          <input
+            type="text"
+            [(ngModel)]="product.manufacturer"
+            name="manufacturer"
+            class="border p-3 rounded-lg w-full"
+          />
+        </div>
+
+        <!-- Expiry Date -->
+        <div>
+          <label class="block font-semibold text-gray-700 mb-2">Expiry Date</label>
+          <input
+            type="date"
+            [(ngModel)]="product.expiryDate"
+            name="expiryDate"
+            class="border p-3 rounded-lg w-full"
+            required
+          />
+        </div>
+
+        <!-- Product Type -->
+        <div>
+          <label class="block font-semibold text-gray-700 mb-2">Product Type</label>
+          <select
+            [(ngModel)]="product.type"
+            name="type"
+            class="border p-3 rounded-lg w-full"
+            required
+          >
+            <option value="" disabled>Select Type</option>
+            <option value="SYRUP">Syrup</option>
+            <option value="TABLETS">Tablets</option>
+            <option value="OINTMENTS">Ointments</option>
+          </select>
+        </div>
+
+        <!-- Price -->
+        <div>
+          <label class="block font-semibold text-gray-700 mb-2">Price (KSh)</label>
+          <input
+            type="number"
+            [(ngModel)]="product.price"
+            name="price"
+            class="border p-3 rounded-lg w-full"
+            min="1"
+            required
+          />
+        </div>
+
+        <!-- Stock Quantity -->
+        <div>
+          <label class="block font-semibold text-gray-700 mb-2">Stock Quantity</label>
+          <input
+            type="number"
+            [(ngModel)]="product.stockQuantity"
+            name="stockQuantity"
+            class="border p-3 rounded-lg w-full"
+            min="1"
+            required
+          />
+        </div>
+
+        <!-- Description -->
+        <div class="md:col-span-2">
+          <label class="block font-semibold text-gray-700 mb-2">Description</label>
+          <textarea
+            [(ngModel)]="product.description"
+            name="description"
+            class="border p-3 rounded-lg w-full"
+            rows="4"
+          ></textarea>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="md:col-span-2">
+          <label class="block font-semibold text-gray-700 mb-2">Upload Image</label>
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            class="border p-3 rounded-lg w-full"
+          />
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="md:col-span-2 flex justify-end gap-4 pt-4">
+          <button
+            type="submit"
+            class="bg-blue-600 text-white px-6 py-3 rounded-lg"
+          >
+            Upload Product
+          </button>
+          <button
+            type="button"
+            class="bg-gray-600 text-white px-6 py-3 rounded-lg"
+            (click)="cancel()"
+          >
+            Cancel
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

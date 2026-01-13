@@ -24,6 +24,7 @@ export class MedicineDetailsComponent implements OnInit {
 
 
   ngOnInit(): void {
+  
   }
 
   // Helper Methods

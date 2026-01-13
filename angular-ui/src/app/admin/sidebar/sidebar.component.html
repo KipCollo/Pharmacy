@@ -5,7 +5,7 @@
   <div class="flex items-center justify-between px-4 py-4">
     <div class="flex items-center gap-2 text-white font-semibold">
       <span class="text-xl">✕</span>
-      <span *ngIf="!collapsed()">KipCollo</span>
+      @if(!collapsed()) {<span>KipCollo</span>}
     </div>
 
     <!-- Collapse button -->
@@ -17,7 +17,8 @@
   </div>
 
   <!-- SEARCH -->
-  <div class="px-3 mb-3" *ngIf="!collapsed()">
+  @if (!collapsed()) {
+  <div class="px-3 mb-3">
     <div class="relative">
       <input type="text" placeholder="Search"
         class="w-full bg-gray-800 text-sm rounded pl-9 pr-3 py-2 focus:outline-none" />
@@ -27,45 +28,47 @@
       </svg>
     </div>
   </div>
+  }
 
   <!-- NAV -->
   <nav class="flex-1 px-2 space-y-2">
 
-    <ng-container *ngFor="let group of menuItems">
+    @for (group of menuItems; track $index) {
+    @for (item of group.items; track $index) {
+    <a class="nav-item" [routerLink]="item.route" routerLinkActive="active">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          [attr.d]="getIconPath(item.icon)" />
+      </svg>
 
-      <ng-container *ngFor="let item of group.items">
-        <a class="nav-item" [routerLink]="item.route" routerLinkActive="active">
-          <svg class="icon" viewBox="0 0 24 24">
-            <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              [attr.d]="getIconPath(item.icon)" />
-          </svg>
+      @if (!collapsed()) {<span>{{ item.label }}</span>}
+      @if (item.badge && !collapsed()) {
+      <span class="badge ml-auto"> {{ item.badge }} </span>
+      }
+    </a>
+    }
 
-          <span *ngIf="!collapsed()">{{ item.label }}</span>
+    <!-- divider between sections -->
+    <div class="border-t border-gray-800 my-2"></div>
 
-          <span *ngIf="item.badge && !collapsed()" class="badge ml-auto">
-            {{ item.badge }}
-          </span>
-        </a>
-      </ng-container>
-
-      <!-- divider between sections -->
-      <div class="border-t border-gray-800 my-2"></div>
-
-    </ng-container>
+    }
 
   </nav>
 
 
   <!-- FOOTER -->
   <div class="border-t border-gray-800 px-4 py-4 flex items-center gap-3">
-    <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white text-sm">
-      O
+    <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-green-500 text-sm">
+      {{ getInitials(currentUser.firstName, currentUser.lastName) }}
     </div>
 
-    <div *ngIf="!collapsed()" class="flex-1 text-sm">
-      <p class="text-white font-medium">Olivia Williams</p>
-      <p class="text-gray-500 text-xs">Admin</p>
+    @if (!collapsed()) {
+    <div class="flex-1 text-sm">
+      <p class="text-white font-medium">{{currentUser.firstName}} {{currentUser.lastName}}</p>
+      <p class="text-green-600 font-small">{{currentUser.email}}</p>
+      @for (role of currentUser.roles; track $index) { <p class="text-gray-500 text-xs">{{role.name}}</p>}
     </div>
+  }
 
     <button class="text-gray-400 hover:text-white">⋮</button>
   </div>

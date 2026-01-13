@@ -3,16 +3,14 @@ import {Router} from "@angular/router";
 
 import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
 import {NgForOf} from "@angular/common";
-import {ProductRequest} from "../services/models/product-request";
-import {MedicineApIsService} from "../services/services/medicine-ap-is.service";
+import { ProductRequest } from '../../services/models/product-request';
+import { MedicineApIsService } from '../../services/services';
 
 @Component({
   selector: 'app-medicine',
   standalone: true,
   imports: [
-
     FormsModule,
-    NgForOf
   ],
   templateUrl: './medicine.component.html',
   styleUrl: './medicine.component.css'
@@ -69,7 +67,7 @@ export class MedicineComponent{
     }
 
     cancel() {
-      this.router.navigate(['/admin']);
+      this.router.navigate(['/admin/medicine']);
     }
 
 }

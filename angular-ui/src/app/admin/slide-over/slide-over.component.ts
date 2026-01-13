@@ -10,9 +10,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class SlideOverComponent {
   @Input() open = false;
   @Input() data: any;
+  @Input() width = 'max-content';
   @Output() close = new EventEmitter<void>();
 
-  onClose() {
+  onclose() {
     this.close.emit();
   }
 
