@@ -1,18 +1,13 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {NgIf} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
 import {jwtDecode} from "jwt-decode";
 import {TokenService} from "../services/token/token.service";
-import {UserComponent} from "../user/user.component";
-import {CartComponent} from "../cart/cart.component";
-import { NavbarLinksComponent } from '../navbar-links/navbar-links.component';
 import {CartControllerService} from "../services/services/cart-controller.service";
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [
-    NgIf,
     RouterLink
   ],
   templateUrl: './navbar.component.html',
@@ -27,20 +22,21 @@ export class NavbarComponent implements OnInit{
   userEmail: string = 'user@example.com';
   userProfileImage: string = '/public/login.jpg';
   isLoggedIn = false;
-  cart: any[] = []; // Example cart array
+  cart: any[] = []; 
+
+   constructor(private router: Router,
+              private  tokenService:TokenService,
+              private cartService: CartControllerService) {
+   }
 
   ngOnInit() {
     this.checkLoginStatus();
     this.loadCartCount();
-
   }
 
-  constructor(private router: Router,
-              private  tokenService:TokenService,
-              private cartService: CartControllerService) {
-    this.checkLoginStatus();
+   home(){
+    this.router.navigate(['/home'])
    }
-
 
   checkLoginStatus(){
   const token = this.tokenService.token;
@@ -65,6 +61,7 @@ export class NavbarComponent implements OnInit{
 
   openCart() {
     this.isCartOpen = true;
+    this.router.navigate(['cart'])
   }
 
   closeCart() {
@@ -80,12 +77,10 @@ export class NavbarComponent implements OnInit{
   isAccountOpen = false;
 
   toggleAccountDropdown() {
-    console.log("Account clicked..")
     this.isAccountOpen = !this.isAccountOpen;
   }
 
-// Optional: Close on outside click
-  @HostListener('document:click', ['$event'])
+  // @HostListener('document:click', ['$event'])
   onOutsideClick(event: Event) {
     const target = event.target as HTMLElement;
     if (!target.closest('.account-dropdown')) {
@@ -93,7 +88,6 @@ export class NavbarComponent implements OnInit{
     }
   }
 
-  // Redirect to the profile page
   goToProfile() {
     this.router.navigate(['/profile']);
   }
@@ -113,4 +107,5 @@ export class NavbarComponent implements OnInit{
       return 0;
     }
   }
+
 }

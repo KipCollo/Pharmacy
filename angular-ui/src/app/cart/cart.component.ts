@@ -7,14 +7,13 @@ import { TokenService } from "../services/token/token.service";
 import { jwtDecode } from "jwt-decode";
 import { MedicineApIsService } from "../services/services/medicine-ap-is.service";
 import { OrderApIsService } from "../services/services/order-ap-is.service";
-import {OrderRequest} from "../services/models/order-request"; // ✅ Use this now
+import {OrderRequest} from "../services/models/order-request";
 
 @Component({
   selector: 'app-cart',
   standalone: true,
   imports: [
     CurrencyPipe,
-    RouterLink,
     NgForOf,
     NgIf
   ],

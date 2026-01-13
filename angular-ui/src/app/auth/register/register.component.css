@@ -1,10 +1,9 @@
-.left-section { width: 50%; display: flex; flex-direction: column; justify-content: center; padding: 4rem; }
-.right-section { width: 50%; display: none; }
+
 .form-group { margin-bottom: 1rem; }
 .input-field { width: 100%; border: 1px solid #ccc; padding: 0.5rem; border-radius: 0.5rem; }
 .line { flex: 1; height: 1px; background: #ccc; }
-.divider { display: flex; align-items: center; margin-top: 1rem; }
-.btn-primary { width: 100%; background-color: #4f46e5; color: white; padding: 0.5rem; border-radius: 0.5rem; }
+.divider {margin-top: 1rem; }
+.btn-primary { border-radius: 0.5rem; }
 .social-buttons { display: flex; gap: 3rem; margin-top: 1rem; }
 .btn-social { flex: 1; display: flex; align-items: center; justify-content: center; border: 1px solid #ccc; padding: 0.5rem; border-radius: 0.5rem; }
 .input-field{
@@ -12,10 +11,27 @@
 }
 .input-field label{
   position: absolute;
-  color: var(--secondary);
+  color: var(--secondary); 
   left: 15px;
   top: 16px;
 }
-.container { display: flex; min-height: 100vh; }
-.image { width: 100%; height: 100%; object-fit: cover; }
 .line { flex: 1; height: 1px; background: #ccc; }
+.logo { color: #4f46e5; font-size: 2rem; font-weight: bold; }
+.success-snackbar{
+  position: relative;
+}
+
+.success-snackbar::after{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: blue;
+  animation: progress 3s linear forwards;
+}
+
+@keyframes progress {
+  from { width: 0;}
+  to { width: 100%;}
+}

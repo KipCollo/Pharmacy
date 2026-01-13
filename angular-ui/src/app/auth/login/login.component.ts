@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationRequest} from "../services/models/authentication-request";
 import {FormsModule, NgModel} from "@angular/forms";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {Router} from "@angular/router";
-import {TokenService} from "../services/token/token.service";
-import {AuthenticationApIsService} from "../services/services/authentication-ap-is.service";
 import {jwtDecode} from "jwt-decode";
+import { AuthenticationRequest } from '../../services/models/authentication-request';
+import { AuthenticationApIsService } from '../../services/services/authentication-ap-is.service';
+import { TokenService } from '../../services/token/token.service';
 
 @Component({
   selector: 'app-login',

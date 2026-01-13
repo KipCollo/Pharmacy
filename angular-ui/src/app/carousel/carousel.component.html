@@ -1,22 +1,40 @@
 <section class="py-1 px-2">
   <!-- Title -->
   <div class="text-center mb-2">
-    <h2 class="text-lg font-semibold text-blue-600">New Arrivals</h2>
+    <h2 class="text-lg font-semibold text-blue-600">Categories</h2>
   </div>
 
-  <!-- Carousel -->
+  <!-- Categories Carousel -->
   <div class="max-w-6xl mx-auto">
-    <div class="swiper-container new-arrivals-swiper">
+    <div class="swiper-container categories-swiper">
       <div class="swiper-wrapper">
 
-        <a *ngFor="let product of products.content" [routerLink]="['/product', product.productId]"
-          class="swiper-slide w-32 h-32 bg-gray-100 rounded-full overflow-hidden flex items-center justify-center group">
-          <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-full">
-            <img loading="lazy" [src]="'data:image/jpeg;base64,' + product.image" alt="Product"
-              class="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-110" />
+        <a
+          *ngFor="let category of categories"
+          [routerLink]="['/category', category.id]"
+          class="swiper-slide w-32 flex flex-col items-center
+                 text-center group cursor-pointer"
+        >
+          <!-- Image Circle ONLY -->
+          <div
+            class="w-20 h-20 rounded-full bg-gray-100
+                   overflow-hidden flex items-center justify-center"
+          >
+            <img
+              loading="lazy"
+              [src]="category.image"
+              alt="Category"
+              class="w-full h-full object-cover
+                     transition-transform duration-300
+                     group-hover:scale-110"
+            />
           </div>
-        </a>
 
+          <!-- Category Name BELOW -->
+          <span class="mt-2 text-xs font-medium text-gray-700">
+            {{ category.name }}
+          </span>
+        </a>
 
       </div>
     </div>

@@ -1,0 +1,84 @@
+<form #registerForm="ngForm" (ngSubmit)="onRegister()">
+  <div class="flex min-h-screen justify-center mt-10">
+    <div class="flex flex-col left-section">
+
+      <!--Register Title-->
+      <div class="title pt-7">
+        <div class="logo">&#12638;</div>
+        <h1 class="font-bold">CREATE ACCOUNT</h1>
+        <p>Please create an Account..</p>
+      </div>
+
+      @if (errorMsg.length) {
+      <div class="mb-4">
+        @for (msg of errorMsg; track $index) { <p class="text-red-600 font-semibold">{{ msg }}</p>}
+      </div>
+      }
+
+      <div class="social-buttons">
+        <div class="form-group">
+          <label for="firstname">First Name</label>
+          <input [(ngModel)]="customer.firstName" name="firstName" required minlength="3" type="text" id="firstname"
+            placeholder="Firstname" class="input-field" #firstName="ngModel">
+          @if (firstName.invalid && firstName.touched) {
+          <div class="text-red-600 text-sm">
+            <div *ngIf="firstName.errors?.['required']">First name is required.</div>
+            <div *ngIf="firstName.errors?.['minlength']">First name must be at least 3 characters.</div>
+          </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="lastname">Last Name</label>
+          <input [(ngModel)]="customer.lastName" name="lastName" required minlength="3" type="text" id="lastname"
+            placeholder="Lastname" class="input-field" #lastName="ngModel">
+          <div *ngIf="lastName.invalid && lastName.touched" class="text-red-600 text-sm">
+            <div *ngIf="lastName.errors?.['required']">Last name is required.</div>
+            <div *ngIf="lastName.errors?.['minlength']">Last name must be at least 3 characters.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input [(ngModel)]="customer.email" name="email" required email type="email" id="email"
+          placeholder="name@gmail.com" class="input-field" #email="ngModel">
+        <div *ngIf="email.invalid && email.touched" class="text-red-600 text-sm">
+          <div *ngIf="email.errors?.['required']">Email is required.</div>
+          <div *ngIf="email.errors?.['email']">Enter a valid email.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input [(ngModel)]="customer.password" name="password" required minlength="6" type="password" id="password"
+          placeholder="password" class="input-field" #password="ngModel">
+        <div *ngIf="password.invalid && password.touched" class="text-red-600 text-sm">
+          <div *ngIf="password.errors?.['required']">Password is required.</div>
+          <div *ngIf="password.errors?.['minlength']">Password must be at least 6 characters long.</div>
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" class="btn-primary bg-blue-900 w-full text-white p-2 hover:cursor-pointer"
+          [disabled]="registerForm.invalid">
+          <em>&nbsp;Sign Up</em>
+        </button>
+
+      </div>
+
+      <div class="flex items-center divider">
+        <div class="line "></div>
+        <span>***Or***</span>
+        <div class="line"></div>
+      </div>
+
+      <div class="flex gap-2 pt-5">
+        <p class="pl-4 ">Already have an account?&nbsp;</p>
+        <button (click)="login()" type="button" class="btn-social text-white bg-green-700 hover:cursor-pointer">
+          Log In
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

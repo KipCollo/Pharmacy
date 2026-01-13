@@ -8,16 +8,13 @@
   left: 15px;
   top: 16px;
 }
-.container { display: flex; min-height: 100vh; }
-.left-section { width: 50%; display: flex; flex-direction: column; justify-content: center; padding: 4rem; }
-.right-section { width: 50%; display: none; }
-.logo { color: #4f46e5; font-size: 2rem; font-weight: bold; }
+.left-section { width: 50%; }
 .link { color: #4f46e5; }
 .form-group { margin-bottom: 1rem; }
 .input-field { width: 100%; border: 1px solid #ccc; padding: 0.5rem; border-radius: 0.5rem; }
 .form-footer { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.btn-primary { width: 100%; background-color: #4f46e5; color: white; padding: 0.5rem; border-radius: 0.5rem; }
-.divider { display: flex; align-items: center; margin-top: 1rem; }
+.btn-primary { padding: 0.5rem; border-radius: 0.5rem; }
+.divider { margin-top: 1rem; }
 .line { flex: 1; height: 1px; background: #ccc; }
 .social-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
 .btn-social { flex: 1; display: flex; align-items: center; justify-content: center; border: 1px solid #ccc; padding: 0.5rem; border-radius: 0.5rem; }

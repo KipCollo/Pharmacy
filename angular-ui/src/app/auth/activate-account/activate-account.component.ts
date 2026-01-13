@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {CodeInputModule} from "angular-code-input";
 import {NgIf} from "@angular/common";
-import {AuthenticationApIsService} from "../services/services/authentication-ap-is.service";
+import { AuthenticationApIsService } from '../../services/services/authentication-ap-is.service';
 
 @Component({
   selector: 'app-activate-account',

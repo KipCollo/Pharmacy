@@ -1,18 +1,19 @@
 <div class="min-h-screen bg-gray-50">
-
   <main class="container mx-auto py-6 px-4">
 
     <!-- Toggle Cart Button -->
-    <button (click)="toggleCart()" class="mb-4 bg-gray-300 text-black px-4 py-2 rounded">
+    <button (click)="toggleCart()" class="mb-4 bg-gray-300 text-black px-4 py-2 rounded hover:cursor-pointer">
       {{ showCart ? 'Close Cart' : 'Open Cart' }}
     </button>
 
     <!-- Cart Section -->
-    <section *ngIf="showCart" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+     @if (showCart) {
+    <section class="bg-white rounded-lg shadow-sm p-6 mb-6">
       <h2 class="text-xl font-semibold mb-4">Cart ({{ cartItems.length }})</h2>
 
-      <ng-container *ngIf="cartItems.length > 0; else emptyCart">
-        <div *ngFor="let item of cartItems" class="border-b border-gray-200 pb-4 mb-4 flex justify-between">
+      @if (cartItems.length > 0) {
+        @for (item of cartItems; track $index) {
+        <div class="border-b border-gray-200 pb-4 mb-4 flex justify-between">
           <!-- Cart Item Left Section -->
           <div class="flex-1">
             <h3 class="font-medium">{{ item.product?.name }}</h3>
@@ -31,11 +32,10 @@
           <!-- Remove Button -->
           <button (click)="removeFromCart(item.product?.id)" class="text-blue-600 font-medium mt-4">Remove</button>
         </div>
-      </ng-container>
-
-      <ng-template #emptyCart>
+      }
+    } @else {
         <p class="text-gray-600 text-center mt-10">Your cart is empty.</p>
-      </ng-template>
+    }
 
       <!-- Cart Summary -->
       <div class="flex justify-between mt-6">
@@ -43,10 +43,11 @@
         <span class="text-xl font-semibold">{{ calculateTotalPrice() | currency }}</span>
       </div>
 
-      <button (click)="placeOrder()" class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md">
+      <button (click)="placeOrder()" class="w-full mt-4 bg-blue-600 hover:bg-blue-700 hover:cursor-pointer text-white py-2 rounded-md">
         Proceed to Checkout
       </button>
     </section>
+  }
 
   </main>
 </div>

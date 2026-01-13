@@ -1,6 +1,6 @@
-<div class="container flex">
-  <div class="left-section">
-    <div class="logo">&#12638;</div>
+<div class="flex justify-center min-h-screen">
+  <div class="p-10 left-section">
+    <div class="text-4xl text-blue-600 font-bold">&#12638;</div>
     <h1>LOG IN</h1>
     <h2>Welcome back! Please sign in to your account</h2>
     <form>
@@ -24,25 +24,22 @@
         </div>
         <a href="#" class="link">Forgot password?</a>
       </div>
-      <button (click)="login()" class="btn-primary" type="submit">Sign in</button>
+      <button (click)="login()" class="w-full bg-blue-800 text-white  hover:cursor-pointer btn-primary" type="submit">Sign in</button>
     </form>
-    <div class="divider">
+    <div class="flex items-center divider">
       <div class="line"></div>
       <span>Or continue with</span>
       <div class="line"></div>
     </div>
     <div class="social-buttons">
-      <button class="btn-social">
+      <button class="btn-social  hover:cursor-pointer">
         <img src="https://www.svgrepo.com/show/355037/google.svg" class="icon"> Google
       </button>
     </div>
     <div>
       Don't have an account?&nbsp;
-      <button (click)="register()" style="color: white; background-color: green" type="button" class=" btn-social"> Register</button>
+      <button (click)="register()" style="color: white; background-color: green" type="button" class=" btn-social hover:cursor-pointer"> Register</button>
     </div>
   </div>
-  <div class="right-section">
-<!--    <img src="../public/login.jpg" class="image" alt="login image" height="1080" width="1620">-->
-    <img src = "../public/login.jpg" alt = "">
-  </div>
+
 </div>

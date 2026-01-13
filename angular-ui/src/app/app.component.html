@@ -1,13 +1,12 @@
 <!-- NAVBAR (Visible only if NOT in Admin) -->
-<header *ngIf="!isAdminPage()">
+<header *ngIf="!isAdminPage()"  class="fixed top-0 left-0 right-0 z-50 bg-white shadow" >
   <app-announcement-bar></app-announcement-bar>
   <app-navbar></app-navbar>
   <app-navbar-links></app-navbar-links>
 </header>
 
 <!-- MAIN CONTENT -->
-<main class="flex-1 overflow-auto">
-  <app-loader></app-loader>
+<main class="pt-[160px] pb-[80px] overflow-y-auto h-screen">
   <router-outlet></router-outlet>
 </main>
 

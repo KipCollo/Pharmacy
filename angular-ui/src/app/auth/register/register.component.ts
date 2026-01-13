@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
-import {AuthenticationApIsService} from "../services/services/authentication-ap-is.service";
-import {UserRequest} from "../services/models/user-request";
+import {AuthenticationApIsService} from "../../services/services/authentication-ap-is.service";
+import {UserRequest} from "../../services/models/user-request";
+import {MatSnackBar} from "@angular/material/snack-bar"
 
 @Component({
   selector: 'app-register',
@@ -11,7 +12,6 @@ import {UserRequest} from "../services/models/user-request";
   imports: [
     FormsModule,
     NgIf,
-    NgForOf
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
@@ -22,7 +22,9 @@ export class RegisterComponent {
   errorMsg: Array<string> =[]
 
   constructor(private router: Router,
-              private authService: AuthenticationApIsService) {
+              private authService: AuthenticationApIsService,
+              private snackBar: MatSnackBar
+            ) {
   }
 
   login() {
@@ -41,11 +43,24 @@ export class RegisterComponent {
       body: this.customer
     }).subscribe({
       next: () =>{
+        this.onSuccess()
         this.router.navigate(["activate-account"]);
       },
       error: (err) => {
         this.errorMsg = err.error.validationErrors;
       }
+    })
+  }
+
+  onSuccess(){
+    this.snackBar.open(
+      'Registration successful! Please activate Account',
+      'Close',
+    {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar']
     })
   }
 
