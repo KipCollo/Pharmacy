@@ -1,8 +1,9 @@
 package com.kipcollo.cart;
 
-import com.kipcollo.customer.UserRequest;
-import com.kipcollo.customer.Users;
 import org.springframework.stereotype.Service;
+
+import com.kipcollo.user.UserRequest;
+import com.kipcollo.user.Users;
 
 @Service
 public class CartMapper {

@@ -1,7 +1,8 @@
 package com.kipcollo.orders;
 
-import com.kipcollo.customer.UserResponse;
 import com.kipcollo.payments.PaymentMethod;
+import com.kipcollo.user.UserResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

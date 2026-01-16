@@ -1,8 +1,9 @@
 package com.kipcollo.orders;
 
-import com.kipcollo.customer.Users;
 import com.kipcollo.payments.PaymentMethod;
 import com.kipcollo.products.Product;
+import com.kipcollo.user.Users;
+
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,5 @@
 package com.kipcollo.configs;
 
-import com.kipcollo.customer.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -24,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import com.kipcollo.user.UserService;
 
 import java.util.Arrays;
 import java.util.Collections;

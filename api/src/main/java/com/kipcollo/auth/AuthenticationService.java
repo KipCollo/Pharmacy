@@ -1,10 +1,11 @@
 package com.kipcollo.auth;
 
 import com.kipcollo.configs.JwtService;
-import com.kipcollo.customer.Users;
-import com.kipcollo.customer.UsersRepository;
 import com.kipcollo.email.EmailService;
 import com.kipcollo.email.EmailTemplate;
+import com.kipcollo.user.Users;
+import com.kipcollo.user.UsersRepository;
+
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +30,7 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
   private final JwtService jwtService;
 
+    // Registration
     public void register(RegistrationRequest request) throws MessagingException {
       var userRole = roleRepository.findByName("USER")
               .orElseThrow(()-> new IllegalArgumentException("ROLE USER was not initialised"));
@@ -62,7 +64,7 @@ public class AuthenticationService {
        var token = Token.builder()
                .token(generatedToken)
                .createdAt(LocalDateTime.now())
-               .expiresAt(LocalDateTime.now().plusMinutes(15))
+               .expiresAt(LocalDateTime.now().plusMinutes(60))
                .users(user)
                .build();
 
@@ -83,6 +85,7 @@ public class AuthenticationService {
        
    }
 
+   // Authentication/Login
    public AuthenticationResponse authenticate(AuthenticationRequest request) {
        var auth = authenticationManager.authenticate(
                new UsernamePasswordAuthenticationToken(
@@ -98,6 +101,7 @@ public class AuthenticationService {
        return AuthenticationResponse.builder().token(jwtToken).build();
    };
 
+   //Activate Account
     public void activateAccount(String token) throws MessagingException {
        Token saveToken = tokenRepository.findByToken(token).orElseThrow(()-> new RuntimeException("Token not found"));
        if (LocalDateTime.now().isAfter(saveToken.getExpiresAt())){

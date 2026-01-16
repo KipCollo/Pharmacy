@@ -1,12 +1,13 @@
 package com.kipcollo.orders;
 
-import com.kipcollo.customer.UserService;
-import com.kipcollo.customer.Users;
 import com.kipcollo.dto.PurchaseRequest;
 import com.kipcollo.orderlines.OrderLineRequest;
 import com.kipcollo.orderlines.OrderLineService;
 import com.kipcollo.products.ProductService;
 import com.kipcollo.products.PurchaseProductRequest;
+import com.kipcollo.user.UserService;
+import com.kipcollo.user.Users;
+
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

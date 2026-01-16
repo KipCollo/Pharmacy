@@ -1,9 +1,10 @@
 package com.kipcollo.orders;
 
-import com.kipcollo.customer.Users;
 import com.kipcollo.orderlines.OrderLine;
 import com.kipcollo.payments.PaymentMethod;
 import com.kipcollo.products.Product;
+import com.kipcollo.user.Users;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

@@ -1,9 +1,10 @@
 package com.kipcollo.orders;
 
-import com.kipcollo.customer.Users;
 import com.kipcollo.dto.PurchaseRequest;
 import com.kipcollo.payments.PaymentMethod;
 import com.kipcollo.products.PurchaseProductRequest;
+import com.kipcollo.user.Users;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

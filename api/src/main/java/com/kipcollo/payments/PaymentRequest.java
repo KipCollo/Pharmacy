@@ -1,11 +1,12 @@
 package com.kipcollo.payments;
 
-import com.kipcollo.customer.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+
+import com.kipcollo.user.UserResponse;
 
 @Data
 @AllArgsConstructor

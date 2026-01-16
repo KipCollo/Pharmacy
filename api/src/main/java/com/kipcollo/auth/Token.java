@@ -3,7 +3,8 @@ package com.kipcollo.auth;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.kipcollo.customer.Users;
+import com.kipcollo.user.Users;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

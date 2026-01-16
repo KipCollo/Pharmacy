@@ -1,10 +1,11 @@
 package com.kipcollo.configs;
 
-import com.kipcollo.customer.Users;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import com.kipcollo.user.Users;
 
 import java.util.Optional;
 
