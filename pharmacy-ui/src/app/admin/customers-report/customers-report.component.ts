@@ -3,26 +3,15 @@ import {CustomersApIsService} from "../../services/services/customers-ap-is.serv
 import {BaseChartDirective} from "ng2-charts";
 import {Chart} from "chart.js";
 import {FormsModule} from "@angular/forms";
-import {MatFormField, MatLabel} from "@angular/material/form-field";
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
-import {MatInput} from "@angular/material/input";
-import {MatOption} from "@angular/material/core";
-import {MatSelect} from "@angular/material/select";
+
+
+
 
 @Component({
   selector: 'app-customers-report',
   standalone: true,
   imports: [
-    BaseChartDirective,
-    FormsModule,
-    MatLabel,
-    MatFormField,
-    MatDatepickerInput,
-    MatDatepickerToggle,
-    MatDatepicker,
-    MatInput,
-    MatOption,
-    MatSelect
+
   ],
   templateUrl: './customers-report.component.html',
   styleUrl: './customers-report.component.css'

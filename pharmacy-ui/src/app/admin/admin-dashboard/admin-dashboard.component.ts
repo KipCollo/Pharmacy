@@ -26,7 +26,7 @@ export class AdminPanelComponent {
     datasets: [{ data: [100, 200, 150, 300, 250, 400], label: 'Net Revenue' }]
   };
   public revenueChartType: ChartType = 'line';
-  public isRevenueUp = this.checkTrend(this.revenueChartData.datasets[0].data);
+  //public isRevenueUp = this.checkTrend(this.revenueChartData.datasets[0].data);
 
   // Profit Pie Chart
   public profitChartData: ChartConfiguration<'pie'>['data'] = {
