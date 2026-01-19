@@ -97,11 +97,11 @@ public class UserService implements UserDetailsService{
                .orElseThrow(() -> new RuntimeException("Customer not found"));
     }
 
-    public List<UserReport> getCustomerReport(LocalDateTime startDate, LocalDateTime endDate) {
-        if (startDate == null || endDate == null) {
-            return repo.findAllCustomers();
-        }
-        return repo.findCustomersBetweenDates(startDate, endDate);
-    }
+    // public List<UserReport> getCustomerReport(LocalDateTime startDate, LocalDateTime endDate) {
+    //     if (startDate == null || endDate == null) {
+    //         return repo.findAllCustomers();
+    //     }
+    //     return repo.findCustomersBetweenDates(startDate, endDate);
+    // }
 
 }

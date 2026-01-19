@@ -41,6 +41,8 @@ public class Product {
    private int stockQuantity;
    @Column(nullable = false)
    private BigDecimal price;
+   @ManyToOne
+   private ProductCategory category;
 //   @ManyToOne
 //   @JoinColumn(name = "supplierId")
 //   private Suppliers suppliers;

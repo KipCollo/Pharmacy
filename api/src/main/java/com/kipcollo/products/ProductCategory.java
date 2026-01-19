@@ -1,12 +1,18 @@
 package com.kipcollo.products;
 import java.util.List;
 
+import jakarta.persistence.*;
+
+@Entity
 public class ProductCategory {
 
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Integer id;
    private String name;
    private String description;
    private byte[] image;
+   @OneToMany(mappedBy="category")
    private List<Product> products;
 
 }

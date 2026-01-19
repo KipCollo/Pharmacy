@@ -27,14 +27,14 @@ public class UsersController {
       return ResponseEntity.ok(service.getAllCustomers());
    }
 
-   @GetMapping("/report")
-   public ResponseEntity<List<UserReport>> getAllCustomersReport(
-           @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-           @RequestParam(required = false ) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
-   ){
-    List<UserReport> report = service.getCustomerReport(startDate,endDate);
-    return ResponseEntity.ok(report);
-   }
+   // @GetMapping("/report")
+   // public ResponseEntity<List<UserReport>> getAllCustomersReport(
+   //         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+   //         @RequestParam(required = false ) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
+   // ){
+   //  List<UserReport> report = service.getCustomerReport(startDate,endDate);
+   //  return ResponseEntity.ok(report);
+   // }
 
    @GetMapping("/{customerId}")
    public ResponseEntity<UserResponse> getCustomer(@PathVariable("customerId") Integer customerId){
