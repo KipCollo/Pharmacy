@@ -1,9 +1,10 @@
-<div class="p-6">
-  <h2 class="text-2xl font-bold mb-4">Prescription Upload</h2>
+<div class="p-6 ">
+  <h2 class="font-medium text-xl mb-4">Upload Your Prescription</h2>
+  <p>Your prescription is required for us to verify and proceed to the next step.</p>
 
   <!-- Upload Prescription Section -->
-  <div class="mb-6 border p-4 rounded-lg">
-    <input type="file" (change)="onFileSelected($event)" class="border p-2">
+  <div class="mb-6 p-4 rounded-lg">
+    <input type="file" (change)="onFileSelected($event)" value="Click to upload" class="border p-2">
     <button (click)="uploadPrescription()" class="bg-blue-500 text-white px-4 py-2 ml-2">
       Upload Prescription
     </button>

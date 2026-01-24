@@ -1,0 +1,35 @@
+<section class="py-1 px-2">
+  <!-- Title -->
+  <div class="text-center mb-2 mg">
+    <h2 class="text-lg font-semibold text-blue-600">Categories</h2>
+  </div>
+
+  <!-- Categories Carousel -->
+  <div class="max-w-fit mx-auto">
+    <div class="swiper-container categories-swiper">
+      <div class="swiper-wrapper">
+
+        @for (category of categories; track $index) {
+        <div class="swiper-slide flex flex-col items-center group cursor-pointer">
+          <a [routerLink]="['/category', category.id]">
+            <!-- Image Circle -->
+            <div class="w-17 h-17 rounded-full bg-gray-100
+                   overflow-hidden flex items-center justify-center">
+              <img loading="lazy" [src]="category.image" alt="Category" class="w-full h-full object-cover
+                     transition-transform duration-300
+                     group-hover:scale-110" />
+            </div>
+          </a>
+
+          <!-- Category Name -->
+          <span class="text-xs font-bold text-gray-700">
+            {{ category.name }}
+          </span>
+
+        </div>
+        }
+
+      </div>
+    </div>
+  </div>
+</section>

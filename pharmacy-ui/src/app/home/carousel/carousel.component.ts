@@ -36,9 +36,11 @@ export class CarouselComponent implements AfterViewInit {
   products: PageResponseProductResponse = {};
 
   categories = [
-    { id: 1, name: 'Pain Relief', image: '../public/login.jpg' },
+    { id: 1, name: 'Pain Relief', image: '/home/collins/Documents/03_Projects/Academic/Pharmacy/pharmacy-ui/public/login.jpg' },
     { id: 2, name: 'Vitamins', image: 'assets/categories/vitamins.jpg' },
     { id: 3, name: 'Skincare', image: 'assets/categories/skincare.jpg' },
+    { id: 4, name: 'Baby Care', image: 'assets/categories/baby.jpg' },
+    { id: 5, name: 'Medical', image: 'assets/categories/medical.jpg' },
     { id: 4, name: 'Baby Care', image: 'assets/categories/baby.jpg' },
     { id: 5, name: 'Medical', image: 'assets/categories/medical.jpg' }
   ];
@@ -52,7 +54,7 @@ export class CarouselComponent implements AfterViewInit {
     new Swiper('.categories-swiper', {
       modules: [Autoplay],
       slidesPerView: 'auto',
-      spaceBetween: 6,
+      spaceBetween: 2,
       loop: true,
       speed: 6000,
       autoplay: {

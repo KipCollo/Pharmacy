@@ -1,19 +1,17 @@
 import { NgIf } from '@angular/common';
 import {Component, OnInit} from '@angular/core';
 import {RouterLink} from "@angular/router";
-import {AuthenticationApIsService} from "../services/services/authentication-ap-is.service";
-import {SidebarComponent} from "../admin/sidebar/sidebar.component";
+
 import {ChatListComponent} from "../chat-list/chat-list.component";
 import {ChatWindowComponent} from "../chat-window/chat-window.component";
 import {SideChatComponent} from "../side-chat/side-chat.component";
+import { AuthenticationApIsService } from '../../services/services/authentication-ap-is.service';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
   imports: [
-    RouterLink,
     NgIf,
-    SidebarComponent,
     ChatListComponent,
     ChatWindowComponent,
     SideChatComponent

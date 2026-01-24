@@ -7,17 +7,19 @@ import { jwtDecode } from 'jwt-decode';
 import { TokenService } from '../services/token/token.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ProductComponent } from "../product/product.component";
 
 @Component({
   selector: 'app-medicine-list',
   standalone: true,
-  imports: [CommonModule, SlicePipe, FormsModule],
+  imports: [CommonModule, SlicePipe, FormsModule, ProductComponent],
   templateUrl: './medicine-list.component.html',
   styleUrls: ['./medicine-list.component.css']
 })
 export class MedicineListComponent implements OnInit {
   medicineResponse: PageResponseProductResponse = { content: [], totalPages: 0, totalElements: 0 };
   selectedMedicine: ProductResponse | null = null;
+  medicineRes: ProductResponse = {}
   page = 0;
   size = 24;
   totalPages = 0;

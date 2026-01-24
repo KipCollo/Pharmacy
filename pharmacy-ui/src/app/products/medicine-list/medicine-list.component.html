@@ -31,6 +31,8 @@
         </p>
       </div>
 
+      <app-product [medicine]="medicineRes"></app-product>
+
       <!-- Action Buttons -->
       <div class="mt-2 flex justify-between items-center">
         <!-- Add to Cart -->
@@ -62,7 +64,7 @@
   <div class="mt-10 mb-4 flex justify-center w-full">
     @if (canLoadMore()) {
     <button (click)="loadMore()"
-      class="w-100 py-3 text-black font-semibold border-1 border-grey-400 rounded-lg hover:bg-blue-700 hover:text-white transition flex items-center justify-center hover:cursor-pointer">
+      class="w-100 py-3 text-black font-semibold border border-grey-400 rounded-lg hover:bg-blue-700 hover:text-white transition flex items-center justify-center hover:cursor-pointer">
       @if (!loadingMore) { <span> Show More...</span>}
       @else { <span class="animate-spin border-2 border-t-2 border-white rounded-full w-5 h-5"></span>}
     </button>

@@ -3,9 +3,9 @@ import {CurrencyPipe, DatePipe, NgForOf} from "@angular/common";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Papa from 'papaparse';
-import {OrderApIsService} from "../services/services/order-ap-is.service";
-import {OrderResponse} from "../services/models/order-response";
-import {Product} from "../services/models/product";
+import {OrderApIsService} from "../../services/services/order-ap-is.service";
+import {OrderResponse} from "../../services/models/order-response";
+import {Product} from "../../services/models/product";
 
 @Component({
   selector: 'app-orders-report',

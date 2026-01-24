@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from "@angular/router";
 import { CarouselComponent } from "../carousel/carousel.component";
-import { HeroComponent } from "../hero/hero.component";
+import { HeroComponent } from "./hero/hero.component";
 import { NavbarComponent } from "../navbar/navbar.component";
 import { MedicineListComponent } from "../medicine-list/medicine-list.component";
 

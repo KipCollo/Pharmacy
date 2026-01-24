@@ -1,6 +1,6 @@
 import {Component, effect, inject, Input, OnInit, signal} from '@angular/core';
 import {NavbarComponent} from "../navbar/navbar.component";
-import {FooterComponent} from "../footer/footer.component";
+import {FooterComponent} from "../shared/footer/footer.component";
 import {PageResponseProductResponse} from "../services/models/page-response-product-response";
 import {MedicineApIsService} from "../services/services/medicine-ap-is.service";
 import {NgForOf, SlicePipe} from "@angular/common";
@@ -11,8 +11,6 @@ import {CartControllerService} from "../services/services/cart-controller.servic
   selector: 'app-products',
   standalone: true,
   imports: [
-    NavbarComponent,
-    FooterComponent,
     NgForOf,
     SlicePipe
   ],

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {NavbarComponent} from "./navbar/navbar.component";
-import {FooterComponent} from "./footer/footer.component";
-import { AnnouncementBarComponent } from './announcement-bar/announcement-bar.component';
+import {FooterComponent} from "./shared/footer/footer.component";
+import { AnnouncementBarComponent } from './shared/announcement-bar/announcement-bar.component';
 import {NgIf} from "@angular/common";
-import { NavbarLinksComponent } from "./navbar-links/navbar-links.component";
+import { NavbarLinksComponent } from "./shared/navbar-links/navbar-links.component";
 
 @Component({
   selector: 'app-root',

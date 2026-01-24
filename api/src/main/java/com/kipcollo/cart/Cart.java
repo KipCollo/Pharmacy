@@ -2,6 +2,7 @@ package com.kipcollo.cart;
 
 import com.kipcollo.products.Product;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -17,10 +18,10 @@ public class Cart{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private int userId;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Product product;
+    @OneToMany
+    private List<Product> product;
     private boolean ordered;
     @Enumerated(EnumType.STRING)
     private CartStatus status;

@@ -1,0 +1,25 @@
+<!-- Product Info -->
+<div class="product-card flex flex-col flex-1">
+   <h3 class="text-lg font-semibold mb-2 text-center">
+      {{ medicine.name }}
+   </h3>
+
+   <div class="w-full h-48 flex items-center justify-center overflow-hidden rounded-md mb-4">
+      <img [src]="'data:image/jpeg;base64,' + medicine.image" alt="{{ medicine.name }}"
+         class="object-cover max-h-48 max-w-full" />
+   </div>
+
+   <div class="flex justify-between items-center mb-2">
+      <span class="text-sm text-gray-600">
+         Availability: {{ medicine.stockQuantity }}
+      </span>
+      <span class="text-base font-bold text-green-600">
+         KES {{ medicine.price }}
+      </span>
+   </div>
+
+   <p class="text-sm text-gray-700 flex-1">
+      {{ (medicine.description || '') | slice: 0:120 }}
+      {{ (medicine.description?.length || 0) > 100 ? '...' : '' }}
+   </p>
+</div>
