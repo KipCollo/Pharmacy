@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {Router} from "@angular/router";
 
 class Prescription {
   status: string | undefined;
@@ -22,11 +23,8 @@ export class PrescriptionUploadComponent {
   selectedFile: File | null = null;
   prescriptions: Prescription[] = [];
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    this.loadPrescriptions();
-  }
+  constructor(private http: HttpClient,
+              private router: Router) {}
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
@@ -44,16 +42,11 @@ export class PrescriptionUploadComponent {
     this.http.post('/api/prescriptions/upload', formData).subscribe({
       next: () => {
         alert('Prescription uploaded successfully');
-        this.loadPrescriptions(); // Refresh the list after upload
+        this.router.navigate(['prescription-approval'])
       },
       error: (err) => alert('Upload failed: ' + err.message)
     });
   }
 
-  loadPrescriptions() {
-    this.http.get<Prescription[]>('/api/prescriptions').subscribe({
-      next: (data) => (this.prescriptions = data),
-      error: (err) => console.error('Error loading prescriptions:', err)
-    });
-  }
+
 }

@@ -9,15 +9,16 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { CartResponse } from '../../models/cart-response';
+import { SecurityContext } from '../../models/security-context';
 
 export interface GetUserCart$Params {
-  userId: number;
+  securityContext: SecurityContext;
 }
 
 export function getUserCart(http: HttpClient, rootUrl: string, params: GetUserCart$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<CartResponse>>> {
   const rb = new RequestBuilder(rootUrl, getUserCart.PATH, 'get');
   if (params) {
-    rb.path('userId', params.userId, {});
+    rb.query('securityContext', params.securityContext, {});
   }
 
   return http.request(
@@ -30,4 +31,4 @@ export function getUserCart(http: HttpClient, rootUrl: string, params: GetUserCa
   );
 }
 
-getUserCart.PATH = '/api/cart/add/{userId}';
+getUserCart.PATH = '/api/cart/add/';

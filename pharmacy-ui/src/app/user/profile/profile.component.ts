@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {AuthenticationApIsService} from "../services/services/authentication-ap-is.service";
-import {UserRequest} from "../services/models/user-request";
-import {CustomersApIsService} from "../services/services/customers-ap-is.service";
-import {UserResponse} from "../services/models/user-response";
 import {Router} from "@angular/router";
-import {TokenService} from "../services/token/token.service";
+import { UserResponse } from '../../services/models/user-response';
+import { UserRequest } from '../../services/models/user-request';
+import { CustomersApIsService } from '../../services/services/customers-ap-is.service';
+import { TokenService } from '../../services/token/token.service';
+
+
 
 @Component({
   selector: 'app-profile',

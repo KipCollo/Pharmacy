@@ -11,10 +11,7 @@ import { TokenService } from '../../services/token/token.service';
   selector: 'app-login',
   standalone: true,
   imports: [
-    FormsModule,
-    NgForOf,
-    NgIf,
-    NgOptimizedImage,
+    FormsModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

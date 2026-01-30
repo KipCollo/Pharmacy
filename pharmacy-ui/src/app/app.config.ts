@@ -6,6 +6,7 @@ import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptors
 import {HttpTokenInterceptor} from "./services/interceptor/http-token.interceptor";
 import {provideNativeDateAdapter} from "@angular/material/core";
 import {provideAnimations} from "@angular/platform-browser/animations";
+// import { provideLucideIcons } from 'lucide-angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,9 +14,11 @@ export const appConfig: ApplicationConfig = {
      provideRouter(routes),
      //provideNativeDateAdapter(),
      provideAnimations(),
+    // provideLucideIcons(),
      provideHttpClient(
        withInterceptorsFromDi(),
      ),
+
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpTokenInterceptor,

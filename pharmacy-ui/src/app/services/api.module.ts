@@ -10,6 +10,7 @@ import { MedicineApIsService } from './services/medicine-ap-is.service';
 import { PrescriptionControllerService } from './services/prescription-controller.service';
 import { CustomersApIsService } from './services/customers-ap-is.service';
 import { AuthenticationApIsService } from './services/authentication-ap-is.service';
+import { ProductCategoryControllerService } from './services/product-category-controller.service';
 import { PaymentControllerService } from './services/payment-controller.service';
 import { OrderApIsService } from './services/order-ap-is.service';
 import { CartControllerService } from './services/cart-controller.service';
@@ -27,6 +28,7 @@ import { OrderLineControllerService } from './services/order-line-controller.ser
     PrescriptionControllerService,
     CustomersApIsService,
     AuthenticationApIsService,
+    ProductCategoryControllerService,
     PaymentControllerService,
     OrderApIsService,
     CartControllerService,

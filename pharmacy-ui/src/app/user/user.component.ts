@@ -10,9 +10,6 @@ import {TokenService} from "../services/token/token.service";
   selector: 'app-user',
   standalone: true,
   imports: [
-    NgIf,
-    NgForOf,
-    DatePipe,
     RouterLink
   ],
   templateUrl: './user.component.html',

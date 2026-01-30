@@ -105,7 +105,7 @@ export class CartControllerService extends BaseService {
   }
 
   /** Path part for operation `getUserCart()` */
-  static readonly GetUserCartPath = '/api/cart/add/{userId}';
+  static readonly GetUserCartPath = '/api/cart/add/';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

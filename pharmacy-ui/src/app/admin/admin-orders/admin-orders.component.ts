@@ -7,10 +7,6 @@ import {SidebarComponent} from "../sidebar/sidebar.component";
   selector: 'app-admin-orders',
   standalone: true,
   imports: [
-    NgForOf,
-    NgIf,
-    NgClass,
-    SidebarComponent
   ],
   templateUrl: './admin-orders.component.html',
   styleUrl: './admin-orders.component.css'

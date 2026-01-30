@@ -8,7 +8,6 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
   imports: [
     RouterLink,
     NgForOf,
-    NgClass,
     NgIf
   ],
   templateUrl: './reports.component.html',

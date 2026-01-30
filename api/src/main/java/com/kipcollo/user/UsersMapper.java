@@ -27,7 +27,9 @@ public class UsersMapper {
                 users.getEmail(),
                 users.getPassword(),
                 users.getLocation(),
-                users.getRoles()
+                users.getRoles(),
+                users.getCreatedDate(),
+                users.getLastModifiedDate()
 
         );
     }

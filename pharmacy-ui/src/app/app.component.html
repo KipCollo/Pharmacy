@@ -1,17 +1,23 @@
-<!-- NAVBAR (Visible only if NOT in Admin) -->
-<header *ngIf="!isAdminPage()"  class="fixed top-0 left-0 right-0 z-50 bg-white shadow" >
-  <app-announcement-bar></app-announcement-bar>
-  <app-navbar></app-navbar>
-  <app-navbar-links></app-navbar-links>
-</header>
+<div class="min-h-screen flex flex-col">
 
-<!-- MAIN CONTENT -->
-<main class="pt-[160px] pb-[80px] overflow-y-auto h-screen">
-  <router-outlet></router-outlet>
-</main>
+  <!-- NAVBAR -->
+  @if (!isAdminPage()) {
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white shadow">
+      <app-announcement-bar></app-announcement-bar>
+      <app-navbar></app-navbar>
+      <app-navbar-links></app-navbar-links>
+    </header>
+  }
 
-<!-- FOOTER (Visible only if NOT in Admin) -->
-<footer *ngIf="!isAdminPage()" >
-  <app-footer></app-footer>
-</footer>
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 pt-40">
+    <router-outlet></router-outlet>
+    <app-cart-modal></app-cart-modal>
+  </main>
 
+  <!-- FOOTER -->
+  @if (!isAdminPage()) {
+    <app-footer></app-footer>
+  }
+
+</div>

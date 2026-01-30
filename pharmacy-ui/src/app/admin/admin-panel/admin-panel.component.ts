@@ -14,11 +14,7 @@ import {RouterOutlet} from "@angular/router";
   selector: 'app-admin',
   standalone: true,
   imports: [
-    NgForOf,
-    AdminPanelComponent,
     SidebarComponent,
-    BaseChartDirective,
-    NgClass,
     RouterOutlet
   ],
   templateUrl: './admin-panel.component.html',

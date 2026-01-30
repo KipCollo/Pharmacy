@@ -9,8 +9,7 @@ Chart.register(...registerables)
   selector: 'app-cart-reports',
   standalone: true,
     imports: [
-        BaseChartDirective,
-        SidebarComponent
+        BaseChartDirective
     ],
   templateUrl: './cart-reports.component.html',
   styleUrl: './cart-reports.component.css'

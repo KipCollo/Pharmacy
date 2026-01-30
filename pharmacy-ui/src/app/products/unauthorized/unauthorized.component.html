@@ -1,0 +1,106 @@
+<div class="max-w-7xl mx-auto p-4 md:p-6 bg-white font-sans">
+
+  <nav class="flex items-center text-sm text-gray-500 mb-6">
+    <i class="fas fa-home mr-2"></i> Home <span class="mx-2">></span>
+    Products <span class="mx-2">></span>
+    Category <span class="mx-2">></span>
+    <span class="text-black font-semibold">Vitamins & Supplements</span>
+  </nav>
+
+  <div class="flex flex-col lg:flex-row gap-8">
+
+    <aside class="w-full lg:w-64 space-y-8">
+      <div class="p-4 bg-pink-50 rounded-lg border border-pink-100 flex justify-between items-center">
+        <div>
+          <p class="text-sm font-bold text-gray-800">Show Available Products</p>
+          <p class="text-xs text-gray-500">Only show products in stock</p>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" [(ngModel)]="showInStockOnly" class="sr-only peer">
+          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-red-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+        </label>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-gray-800 mb-4">Price Range</h3>
+        <input type="range" class="w-full accent-red-500" min="0" max="10000">
+        <div class="flex justify-between text-xs text-gray-500 mt-2">
+          <span>kes 0</span>
+          <span>kes 10000</span>
+        </div>
+        <div class="flex items-center gap-2 mt-4">
+          <input type="number" [(ngModel)]="minPrice" class="w-20 border rounded p-1 text-center text-sm">
+          <span>-</span>
+          <input type="number" [(ngModel)]="maxPrice" class="w-20 border rounded p-1 text-center text-sm">
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-gray-800 mb-4">Categories</h3>
+        <ul class="space-y-3">
+          <li *ngFor="let cat of categories" class="flex items-center text-sm text-gray-600 hover:text-red-500 cursor-pointer">
+            <span class="mr-2 text-gray-300 text-xs">+</span> {{cat}}
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="flex-1">
+      <div class="relative rounded-xl overflow-hidden mb-8 h-48 md:h-64">
+        <img src="https://images.unsplash.com/photo-1584362944585-87bd4969573c?q=80&w=2000" class="w-full h-full object-cover" alt="Banner">
+        <div class="absolute bottom-4 left-4 bg-white p-2 rounded-lg shadow-lg flex items-center gap-3">
+          <div class="w-12 h-12 bg-gray-100 rounded flex items-center justify-center">
+            <i class="fas fa-pills text-red-500"></i>
+          </div>
+          <span class="font-bold text-gray-800 pr-4">Vitamins & Supplements</span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between mb-6 border-b pb-4">
+        <div class="flex items-center gap-2">
+          <h2 class="text-xl font-bold text-gray-900">Vitamins & Supplements</h2>
+          <span class="text-sm text-gray-400">(Showing 40 out of 40)</span>
+        </div>
+        <div class="flex items-center gap-4 text-sm mt-4 md:mt-0">
+          <span class="text-gray-500">Sort by:</span>
+          <button class="text-green-600 font-bold border-b-2 border-green-600">Most Popular</button>
+          <button class="text-gray-500 hover:text-black">Most Rated</button>
+          <button class="text-gray-500 hover:text-black">Price: Low to High</button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 mb-8">
+        <span class="text-xs text-gray-400">Active:</span>
+        <div class="bg-purple-100 text-purple-600 text-xs px-3 py-1 rounded-full flex items-center gap-2">
+          Categories: Vitamins & Supplements <i class="fas fa-times cursor-pointer"></i>
+        </div>
+        <button class="text-xs text-gray-400 underline ml-2">Reset all</button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div *ngFor="let prod of products" class="group border rounded-xl p-4 relative hover:shadow-xl transition-shadow">
+          <div class="flex justify-between items-start mb-4">
+            <span *ngIf="prod.isTrending" class="bg-orange-500 text-white text-[10px] px-2 py-0.5 rounded flex items-center gap-1">
+                <i class="fas fa-bolt"></i> Trending
+            </span>
+            <div class="flex flex-col gap-2 ml-auto">
+              <button class="text-gray-300 hover:text-red-500"><i class="far fa-heart"></i></button>
+              <button class="text-gray-300 hover:text-blue-500"><i class="fas fa-share-nodes text-xs"></i></button>
+              <button class="text-gray-300 hover:text-green-500"><i class="fas fa-rotate text-xs"></i></button>
+            </div>
+          </div>
+
+          <div class="h-40 flex items-center justify-center mb-4">
+            <img src="https://via.placeholder.com/150" class="max-h-full" [alt]="prod.name">
+          </div>
+
+          <div class="text-center">
+            <h4 class="text-sm font-semibold text-gray-800 h-10 overflow-hidden">{{prod.name}}</h4>
+            <p class="text-lg font-bold text-gray-900 mt-2">Kes {{prod.price | number}}</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+</div>

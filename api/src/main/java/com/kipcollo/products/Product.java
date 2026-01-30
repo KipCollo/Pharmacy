@@ -30,6 +30,7 @@ public class Product {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private int id;
    private String name;
+   @Column(length = 1000)
    private String description;
    private MedicineType type;
    @Lob
@@ -42,6 +43,7 @@ public class Product {
    @Column(nullable = false)
    private BigDecimal price;
    @ManyToOne
+   @JoinColumn(name = "categoryId")
    private ProductCategory category;
 //   @ManyToOne
 //   @JoinColumn(name = "supplierId")

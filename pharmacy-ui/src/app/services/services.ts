@@ -6,6 +6,7 @@ export { MedicineApIsService } from './services/medicine-ap-is.service';
 export { PrescriptionControllerService } from './services/prescription-controller.service';
 export { CustomersApIsService } from './services/customers-ap-is.service';
 export { AuthenticationApIsService } from './services/authentication-ap-is.service';
+export { ProductCategoryControllerService } from './services/product-category-controller.service';
 export { PaymentControllerService } from './services/payment-controller.service';
 export { OrderApIsService } from './services/order-ap-is.service';
 export { CartControllerService } from './services/cart-controller.service';

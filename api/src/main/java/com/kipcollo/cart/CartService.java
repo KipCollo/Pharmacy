@@ -14,7 +14,8 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartMapper cartMapper;
 
-    public List<CartResponse> getCartByUser(int userId) {
+    public List<CartResponse> getCartByUser() {
+        int userId =3;
         return cartRepository.findByUserIdAndOrderedFalse(userId)
                 .stream()
                 .map(cartMapper::fromCart)

@@ -1,11 +1,5 @@
 /* Main container with flex */
 body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;  /* Ensures the footer sticks at the bottom if content is minimal */
-}
-
-main {
-  flex: 1;  /* Takes the remaining space */
-  overflow: auto;  /* Makes the content scrollable */
+  min-height: 100%;
+  overflow-x: hidden;
 }

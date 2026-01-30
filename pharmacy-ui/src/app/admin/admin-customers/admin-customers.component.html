@@ -34,7 +34,7 @@
         <canvas baseChart [data]="revenueChartData" [options]="chartOptions" [type]="'bar'" class="w-full h-64">
         </canvas>
       </div>
-    </div> --> 
+    </div> -->
 
 
     <!-- CUSTOMER LIST -->
@@ -113,28 +113,31 @@
           <th class="px-6 py-3 text-left">Name</th>
           <th class="px-6 py-3 text-left">Email</th>
           <th class="px-6 py-3 text-left">Phone</th>
+          <th class="px-6 py-3 text-left">DOB</th>
           <th class="px-6 py-3 text-left">Location</th>
+          <th class="px-6 py-3 text-left">Role</th>
           <th class="px-6 py-3 text-left">Created</th>
+          <th class="px-6 py-3 text-left">Modified</th>
         </tr>
       </thead>
 
       <tbody class="divide-y">
+        @for (customer of filteredCustomers(); track customer.customerId){
         <tr
-          *ngFor="let customer of filteredCustomers()"
           class="hover:bg-gray-50 cursor-pointer"
           (click)="openCustomerPreview(customer)"
         >
-          <td class="px-6 py-4 flex items-center gap-3">
+          <td class="px-4 py-2 flex items-center gap-2">
             <img
-              [src]="customer || 'https://ui-avatars.com/api/?name=' + customer"
+              [src]="getInitials(customer.firstName, customer.lastName) || 'https://ui-avatars.com/api/?name=' + customer"
               class="w-8 h-8 rounded-full"
             />
             <span class="font-medium text-gray-700">
-              {{ customer.firstName }}
+              {{ customer.firstName }}  {{ customer.lastName }}
             </span>
           </td>
 
-          <td class="px-6 py-4 text-blue-600">
+          <td class="px-5 py-2 text-blue-600">
             {{ customer.email }}
           </td>
 
@@ -143,13 +146,36 @@
           </td>
 
           <td class="px-6 py-4">
+            {{ customer.dateOfBirth }}
+          </td>
+
+          <td class="px-6 py-4">
             {{ customer.location }}
           </td>
 
-          <td class="px-6 py-4 text-gray-500">
-            {{ customer.dateOfBirth| date:'mediumDate' }}
+          <td class="px-6 py-4 font-semibold">
+            @for (role of customer.roles; track role.roleId) {
+            <div >
+                <span class="px-2 py-1 rounded bg-gray-200 text-xs" [ngClass]="{
+                        'text-green-500': role.name === 'ADMIN',
+                        'text-blue-500': role.name === 'USER',
+                        'text-yellow-500': role.name === 'DOCTOR'
+                      }">
+                  {{ role.name }}
+                </span>
+            </div>
+            }
+          </td>
+
+          <td class="px-6 py-4 text-gray-400">
+            {{ customer.createdDate | date:'medium' }}
+          </td>
+
+          <td class="px-6 py-4 text-gray-400">
+            {{ customer.lastModifiedDate | date:'medium' }}
           </td>
         </tr>
+        }
       </tbody>
     </table>
   </div>

@@ -12,11 +12,9 @@ import { FormsModule} from '@angular/forms';
   standalone: true,
   imports: [
     NgForOf,
-    NgClass,
-    DecimalPipe,
-    BaseChartDirective,
     DatePipe,
-    FormsModule
+    FormsModule,
+    NgClass
   ],
   templateUrl: './admin-customers.component.html',
   styleUrl: './admin-customers.component.css'

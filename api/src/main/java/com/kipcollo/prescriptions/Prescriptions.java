@@ -1,5 +1,6 @@
 package com.kipcollo.prescriptions;
 
+import com.kipcollo.user.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,10 +24,8 @@ public class Prescriptions {
     private String email;
     private String imageURL;
     private PrescriptionStatus status;
-//    @ManyToOne
-//    private Customer customer;
+    @ManyToOne
+    private Users user;
     private LocalDate dateIssued;
-//    @ManyToOne
-//    @JoinColumn
-//    private Doctor doctor;
+
 }

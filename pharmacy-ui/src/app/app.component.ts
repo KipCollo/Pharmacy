@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
-import {NavbarComponent} from "./navbar/navbar.component";
 import {FooterComponent} from "./shared/footer/footer.component";
 import { AnnouncementBarComponent } from './shared/announcement-bar/announcement-bar.component';
 import {NgIf} from "@angular/common";
 import { NavbarLinksComponent } from "./shared/navbar-links/navbar-links.component";
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import {CartModalComponent} from "./cart/cart-modal/cart-modal.component";
 
 @Component({
   selector: 'app-root',
@@ -15,13 +16,15 @@ import { NavbarLinksComponent } from "./shared/navbar-links/navbar-links.compone
     AnnouncementBarComponent,
     FooterComponent,
     NgIf,
-    NavbarLinksComponent
-],
+    NavbarLinksComponent,
+    CartModalComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'ui';
+  loading: boolean = false;
 
   constructor(private router: Router) {}
 

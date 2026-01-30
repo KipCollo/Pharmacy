@@ -1,4 +1,155 @@
-<div class="bg-gray-900 text-white py-6 text-center">
-  <p>© 2025 KipCollo. All Rights Reserved.</p>
-</div>
+<footer class="bg-white ml-60 border-t mt-16">
 
+  <!-- Newsletter Section -->
+  <div class="max-w-7xl mx-auto px-6 py-10">
+    <div class="bg-gray-50 rounded-xl shadow-sm p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 flex items-center justify-center rounded-full bg-red-100 text-red-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-red-600">Join Our Newsletter</h3>
+          <p class="text-gray-500 text-sm">
+            Subscribe now and stay updated with exclusive offers, new product launches, and more!
+          </p>
+        </div>
+      </div>
+
+      <div class="flex w-full md:w-auto">
+        <input
+          type="email"
+          placeholder="Enter your email"
+          class="border rounded-l-lg px-4 py-2 w-full md:w-64 focus:outline-none focus:ring-1 focus:ring-green-500"
+        />
+        <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-r-lg font-medium">
+          Subscribe
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Footer -->
+  <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-5 gap-8">
+
+    <!-- Brand -->
+    <div class="md:col-span-1 space-y-4">
+      <h2 class="text-2xl font-bold text-green-600">KipCollopham</h2>
+      <p class="text-gray-600 text-sm">
+        Your trusted pharmaceutical partner, providing quality health solutions for everyone.
+      </p>
+
+      <div class="flex gap-3">
+        <a class="w-9 h-9 border border-green-500 text-green-600 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-white transition">
+          <lucide-icon [img]="icons.Facebook"></lucide-icon>
+        </a>
+        <a class="w-9 h-9 border border-green-500 text-green-600 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-white transition">
+          <lucide-icon [img]="icons.Instagram"></lucide-icon>
+        </a>
+        <a class="w-9 h-9 border border-green-500 text-green-600 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-white transition">
+          <lucide-icon [img]="icons.Twitter"></lucide-icon>
+        </a>
+        <a class="w-9 h-9 border border-green-500 text-green-600 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-white transition">
+          <lucide-icon [img]="icons.Linkedin"></lucide-icon>
+        </a>
+      </div>
+    </div>
+
+    <!-- About Us -->
+    <div>
+      <h3 class="font-semibold mb-4">About Us</h3>
+      <ul class="space-y-2 text-gray-600 text-sm">
+        <li><a class="hover:text-green-600" routerLink="about">About Us</a></li>
+        <li><a class="hover:text-green-600">Privacy Policy</a></li>
+        <li><a class="hover:text-green-600">Return Policy</a></li>
+        <li><a class="hover:text-green-600">Terms & Conditions</a></li>
+        <li><a class="hover:text-green-600" routerLink="contact">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Useful Links -->
+    <div>
+      <h3 class="font-semibold mb-4">Useful Links</h3>
+      <ul class="space-y-2 text-gray-600 text-sm">
+        <li><a class="hover:text-green-600" routerLink="login">Login</a></li>
+        <li><a class="hover:text-green-600" routerLink="register">Register</a></li>
+        <li><a class="hover:text-green-600">Shipping Policy</a></li>
+        <li><a class="hover:text-green-600">FAQs</a></li>
+        <li><a class="hover:text-green-600">Return Policy</a></li>
+      </ul>
+    </div>
+
+    <!-- Collections -->
+    <div>
+      <h3 class="font-semibold mb-4">Collections</h3>
+      <ul class="space-y-2 text-gray-600 text-sm">
+        <li><a class="hover:text-green-600">Offers</a></li>
+        <li><a class="hover:text-green-600">Trending</a></li>
+        <li><a class="hover:text-green-600">Best Sellers</a></li>
+        <li><a class="hover:text-green-600">New Arrivals</a></li>
+        <li><a class="hover:text-green-600">Promotions</a></li>
+      </ul>
+    </div>
+
+    <!-- Quick Links -->
+    <div>
+      <h3 class="font-semibold mb-4">Quick Links</h3>
+      <ul class="space-y-2 text-gray-600 text-sm">
+        <li><a class="hover:text-green-600">Account</a></li>
+        <li><a class="hover:text-green-600" routerLink="cart" routerLinkActive="">View Cart</a></li>
+        <li><a class="hover:text-green-600" routerLink="wishlist">My Wishlist</a></li>
+        <li><a class="hover:text-green-600">Compare Products</a></li>
+        <li><a class="hover:text-green-600">Prescription Medicines</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Contact Info -->
+  <div class="border-t">
+    <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
+
+      <div>
+        <h4 class="font-semibold">Email Support</h4>
+        <p class="text-gray-600">support@pharmaplus.co.ke</p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold">Phone Support</h4>
+        <p class="text-gray-600">+254 721 454 207</p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold">Customer Service</h4>
+        <p class="text-gray-600">24/7 dedicated support</p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold">Head Office</h4>
+        <p class="text-gray-600">Aryan Center, Block 19, Nairobi</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Methods -->
+  <div class="bg-gray-50 py-4">
+    <div class="max-w-7xl mx-auto px-6 flex flex-wrap gap-4 items-center">
+      <span class="text-gray-600 text-sm">We accept:</span>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" class="h-6">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="h-6">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="h-6">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/M-PESA_LOGO-01.svg" class="h-6">
+    </div>
+  </div>
+
+  <!-- Floating WhatsApp -->
+  <a
+    href="#"
+    class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
+  >
+    💬
+  </a>
+
+</footer>

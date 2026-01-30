@@ -1,19 +1,36 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {jwtDecode} from "jwt-decode";
-import {TokenService} from "../services/token/token.service";
-import {CartControllerService} from "../services/services/cart-controller.service";
+// import { User} from "lucide-angular"
+
+import { TokenService } from '../../services/token/token.service';
+import { CartControllerService } from '../../services/services/cart-controller.service';
+// import {LucideAngularModule } from "lucide-angular";
+import {User, Heart, ShoppingCart, Search, MapPin, LucideAngularModule} from 'lucide-angular/src/icons';
+import {readonly} from "@angular/forms/signals";
+import {ChartNoAxesColumn} from "lucide-angular";
+
+
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [
+    LucideAngularModule,
     RouterLink
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit{
+
+  readonly icons = {
+    User,
+    MapPin,
+    ChartNoAxesColumn,
+    Heart,
+    ShoppingCart
+  }
 
   showDashboard = false; // Controls the user dashboard popup
   cartItemCount: number = 0;
@@ -22,7 +39,7 @@ export class NavbarComponent implements OnInit{
   userEmail: string = 'user@example.com';
   userProfileImage: string = '/public/login.jpg';
   isLoggedIn = false;
-  cart: any[] = []; 
+  cart: any[] = [];
 
    constructor(private router: Router,
               private  tokenService:TokenService,
@@ -31,7 +48,7 @@ export class NavbarComponent implements OnInit{
 
   ngOnInit() {
     this.checkLoginStatus();
-    this.loadCartCount();
+   // this.loadCartCount();
   }
 
    home(){
@@ -68,11 +85,11 @@ export class NavbarComponent implements OnInit{
     this.isCartOpen = false;
   }
 
-  loadCartCount(){
-    this.cartService.getUserCart({userId: this.getUserId()}).subscribe(
-      (items)=>{this.cartItemCount = items.length;
-      })
-  }
+  // loadCartCount(){
+  //   this.cartService.getUserCart({userId: this.getUserId()}).subscribe(
+  //     (items)=>{this.cartItemCount = items.length;
+  //     })
+  // }
 
   isAccountOpen = false;
 
@@ -108,4 +125,9 @@ export class NavbarComponent implements OnInit{
     }
   }
 
+  openWishlist() {
+    this.router.navigate(['wishlist']);
+  }
+
+  protected readonly User = User;
 }

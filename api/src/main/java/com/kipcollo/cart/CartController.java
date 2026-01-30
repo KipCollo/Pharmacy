@@ -2,8 +2,11 @@ package com.kipcollo.cart;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -13,9 +16,9 @@ public class CartController {
 
     private final CartService cartService;
 
-    @GetMapping("/add/{userId}")
-    public ResponseEntity<List<CartResponse>> getUserCart(@PathVariable int userId) {
-        return ResponseEntity.ok(cartService.getCartByUser(userId));
+    @GetMapping("/add/")
+    public ResponseEntity<List<CartResponse>> getUserCart(SecurityContext securityContext) {
+        return ResponseEntity.ok(cartService.getCartByUser());
     }
 
     @GetMapping("/status/{status}")

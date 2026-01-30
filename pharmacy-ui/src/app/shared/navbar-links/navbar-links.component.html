@@ -1,118 +1,202 @@
-<div class="bg-white shadow-inner py-2 flex justify-center w-full">
+<!--<div class="bg-white shadow-inner py-2 flex justify-center w-full">-->
 
-  <div class="flex justify-between width">
-    <ul class="hidden lg:flex gap-x-5 items-center">
-      <li class="cursor-pointer hover:scale-110 transition-transform"> <a routerLink="product"
-          class="hover:text-gray-600"><!-- SHOP BY (Hover Mega Menu) -->
-<div class="relative group">
-  <button
-    class="flex items-center gap-1 font-medium text-gray-700 hover:text-blue-600"
-  >
-    Shop By
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-      viewBox="0 0 24 24">
-      <path d="M9 5l7 7-7 7" />
-    </svg>
-  </button>
+<!--  <div class="flex justify-between width">-->
+<!--    <ul class="hidden lg:flex gap-x-5 items-center">-->
+<!--      <li class="cursor-pointer hover:scale-110 transition-transform"> <a routerLink="product"-->
+<!--          class="hover:text-gray-600">&lt;!&ndash; SHOP BY (Hover Mega Menu) &ndash;&gt;-->
+<!--<div class="relative group">-->
+<!--  <button-->
+<!--    class="flex items-center gap-1 font-medium text-gray-700 hover:text-blue-600"-->
+<!--  >-->
+<!--    Shop By-->
+<!--    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"-->
+<!--      viewBox="0 0 24 24">-->
+<!--      <path d="M9 5l7 7-7 7" />-->
+<!--    </svg>-->
+<!--  </button>-->
 
-  <!-- Mega Menu -->
-  <div
-    class="absolute left-0 top-full hidden group-hover:flex
-           w-[900px] bg-white shadow-xl border
-           z-50"
-  >
-    <!-- LEFT COLUMN -->
-    <div class="w-1/4 bg-gray-50 border-r">
-      <ul class="py-4">
-        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">HealthCare</li>
-        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Vitamins & Supplements</li>
-        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Skin Care</li>
-        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Beauty & Make Up</li>
-        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Devices & Diagnostics</li>
-        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Family Planning</li>
-        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Hair Care</li>
-        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Mens</li>
-        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Mum & Baby</li>
-        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Personal Care</li>
-        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Prescription Products</li>
-        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Travel</li>
-      </ul>
-    </div>
+<!--  &lt;!&ndash; Mega Menu &ndash;&gt;-->
+<!--  <div-->
+<!--    class="absolute left-0 top-full hidden group-hover:flex-->
+<!--           w-[900px] bg-white shadow-xl border-->
+<!--           z-50"-->
+<!--  >-->
+<!--    &lt;!&ndash; LEFT COLUMN &ndash;&gt;-->
+<!--    <div class="w-1/4 bg-gray-50 border-r">-->
+<!--      <ul class="py-4">-->
+<!--        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">HealthCare</li>-->
+<!--        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Vitamins & Supplements</li>-->
+<!--        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Skin Care</li>-->
+<!--        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Beauty & Make Up</li>-->
+<!--        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Devices & Diagnostics</li>-->
+<!--        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Family Planning</li>-->
+<!--        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Hair Care</li>-->
+<!--        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Mens</li>-->
+<!--        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Mum & Baby</li>-->
+<!--        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Personal Care</li>-->
+<!--        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Prescription Products</li>-->
+<!--        <li class="px-4 py-2 hover:bg-gray-200 cursor-pointer">Travel</li>-->
+<!--      </ul>-->
+<!--    </div>-->
 
-    <!-- MIDDLE COLUMN -->
-    <div class="w-2/4 p-6 grid grid-cols-2 gap-4">
-      <div>
-        <h3 class="font-semibold text-purple-700 mb-2">
-          Health Care Conditions
-        </h3>
-        <ul class="space-y-1 text-sm text-gray-700">
-          <li>Aches & Pains</li>
-          <li>Allergy & Hayfever</li>
-          <li>Anti Infectives</li>
-          <li>Bath & Bodycare</li>
-          <li>Beauty</li>
-          <li>Bites & Stings</li>
-          <li>Bones & Joints</li>
-          <li>Cold, Flu and Cough</li>
-          <li>Eye Care</li>
-          <li>Equipment & Diagnostics</li>
-          <li>Family Planning</li>
-          <li>Fertility & Pregnancy</li>
-          <li>First Aid & Bandages</li>
-        </ul>
+<!--    &lt;!&ndash; MIDDLE COLUMN &ndash;&gt;-->
+<!--    <div class="w-2/4 p-6 grid grid-cols-2 gap-4">-->
+<!--      <div>-->
+<!--        <h3 class="font-semibold text-purple-700 mb-2">-->
+<!--          Health Care Conditions-->
+<!--        </h3>-->
+<!--        <ul class="space-y-1 text-sm text-gray-700">-->
+<!--          <li>Aches & Pains</li>-->
+<!--          <li>Allergy & Hayfever</li>-->
+<!--          <li>Anti Infectives</li>-->
+<!--          <li>Bath & Bodycare</li>-->
+<!--          <li>Beauty</li>-->
+<!--          <li>Bites & Stings</li>-->
+<!--          <li>Bones & Joints</li>-->
+<!--          <li>Cold, Flu and Cough</li>-->
+<!--          <li>Eye Care</li>-->
+<!--          <li>Equipment & Diagnostics</li>-->
+<!--          <li>Family Planning</li>-->
+<!--          <li>Fertility & Pregnancy</li>-->
+<!--          <li>First Aid & Bandages</li>-->
+<!--        </ul>-->
+<!--      </div>-->
+
+<!--      <div class="mt-8">-->
+<!--        <ul class="space-y-1 text-sm text-gray-700">-->
+<!--          <li>Hair Care</li>-->
+<!--          <li>Masks & Sanitisers</li>-->
+<!--          <li>Mens</li>-->
+<!--          <li>Mum & Baby</li>-->
+<!--          <li>Oral Care</li>-->
+<!--          <li>Personal Care</li>-->
+<!--          <li>Sexual Health</li>-->
+<!--          <li>Skin Treatments</li>-->
+<!--          <li>Stop Smoking</li>-->
+<!--          <li>Travel & Holiday</li>-->
+<!--          <li>Womens Health</li>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; RIGHT COLUMN &ndash;&gt;-->
+<!--    <div class="w-1/4 p-6">-->
+<!--      <h3 class="font-semibold text-purple-700 mb-2">Brands</h3>-->
+<!--      <ul class="space-y-1 text-sm text-gray-700">-->
+<!--        <li>Aqua Oleum</li>-->
+<!--        <li>Benylin</li>-->
+<!--        <li>BioFreeze</li>-->
+<!--        <li>Brustan</li>-->
+<!--        <li>Deep Heat</li>-->
+<!--        <li>Deep Freeze</li>-->
+<!--        <li>Denk</li>-->
+<!--        <li>Efferalgan</li>-->
+<!--        <li>Gaviscon</li>-->
+<!--        <li>Imodium</li>-->
+<!--        <li>Nizoral</li>-->
+<!--        <li>Panadol</li>-->
+<!--        <li>Saru Organics</li>-->
+<!--        <li>Shea Moisture</li>-->
+<!--        <li>Sheth Naturals</li>-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--</a></li>-->
+<!--      <li class="cursor-pointer hover:scale-110 transition-transform"><a routerLink="about"-->
+<!--          class="hover:text-gray-600">About Us</a></li>-->
+<!--      <li class="cursor-pointer hover:scale-110 transition-transform"><a routerLink="contact"-->
+<!--          class="hover:text-gray-600">Contact Us</a></li>-->
+<!--      <li class="cursor-pointer hover:scale-110 transition-transform"><a routerLink="menu"-->
+<!--          class="hover:text-gray-600">Help</a></li>-->
+<!--    </ul>-->
+<!--  </div>-->
+
+<!--  <button class="cursor-pointer bg-blue-500 text-white rounded-md hover:scale-110 transition-transform px-3.5 py-2"-->
+<!--    [routerLink]='"prescriptions"'>Upload Prescription -->
+<!--  </button>-->
+
+<nav class="w-full bg-white border-b">
+  <div class="max-w-7xl mx-auto px-6 h-12 flex items-center justify-between">
+
+    <!-- Left Menu -->
+    <div class="flex items-center gap-8 text-sm font-medium text-gray-700">
+
+      <!-- Shop By Category -->
+      <div class="relative group cursor-pointer flex items-center gap-2" routerLink="unauthorized">
+        <div class="grid grid-cols-2 gap-0.5">
+          <span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
+          <span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
+          <span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
+          <span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
+        </div>
+        <span>Shop By Category</span>
+        <span class="text-xs">⌄</span>
+
+        <!-- Dropdown -->
+        <div class="absolute top-full left-0 mt-2 hidden group-hover:block bg-white shadow-lg rounded-lg w-56 p-3">
+          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Medicines</a>
+          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Supplements</a>
+          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Medical Devices</a>
+        </div>
       </div>
 
-      <div class="mt-8">
-        <ul class="space-y-1 text-sm text-gray-700">
-          <li>Hair Care</li>
-          <li>Masks & Sanitisers</li>
-          <li>Mens</li>
-          <li>Mum & Baby</li>
-          <li>Oral Care</li>
-          <li>Personal Care</li>
-          <li>Sexual Health</li>
-          <li>Skin Treatments</li>
-          <li>Stop Smoking</li>
-          <li>Travel & Holiday</li>
-          <li>Womens Health</li>
-        </ul>
+      <!-- Shop By Condition -->
+      <div class="relative group cursor-pointer flex items-center gap-1">
+        <span>Shop By Condition</span>
+        <span class="text-xs">⌄</span>
+
+        <div class="absolute top-full left-0 mt-2 hidden group-hover:block bg-white shadow-lg rounded-lg w-56 p-3">
+          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Diabetes</a>
+          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Blood Pressure</a>
+          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Allergy</a>
+        </div>
       </div>
+
+      <!-- Brands -->
+      <div class="relative group cursor-pointer flex items-center gap-1">
+        <span>Brands</span>
+        <span class="text-xs">⌄</span>
+
+        <div class="absolute top-full left-0 mt-2 hidden group-hover:block bg-white shadow-lg rounded-lg w-56 p-3">
+          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Pfizer</a>
+          <a class="block px-3 py-2 hover:bg-gray-100 rounded">GSK</a>
+          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Bayer</a>
+        </div>
+      </div>
+
+      <!-- Links with badges -->
+      <div class="relative">
+        <span>New Arrivals</span>
+        <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-white text-[10px] px-1.5 rounded">New</span>
+      </div>
+
+      <span class="hover:text-green-600 cursor-pointer">Trending</span>
+
+      <div class="relative">
+        <span>Offers</span>
+        <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-[10px] px-1.5 rounded">New</span>
+      </div>
+
+      <span class="hover:text-green-600 cursor-pointer">Best Sellers</span>
     </div>
 
-    <!-- RIGHT COLUMN -->
-    <div class="w-1/4 p-6">
-      <h3 class="font-semibold text-purple-700 mb-2">Brands</h3>
-      <ul class="space-y-1 text-sm text-gray-700">
-        <li>Aqua Oleum</li>
-        <li>Benylin</li>
-        <li>BioFreeze</li>
-        <li>Brustan</li>
-        <li>Deep Heat</li>
-        <li>Deep Freeze</li>
-        <li>Denk</li>
-        <li>Efferalgan</li>
-        <li>Gaviscon</li>
-        <li>Imodium</li>
-        <li>Nizoral</li>
-        <li>Panadol</li>
-        <li>Saru Organics</li>
-        <li>Shea Moisture</li>
-        <li>Sheth Naturals</li>
-      </ul>
-    </div>
-  </div>
-</div>
-</a></li>
-      <li class="cursor-pointer hover:scale-110 transition-transform"><a routerLink="about"
-          class="hover:text-gray-600">About Us</a></li>
-      <li class="cursor-pointer hover:scale-110 transition-transform"><a routerLink="contact"
-          class="hover:text-gray-600">Contact Us</a></li>
-      <li class="cursor-pointer hover:scale-110 transition-transform"><a routerLink="menu"
-          class="hover:text-gray-600">Help</a></li>
-    </ul>
-  </div>
+    <!-- Right Actions -->
+    <div class="flex items-center gap-4">
 
-  <button class="cursor-pointer bg-blue-500 text-white rounded-md hover:scale-110 transition-transform px-3.5 py-2"
-    [routerLink]='"prescriptions"'>Upload Prescription 
-  </button>
-</div>
+      <!-- Store Location -->
+      <button class="flex items-center gap-2 text-green-600 border border-green-600 px-3 py-1.5 rounded-full text-sm hover:bg-green-50 transition">
+        <lucide-icon [img]="icons.MapPin"></lucide-icon>
+        <span>Store Location</span>
+      </button>
+
+      <!-- Prescription Button -->
+      <button class="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded-full text-sm font-medium shadow" routerLink="prescriptions">
+        <lucide-icon [img]="icons.FilePlusCorner"></lucide-icon>
+        <span>Prescription</span>
+      </button>
+
+    </div>
+
+  </div>
+</nav>

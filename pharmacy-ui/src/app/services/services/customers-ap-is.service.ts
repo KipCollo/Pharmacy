@@ -19,15 +19,12 @@ import { existsById } from '../fn/customers-ap-is/exists-by-id';
 import { ExistsById$Params } from '../fn/customers-ap-is/exists-by-id';
 import { getAllCustomers } from '../fn/customers-ap-is/get-all-customers';
 import { GetAllCustomers$Params } from '../fn/customers-ap-is/get-all-customers';
-import { getAllCustomersReport } from '../fn/customers-ap-is/get-all-customers-report';
-import { GetAllCustomersReport$Params } from '../fn/customers-ap-is/get-all-customers-report';
 import { getCurrentCustomer } from '../fn/customers-ap-is/get-current-customer';
 import { GetCurrentCustomer$Params } from '../fn/customers-ap-is/get-current-customer';
 import { getCustomer } from '../fn/customers-ap-is/get-customer';
 import { GetCustomer$Params } from '../fn/customers-ap-is/get-customer';
 import { updateCustomer } from '../fn/customers-ap-is/update-customer';
 import { UpdateCustomer$Params } from '../fn/customers-ap-is/update-customer';
-import { UserReport } from '../models/user-report';
 import { UserResponse } from '../models/user-response';
 
 @Injectable({ providedIn: 'root' })
@@ -158,31 +155,6 @@ export class CustomersApIsService extends BaseService {
   deleteCustomer(params: DeleteCustomer$Params, context?: HttpContext): Observable<void> {
     return this.deleteCustomer$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
-    );
-  }
-
-  /** Path part for operation `getAllCustomersReport()` */
-  static readonly GetAllCustomersReportPath = '/api/customers/report';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getAllCustomersReport()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getAllCustomersReport$Response(params?: GetAllCustomersReport$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<UserReport>>> {
-    return getAllCustomersReport(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `getAllCustomersReport$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getAllCustomersReport(params?: GetAllCustomersReport$Params, context?: HttpContext): Observable<Array<UserReport>> {
-    return this.getAllCustomersReport$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Array<UserReport>>): Array<UserReport> => r.body)
     );
   }
 

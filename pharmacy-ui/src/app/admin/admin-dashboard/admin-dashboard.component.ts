@@ -9,9 +9,6 @@ import { BaseChartDirective } from "ng2-charts";
   selector: 'app-admin-panel',
   standalone: true,
   imports: [
-    RouterLink,
-    NgForOf,
-    SidebarComponent,
     BaseChartDirective,
     NgClass
   ],

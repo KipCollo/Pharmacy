@@ -13,6 +13,9 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { approvePrescription } from '../fn/prescription-controller/approve-prescription';
 import { ApprovePrescription$Params } from '../fn/prescription-controller/approve-prescription';
+import { getAllPrescriptions } from '../fn/prescription-controller/get-all-prescriptions';
+import { GetAllPrescriptions$Params } from '../fn/prescription-controller/get-all-prescriptions';
+import { PrescriptionResponse } from '../models/prescription-response';
 import { uploadPrescription } from '../fn/prescription-controller/upload-prescription';
 import { UploadPrescription$Params } from '../fn/prescription-controller/upload-prescription';
 
@@ -48,6 +51,31 @@ export class PrescriptionControllerService extends BaseService {
       map((r: StrictHttpResponse<{
 }>): {
 } => r.body)
+    );
+  }
+
+  /** Path part for operation `getAllPrescriptions()` */
+  static readonly GetAllPrescriptionsPath = '/api/prescriptions';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllPrescriptions()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllPrescriptions$Response(params?: GetAllPrescriptions$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PrescriptionResponse>>> {
+    return getAllPrescriptions(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllPrescriptions$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllPrescriptions(params?: GetAllPrescriptions$Params, context?: HttpContext): Observable<Array<PrescriptionResponse>> {
+    return this.getAllPrescriptions$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<PrescriptionResponse>>): Array<PrescriptionResponse> => r.body)
     );
   }
 

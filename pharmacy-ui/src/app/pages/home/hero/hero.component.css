@@ -1,0 +1,6 @@
+.back{
+   height: 45vh;
+   background: linear-gradient(rgba(0,0,0,0.5)), rgba(0, 0, 0, 0.4) url("../../../../../public/login.jpg") ;
+   background-attachment: fixed;
+   background-position: 50% 100%;
+}

@@ -11,7 +11,6 @@ import { AuthenticationApIsService } from '../../services/services/authenticatio
   selector: 'app-menu',
   standalone: true,
   imports: [
-    NgIf,
     ChatListComponent,
     ChatWindowComponent,
     SideChatComponent

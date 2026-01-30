@@ -9,7 +9,7 @@ import { MedicineComponent } from "../medicine/medicine.component";
 @Component({
   selector: 'app-admin-medicine',
   standalone: true,
-  imports: [CommonModule, FormsModule, MedicineComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-medicine.component.html',
   styleUrl: './admin-medicine.component.css'
 })
