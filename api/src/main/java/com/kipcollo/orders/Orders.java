@@ -37,7 +37,7 @@ public class Orders {
     @ManyToMany
     private List<Product> products;
     private LocalDateTime localDateTime;
-    @OneToMany(mappedBy = "orders")
+    @OneToMany(mappedBy = "order")
     private List<OrderLine> orderLines;
     private int prescriptionId;
     @CreatedDate

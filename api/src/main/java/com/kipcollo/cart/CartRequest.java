@@ -11,9 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartRequest {
-
-    private int id;
-    private int userId;
-    private List<Product> product;
+    private Integer userId;
+    private List<CartProduct> product;
     private boolean ordered;
 }

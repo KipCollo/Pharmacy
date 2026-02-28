@@ -29,4 +29,6 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
         //                 ORDER BY c.createdDate
         //                 """)
         // List<UserReport> findAllCustomers();
+        List<Users> findAllByCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+
 }

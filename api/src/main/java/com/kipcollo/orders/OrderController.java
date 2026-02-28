@@ -22,7 +22,7 @@ public class OrderController {
     }
 
     //create order from approved prescriptions
-    @PostMapping("/create")
+    @PostMapping("/prescription")
     public ResponseEntity<?> createPrescriptionOrder(@RequestParam int prescriptionId){
         Orders orders = processingService.createPrescriptionOrder(prescriptionId);
         return ResponseEntity.ok("Order created successfully at::" + orders.getCreatedAt());
@@ -44,6 +44,6 @@ public class OrderController {
 
     @GetMapping("{orderId}")
     public ResponseEntity<OrderResponse> findById(@PathVariable int orderId){
-        return ResponseEntity.ok(orderService.findBtId(orderId));
+        return ResponseEntity.ok(orderService.findById(orderId));
     }
 }

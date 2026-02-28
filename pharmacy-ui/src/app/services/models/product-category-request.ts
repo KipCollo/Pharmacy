@@ -4,6 +4,7 @@
 
 export interface ProductCategoryRequest {
   description?: string;
+  id?: number;
   image?: string;
   name?: string;
 }

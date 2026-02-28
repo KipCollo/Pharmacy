@@ -1,0 +1,52 @@
+<h2>Prescription Approval</h2>
+
+@if (loading){
+<div>Loading prescriptions...</div>
+}
+
+@for (prescription of prescriptions; track prescription.id){
+<div style="border:1px solid #ccc; padding:15px; margin-bottom:10px">
+
+  <p><strong>ID:</strong> {{prescription.id}}</p>
+  <p><strong>Status:</strong> {{prescription.status}}</p>
+  <p><strong>Uploaded:</strong> {{prescription.uploadedAt | date:'short'}}</p>
+
+  <img [src]="'data:image/jpeg;base64,' + prescription.image" width="250">
+
+  <!-- Product Selection -->
+  <div style="margin-top:10px">
+    <select [(ngModel)]="newProductId">
+      <option [ngValue]="null">Select Product</option>
+      @for (product of availableProducts; track  product.productId){
+      <option [ngValue]="product.productId">
+        {{product.name}} - Kes {{product.price}}
+      </option>
+      }
+    </select>
+
+    <input type="number" [(ngModel)]="newQuantity" min="1" style="width:60px">
+
+    <button (click)="addProduct()">Add</button>
+  </div>
+
+  <!-- Selected Products List -->
+  <ul>
+    @for (p of selectedProducts; track p.productId){
+    <li>
+      {{ getProductName(p.productId) }} x {{p.quantity}}
+      <button (click)="removeProduct(p.productId)">Remove</button>
+    </li>
+    }
+  </ul>
+
+  <button (click)="approve(prescription.id!)">
+<!--          [disabled]="selectedProducts.length === 0"-->
+    Approve Prescription
+  </button>
+
+  <button >
+    Reject Prescription
+  </button>
+
+</div>
+}

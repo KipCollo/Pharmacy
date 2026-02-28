@@ -1,34 +1,4 @@
 
-*{
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-body{
-  font-family:  'Nunito Sans', sans-serif;
-  line-height: 1.5;
-}
-.contact-bg{
-  height: 60vh;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url("../../../../public/login.jpg");
-  background-position: 50% 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  text-align: center;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.contact-bg h2{
-  font-size: 3rem;
-  text-transform: uppercase;
-  padding: 0.4rem 0;
-  letter-spacing: 4px;
-}
-
 .text{
   font-weight: 300;
   opacity: 0.9;
@@ -39,7 +9,7 @@ body{
 .contact-body{
   max-width: 1320px;
   margin: 0 auto;
-  padding: 0 1rem;
+  /*padding: 0 1rem;*/
 }
 .contact-info{
   margin: 2rem 0;

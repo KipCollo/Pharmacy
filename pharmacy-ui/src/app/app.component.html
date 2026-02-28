@@ -10,7 +10,9 @@
   }
 
   <!-- MAIN CONTENT -->
-  <main class="flex-1 pt-40">
+  <main
+      class="flex-1"
+      [class.pt-40]="!isAdminPage()">
     <router-outlet></router-outlet>
     <app-cart-modal></app-cart-modal>
   </main>

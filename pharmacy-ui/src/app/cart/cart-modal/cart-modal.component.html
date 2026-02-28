@@ -1,17 +1,17 @@
+@if (cart.isOpen()){
 <div
-  *ngIf="cart.isOpen()"
   class="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
 >
 
   <!-- Modal Box -->
-  <div class="bg-white w-[900px] max-w-full rounded-xl shadow-lg relative">
+  <div class="bg-white w-[1100px] max-w-full rounded-xl shadow-lg relative">
 
     <!-- Header -->
     <div class="flex justify-between items-center px-6 py-4 border-b">
       <h2 class="font-semibold text-green-600 flex items-center gap-2">
-        🛒 Review Your Order
+        <lucide-icon [img]="icons.ShoppingBasket"></lucide-icon> Review Your Order
         <span class="text-xs bg-green-100 text-green-600 px-2 rounded">
-          {{ cart.cartItems().length }} item
+          {{ cart.cart().length }} item
         </span>
       </h2>
       <button (click)="cart.closeCart()" class="text-gray-400 hover:text-gray-700">✕</button>
@@ -22,11 +22,12 @@
       <!-- Left: Cart Items -->
       <div class="col-span-2 space-y-4">
 
+        @for (items of cart.cart();track items.id){
+          @for (item of items.product; track item.productId){
         <div
-          *ngFor="let item of cart.cartItems()"
-          class="flex gap-4 items-center border rounded-lg p-3"
+          class="flex gap-4 mb-3 items-center border rounded-lg p-3"
         >
-          <img [src]="item.image" class="w-16 h-16 object-contain" />
+          <img [src]="'data:image/jpeg;base64,' + item.image" class="w-16 h-16 object-contain" />
 
           <div class="flex-1">
             <h3 class="text-sm font-medium">{{ item.name }}</h3>
@@ -38,13 +39,15 @@
           <!-- Qty -->
           <div class="flex items-center border rounded">
             <button class="px-2">-</button>
-            <span class="px-3">{{ item.qty }}</span>
+            <span class="px-3">{{ item.quantity }}</span>
             <button class="px-2">+</button>
           </div>
 
           <!-- Delete -->
-          <button class="text-red-500">🗑</button>
+          <button class="text-red-500 cursor-pointer" (click)="cart.removeItemFromCart(items.id!,item.productId!)"><lucide-icon [img]="icons.Trash2" class="h-5 w-5"></lucide-icon></button>
         </div>
+          }
+        }
 
       </div>
 
@@ -55,25 +58,15 @@
 
         <div class="flex justify-between text-sm">
           <span>Subtotal</span>
-          <span>Kes {{ cart.subtotal() | number }}</span>
+          <span>Kes {{ cart.getSubtotal() | number }}</span>
         </div>
 
-        <div class="flex justify-between text-sm text-green-600">
-          <span>Discounts</span>
-          <span>-Kes {{ cart.discount() | number }}</span>
-        </div>
-
-        <hr />
 
         <div class="flex justify-between font-semibold">
           <span>Order Amount</span>
-          <span>Kes {{ cart.total() | number }}</span>
+          <span>Kes {{ cart.getSubtotal() | number }}</span>
         </div>
 
-        <!-- Savings Banner -->
-        <div class="bg-yellow-50 border border-yellow-300 text-yellow-700 text-xs p-2 rounded">
-          💰 YOU'RE SAVING Kes {{ cart.discount() }}!
-        </div>
 
         <!-- Steps -->
         <div class="flex justify-between text-xs mt-3">
@@ -83,13 +76,13 @@
         </div>
 
         <!-- Buttons -->
-        <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg mt-3">
+        <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg mt-3" routerLink="checkout">
           Proceed to Checkout
         </button>
 
         <button
-          (click)="cart.closeCart()"
-          class="w-full border py-2 rounded-lg text-sm hover:bg-gray-50"
+          (click)="cart.closeCart() "
+          class="w-full border py-2 rounded-lg text-sm hover:bg-gray-50 cursor-pointer"
         >
           Continue Shopping
         </button>
@@ -98,3 +91,4 @@
     </div>
   </div>
 </div>
+}

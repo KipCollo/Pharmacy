@@ -21,9 +21,6 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderRequest {
 
-    private Orders order;
-
-    private int orderId;
     @NotBlank(message = "Customer Should be present")
     @NotNull(message = "Customer should be present")
     private String reference;

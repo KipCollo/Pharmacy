@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kipcollo.auth.Roles;
 import com.kipcollo.auth.Token;
+import com.kipcollo.cart.Cart;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -51,6 +52,8 @@ public class Users implements Principal,UserDetails{
    private String password;
    private String phone;
    private String location;
+   @OneToMany(mappedBy = "user")
+   private List<Cart> cart;
    private boolean accountLocked;
    private boolean enabled;
    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL, orphanRemoval = true)

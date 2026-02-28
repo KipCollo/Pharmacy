@@ -1,12 +1,11 @@
 package com.kipcollo.cart;
 
+import com.kipcollo.user.UserService;
+import com.kipcollo.user.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -15,10 +14,16 @@ import java.util.List;
 public class CartController {
 
     private final CartService cartService;
+    private final UserService userService;
 
-    @GetMapping("/add/")
-    public ResponseEntity<List<CartResponse>> getUserCart(SecurityContext securityContext) {
+    @GetMapping
+    public ResponseEntity<List<CartResponse>> getUserCart() {
         return ResponseEntity.ok(cartService.getCartByUser());
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CartResponse>> getAllCarts(){
+        return ResponseEntity.ok(cartService.getAllCarts());
     }
 
     @GetMapping("/status/{status}")
@@ -26,9 +31,15 @@ public class CartController {
         return ResponseEntity.ok(cartService.getCartsByStatus(status));
     }
 
+    @GetMapping("/{cartId}")
+    public ResponseEntity<CartResponse> getCartDetails(@PathVariable int cartId) {
+        return ResponseEntity.ok(cartService.getCartById(cartId));
+    }
+
     @PostMapping
     public ResponseEntity<CartResponse> addCart(@RequestBody CartRequest cartRequest) {
-        return ResponseEntity.ok(cartService.addToCart(cartRequest));
+        Users user = userService.getAuthenticatedUser();
+        return ResponseEntity.ok(cartService.addToCart(cartRequest, user));
     }
 
     @DeleteMapping("/{cartId}")
@@ -37,9 +48,17 @@ public class CartController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/checkout/{userId}")
-    public ResponseEntity<Void> placeOrder(@PathVariable int userId) {
-        cartService.placeOrder(userId);
+    @DeleteMapping("/{cartId}/product/{productId}")
+    public ResponseEntity<Void> removeProductFromCart(
+            @PathVariable int cartId,
+            @PathVariable int productId) {
+        cartService.removeProductFromCart(cartId, productId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/checkout/")
+    public ResponseEntity<Void> placeOrder() {
+        cartService.placeOrder();
         return ResponseEntity.ok().build();
     }
 }

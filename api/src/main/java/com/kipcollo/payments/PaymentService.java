@@ -10,8 +10,7 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
 
-    public int createPayment(PaymentRequest request){
+    public void process(PaymentRequest request){
         var payment = paymentRepository.save(paymentMapper.toPayment(request));
-        return payment.getPaymentId();
     }
 }

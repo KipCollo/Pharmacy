@@ -13,7 +13,6 @@ import com.kipcollo.user.UserResponse;
 @NoArgsConstructor
 public class PaymentRequest {
 
-    private int paymentId;
     private BigDecimal amount;
     private PaymentMethod paymentMethod;
     private int orderId;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
@@ -18,15 +18,12 @@ import {UserRequest} from "../../services/models/user-request";
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
+  private router = inject(Router);
+  private authService = inject(AuthenticationApIsService);
+
 
   customer: UserRequest ={firstName: '',lastName: '',email: '',password: ''}
   errorMsg: Array<string> =[]
-
-  constructor(private router: Router,
-              private authService: AuthenticationApIsService,
-             // private snackBar: MatSnackBar
-            ) {
-  }
 
   login() {
     this.router.navigate(['login']);

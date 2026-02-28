@@ -21,32 +21,14 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
+              "src/public",
               {
                 "glob": "**/*",
                 "input": "assets"
               }
             ],
             "styles": [
-              // No tilde needed
-@use '@angular/material' as mat;
-
-@include mat.core();
-
-// Define palettes
-$primary: mat.define-palette(mat.$indigo-palette);
-$accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-
-// Define theme
-$theme: mat.define-light-theme((
-  color: (
-    primary: $primary,
-    accent: $accent,
-  )
-));
-
-// Include all component themes
-@include mat.all-component-themes($theme);
-
+              "node_modules/leaflet/dist/leaflet.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -56,8 +38,8 @@ $theme: mat.define-light-theme((
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2MB",
+                  "maximumError": "2.5MB"
                 },
                 {
                   "type": "anyComponentStyle",

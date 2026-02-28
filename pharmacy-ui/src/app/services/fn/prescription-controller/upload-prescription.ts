@@ -10,27 +10,23 @@ import { RequestBuilder } from '../../request-builder';
 
 
 export interface UploadPrescription$Params {
-  email: string;
       body?: {
-'file': Blob;
+'image': Blob;
 }
 }
 
-export function uploadPrescription(http: HttpClient, rootUrl: string, params: UploadPrescription$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-}>> {
+export function uploadPrescription(http: HttpClient, rootUrl: string, params?: UploadPrescription$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, uploadPrescription.PATH, 'post');
   if (params) {
-    rb.query('email', params.email, {});
     rb.body(params.body, 'application/json');
   }
 
   return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
+    rb.build({ responseType: 'text', accept: '*/*', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<{
-      }>;
+      return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
     })
   );
 }

@@ -1,25 +1,103 @@
 <!-- Product Info -->
-<div class="product-card flex flex-col flex-1">
-  <h3 class="text-lg font-semibold mb-2 text-center">
+<div class="flex flex-col flex-1 transition hover:shadow-md  relative"
+     xmlns="http://www.w3.org/1999/html">
+
+      <!-- Tag -->
+  @if (medicine.newArrival || medicine.trending || medicine.discount) {
+  <span
+    class="absolute top-2 left-2 text-white text-xs px-2 py-0.5 rounded"
+    [ngClass]="{
+    'bg-blue-500': medicine.newArrival,
+    'bg-orange-500': medicine.trending,
+    'bg-red-500': medicine.discount
+  }"
+  >
+  {{ medicine.newArrival ? 'New'
+    : medicine.trending ? 'Trending'
+      : 'Special Offer' }}
+</span>
+  }
+
+
+  <!-- Discount -->
+  @if (type === 'special_offers'){
+      <span
+        class="absolute bottom-20 right-2 bg-red-100 text-red-600 text-xs px-2 py-1 rounded"
+      >
+          - {{ medicine.discount }} % OFF
+        </span>
+  }
+
+  <div class="flex">
+
+      <!-- Icons -->
+      <div class="absolute top-2 right-2 flex flex-col gap-2 text-green-600">
+        <button class="hover:text-red-500"><lucide-icon [img]="icons.Heart" class="h-5 w-5"></lucide-icon></button>
+        <button class="hover:text-green-800"><lucide-icon [img]="icons.Share2" class="h-5 w-5"></lucide-icon></button>
+      </div>
+
+  <div class="w-full h-36 flex items-center justify-center overflow-hidden rounded-md mb-4">
+    <img [src]="'data:image/jpeg;base64,' + medicine.image" alt="{{ medicine.name }}"
+          class="w-full h-36 object-contain mb-3"/>
+  </div>
+  </div>
+
+
+  <h3 class="text-sm font-semibold mb-1 text-gray-800 line-clamp-2">
     {{ medicine.name }}
   </h3>
-
-  <div class="w-full h-48 flex items-center justify-center overflow-hidden rounded-md mb-4">
-    <img [src]="'data:image/jpeg;base64,' + medicine.image" alt="{{ medicine.name }}"
-         class="object-cover max-h-48 max-w-full" />
-  </div>
 
   <div class="flex justify-between items-center mb-2">
       <span class="text-sm text-gray-600">
          Availability: {{ medicine.stockQuantity }}
       </span>
-    <span class="text-base font-bold text-green-600">
-         KES {{ medicine.price }}
+    <span class="text-sm font-semibold text-gray-600">
+         KES {{ medicine.price | number:'1.2-2' }}
       </span>
   </div>
 
   <p class="text-sm text-gray-700 flex-1">
-    {{ (medicine.description || '') | slice: 0:120 }}
-    {{ (medicine.description?.length || 0) > 100 ? '...' : '' }}
+    {{ (medicine.description || '') | slice: 0:50 }}
+    {{ (medicine.description?.length || 0) > 50 ? '...' : '' }}
   </p>
+
+      <!-- Price -->
+  @if (type === "special_offers"){
+    <div class="flex justify-between">
+      <span class="text-sm font-semibold text-gray-900">
+        Kes. {{ medicine.price | number:'1.2-2' }}
+      </span>
+        <span class="text-gray-400 line-through ml-4 text-xs">
+            Kes. {{ medicine.originalPrice | number:'1.2-2' }}
+          </span>
+    </div>
+  }
+
+      <!-- Buttons -->
+      <div class="flex gap-2 mt-3">
+        <button
+          type="button"
+          class="flex flex-row items-center justify-center gap-3 flex-1 text-white text-xs rounded-lg
+         cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
+          [class.bg-gray-400]="isInCart(medicine.productId!)"
+          [class.bg-green-600]="!isInCart(medicine.productId!)"
+          [class.hover:bg-green-700]="!isInCart(medicine.productId!)"
+          (click)="cartStore.addToCart(medicine.productId!)"
+          [disabled]="isInCart(medicine.productId!)"
+        >
+
+  <span>
+    {{ isInCart(medicine.productId!) ? 'Already in Cart' : 'Add' }}
+  </span>
+
+          <lucide-icon [img]="icons.ShoppingCart" class="h-5 w-5"></lucide-icon>
+        </button>
+        <button
+          class="flex-1 border text-xs py-2 rounded-lg cursor-pointer hover:bg-gray-50"
+          (click)="viewDetails(medicine)"
+        >
+          View Details
+        </button>
+      </div>
 </div>
+

@@ -1,3 +1,30 @@
+<nav class="flex items-center text-sm text-gray-500 mb-6">
+
+  <!-- Home -->
+  <button
+    (click)="goHome()"
+    class="flex items-center hover:text-red-500 cursor-pointer">
+    <lucide-icon [img]="icons.House"></lucide-icon>
+  </button>
+
+  <span class="mx-2">></span>
+
+  <!-- Products -->
+  <button
+    (click)="goProducts()"
+    class="hover:text-red-500 cursor-pointer">
+    Products
+  </button>
+
+  <span class="mx-2">></span>
+  <!-- Active Category -->
+  <span class="text-black font-semibold">
+    {{ activeProduct()?.name }}
+  </span>
+
+</nav>
+
+
 <!-- Outer wrapper: centers everything horizontally -->
 <div class="flex justify-center w-full p-4">
   <!-- Inner container: restrict width and align items -->
@@ -8,13 +35,13 @@
       <img
         [src]="'data:image/jpeg;base64,' + medicine.image"
         alt="{{ medicine.name }}"
-        class="w-80 h-auto object-cover rounded-md shadow-lg"
+        class="w-80 h-auto object-cover rounded-lg shadow-lg"
       />
     </div>
 
     <!-- Product Details -->
     <div class="w-full sm:w-1/2">
-      <h1 class="text-3xl font-bold mb-2 text-center sm:text-left">
+      <h1 class="text-xl font-bold mb-2 text-center sm:text-left">
         <span>{{ medicine.name }}</span>
       </h1>
 
@@ -29,7 +56,6 @@
                 [ngClass]="isExpired() ? 'text-red-600 font-semibold' : 'text-green-600'">
             {{ medicine.expiryDate | date }}
           </span>
-        
         </p>
 
         <p>

@@ -1,12 +1,16 @@
 package com.kipcollo.user;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -103,5 +107,53 @@ public class UserService implements UserDetailsService{
     //     }
     //     return repo.findCustomersBetweenDates(startDate, endDate);
     // }
+
+    public Users getAuthenticatedUser() {
+
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("Unauthenticated request");
+        }
+
+        Object principal = authentication.getPrincipal();
+
+        String username;
+
+        if (principal instanceof UserDetails userDetails) {
+            username = userDetails.getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+        return repo.findByEmail(username)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found: " + username)
+                );
+    }
+
+
+    public CustomerDashboardResponse getCustomerDashboardMetrics() {
+        List<Users> allUsers = repo.findAll();
+
+        long totalCustomers = allUsers.size();
+        long activeCustomers = allUsers.stream().filter(u -> !u.getCart().isEmpty()).count();
+        long inactiveCustomers = totalCustomers - activeCustomers;
+
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime startDate = today.minusDays(7); // 7-day trend
+        List<DailyNewCustomer> trend = repo.findAllByCreatedDateBetween(startDate, today)
+                .stream()
+                .collect(Collectors.groupingBy(Users::getCreatedDate, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .map(e -> new DailyNewCustomer(e.getKey(), e.getValue()))
+                .sorted(Comparator.comparing(DailyNewCustomer::getDate))
+                .toList();
+
+        return new CustomerDashboardResponse(totalCustomers, activeCustomers, inactiveCustomers, trend);
+    }
 
 }

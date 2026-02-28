@@ -147,17 +147,19 @@
       <!-- Compare -->
       <div class="relative group">
       <div class="flex flex-col items-center text-gray-600 hover:text-green-600 cursor-pointer">
-        <lucide-icon [img]="icons.ChartNoAxesColumn" class="w-6 h-6 text-green-600"></lucide-icon>
-        <span class="text-xs">Compare</span>
+        <lucide-icon [img]="icons.Info" class="w-6 h-6 text-green-600"></lucide-icon>
+        <span class="text-xs">Info</span>
       </div>
 
-      <div
+        <div
         class="absolute right-0 mt-2 w-64 bg-white border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50"
       >
-        <h3 class="text-red-500 font-semibold">Compare(0/4)</h3>
-        <lucide-icon [img]="icons.ChartNoAxesColumn" class="w-6 h-6 text-green-600"></lucide-icon>
-        <p>No items to compare</p>
-        <a>Browse Products</a>
+      <div
+        class="flex flex-col"
+      >
+        <button class="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-lg" routerLink="contact">Contact Us</button>
+        <button class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm py-2 rounded-lg" routerLink="about">About Us</button>
+      </div>
       </div>
       </div>
 
@@ -182,12 +184,12 @@
       <div class="relative flex flex-col items-center text-gray-600 hover:text-green-600 cursor-pointer" routerLink="cart">
         <lucide-icon [img]="icons.ShoppingCart" class="w-6 h-6 text-green-600"></lucide-icon>
         <span class="text-xs">Cart</span>
-        <span class="absolute -top-1 -right-2 bg-red-500 text-white text-xs px-1.5 rounded-full">2</span>
+        <span class="absolute -top-1 -right-2 bg-red-500 text-white text-xs px-1.5 rounded-full">{{cartStore.getCartCount()}}</span>
       </div>
       <div
         class="absolute right-0 mt-2 w-64 bg-white border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50"
       >
-        <h3 class="text-red-500 font-semibold">Cart(0)</h3>
+        <h3 class="text-red-500 font-semibold">Cart({{cartStore.getCartCount()}})</h3>
         <lucide-icon [img]="icons.Heart" class="w-6 h-6 text-gay-300"></lucide-icon>
         <p>Your Wishlist is empty</p>
         <a>Explore Products</a>

@@ -13,8 +13,8 @@ import java.util.List;
 public class CartResponse {
 
     private int id;
-    private int userId;
-    private List<Product> product;
+    private Integer userId;
+    private List<CartProductResponse> product;
     private boolean ordered;
     private CartStatus status;
 }

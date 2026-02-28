@@ -36,7 +36,7 @@ public class ProductController {
                                                  @RequestParam("image") MultipartFile image) throws IOException {
         // Convert image to Blob (byte array) before passing to service
         byte[] imageBytes = image.getBytes();
-        medicine.setImage(imageBytes);  // Assuming ProductRequest has a setImage method
+        medicine.setImage(imageBytes);
         return ResponseEntity.ok(service.createMedicine(medicine));
     }
 
@@ -63,4 +63,36 @@ public class ProductController {
         service.updateMedicine(medicine);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<ProductResponse>> getProductsByCategory(
+            @PathVariable Integer categoryId
+    ) {
+        return ResponseEntity.ok(
+                service.getProductsByCategory(categoryId)
+        );
+    }
+
+    @GetMapping("/trending")
+    public ResponseEntity<List<ProductResponse>> getTrendingProducts() {
+        return ResponseEntity.ok(service.getTrendingProducts());
+    }
+
+    @GetMapping("/offers")
+    public ResponseEntity<List<ProductResponse>> getSpecialOffers() {
+        return ResponseEntity.ok(service.getSpecialOffers());
+    }
+
+    @GetMapping("/condition/{conditionId}")
+    public ResponseEntity<List<ProductResponse>> getProductsByCondition(
+            @PathVariable int conditionId
+    ) {
+        return ResponseEntity.ok(service.getProductsByCondition(conditionId));
+    }
+
+    @GetMapping("/new-arrivals")
+    public ResponseEntity<List<ProductResponse>> getNewArrivals() {
+        return ResponseEntity.ok(service.getNewArrivals());
+    }
+
 }

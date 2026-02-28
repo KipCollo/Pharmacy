@@ -3,12 +3,12 @@
 <div *ngIf="prescriptions.length === 0" class="text-gray-500">No prescriptions uploaded yet.</div>
 
 <div *ngFor="let prescription of prescriptions" class="border p-4 rounded-lg mb-3 flex items-center">
-  <img [src]="prescription.imageUrl" class="w-20 h-20 rounded-md mr-4" alt="Prescription Image">
+  <img [src]="'data:image/jpeg;base64,' + prescription.image"  class="w-20 h-20 rounded-md mr-4" alt="Prescription Image">
   <span class="font-medium">Status:
       <span [ngClass]="{
-        'text-yellow-500': prescription.status === 'Pending',
-        'text-green-500': prescription.status === 'Approved',
-        'text-red-500': prescription.status === 'Rejected'
+        'text-yellow-500': prescription.status === 'PENDING',
+        'text-green-500': prescription.status === 'APPROVED',
+        'text-red-500': prescription.status === 'REJECTED'
       }">
         {{ prescription.status }}
       </span>

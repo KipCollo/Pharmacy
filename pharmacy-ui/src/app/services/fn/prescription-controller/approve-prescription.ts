@@ -8,9 +8,11 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { PrescriptionItemRequest } from '../../models/prescription-item-request';
 
 export interface ApprovePrescription$Params {
   id: number;
+      body?: Array<PrescriptionItemRequest>
 }
 
 export function approvePrescription(http: HttpClient, rootUrl: string, params: ApprovePrescription$Params, context?: HttpContext): Observable<StrictHttpResponse<{
@@ -18,6 +20,7 @@ export function approvePrescription(http: HttpClient, rootUrl: string, params: A
   const rb = new RequestBuilder(rootUrl, approvePrescription.PATH, 'put');
   if (params) {
     rb.path('id', params.id, {});
+    rb.body(params.body, 'application/json');
   }
 
   return http.request(

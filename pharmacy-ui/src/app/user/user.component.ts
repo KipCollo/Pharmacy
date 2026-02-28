@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import { AfterViewInit, Component, OnInit, inject } from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {UserResponse} from "../services/models/user-response";
@@ -16,6 +16,9 @@ import {TokenService} from "../services/token/token.service";
   styleUrl: './user.component.css'
 })
 export class UserComponent implements OnInit{
+  private router = inject(Router);
+  private customerService = inject(CustomersApIsService);
+
   user: UserResponse = {};
 
   orders = [
@@ -23,11 +26,6 @@ export class UserComponent implements OnInit{
     { name: 'Order 2', status: 'Shipped' },
     { name: 'Order 3', status: 'Delivered' },
   ];
-
-  constructor( private router: Router,
-               private customerService:CustomersApIsService,
-               ) {
-  }
 
   ngOnInit() {
     this.getUserData();

@@ -1,9 +1,6 @@
 package com.kipcollo.products;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,11 +8,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProductCategoryResponse {
 
     private Integer id;
     private String name;
     private String description;
     private byte[] image;
-    private List<Product> products;
+    private List<ProductResponse> products;
 }

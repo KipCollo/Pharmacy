@@ -10,13 +10,11 @@ import { RequestBuilder } from '../../request-builder';
 
 
 export interface PlaceOrder$Params {
-  userId: number;
 }
 
-export function placeOrder(http: HttpClient, rootUrl: string, params: PlaceOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+export function placeOrder(http: HttpClient, rootUrl: string, params?: PlaceOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, placeOrder.PATH, 'post');
   if (params) {
-    rb.path('userId', params.userId, {});
   }
 
   return http.request(
@@ -29,4 +27,4 @@ export function placeOrder(http: HttpClient, rootUrl: string, params: PlaceOrder
   );
 }
 
-placeOrder.PATH = '/api/cart/checkout/{userId}';
+placeOrder.PATH = '/api/cart/checkout/';

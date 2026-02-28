@@ -1,11 +1,8 @@
-import { Component } from '@angular/core'
+import { Component, OnInit, inject } from '@angular/core'
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
-
-class Prescription {
-  status: string | undefined;
-  imageUrl: any;
-}
+import {PrescriptionResponse} from "../../services/models/prescription-response";
+import {PrescriptionControllerService} from "../../services/services/prescription-controller.service";
 
 @Component({
   selector: 'app-prescription-approval',
@@ -18,22 +15,32 @@ class Prescription {
   templateUrl: './prescription-approval.html',
   styleUrl: './prescription-approval.css'
 })
-export class PrescriptionApprovalComponent {
+export class PrescriptionApprovalComponent implements OnInit{
+  private prescriptionService = inject(PrescriptionControllerService);
 
-  selectedFile: File | null = null;
-  prescriptions: Prescription[] = [];
 
-  constructor(private http: HttpClient) {}
+  prescription: PrescriptionResponse = {};
+  prescriptions: PrescriptionResponse[] =[]
 
   ngOnInit() {
+    this.loadLatestPrescriptions();
     this.loadPrescriptions();
   }
 
-  loadPrescriptions() {
-    this.http.get<Prescription[]>('/api/prescriptions').subscribe({
-      next: (data) => (this.prescriptions = data),
-      error: (err) => console.error('Error loading prescriptions:', err)
-    });
+  loadLatestPrescriptions() {
+    this.prescriptionService.getLatestApprovedPrescription().subscribe({
+      next: (prescription) => {
+        this.prescription = prescription
+      }
+    })
+  }
+
+  loadPrescriptions(){
+    this.prescriptionService.getUserPrescriptions().subscribe({
+      next: (prescriptions) => {
+        this.prescriptions = prescriptions
+      }
+    })
   }
 
 }

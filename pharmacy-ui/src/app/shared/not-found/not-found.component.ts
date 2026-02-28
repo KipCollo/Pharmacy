@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 
 @Component({
@@ -11,11 +11,8 @@ import {Router, RouterLink} from "@angular/router";
   styleUrl: './not-found.component.css'
 })
 export class NotFoundComponent {
+  private router = inject(Router);
 
-  constructor(
-    private router: Router
-  ) {
-  }
 
   goHome() {
     this.router.navigate(['home'])

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Router} from "@angular/router";
 
 import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
@@ -16,6 +16,9 @@ import { MedicineApIsService } from '../../services/services';
   styleUrl: './medicine.component.css'
 })
 export class MedicineComponent{
+  private productService = inject(MedicineApIsService);
+  private router = inject(Router);
+
 
   errorMsg: Array<string> =[]
 
@@ -30,8 +33,6 @@ export class MedicineComponent{
   };
 
   selectedFile: File | null = null;
-
-  constructor(private productService: MedicineApIsService, private router: Router) {}
 
   // Handle file selection
   onFileSelected(event: any) {

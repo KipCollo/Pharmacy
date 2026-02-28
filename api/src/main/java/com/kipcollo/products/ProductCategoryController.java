@@ -1,5 +1,6 @@
 package com.kipcollo.products;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,17 @@ public class ProductCategoryController {
         byte[] imageBytes = image.getBytes();
         productCategoryRequest.setImage(imageBytes);
         return ResponseEntity.ok(productCategoryService.createProductCategory(productCategoryRequest));
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> updateProductCategory(@RequestPart("category") @Valid ProductCategoryRequest categoryRequest,
+                                               @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+        if (image != null) {
+            byte[] imageBytes = image.getBytes();
+            categoryRequest.setImage(imageBytes);
+        }
+        productCategoryService.updateProductCategory(categoryRequest);
+        return ResponseEntity.ok().build();
     }
 
 }

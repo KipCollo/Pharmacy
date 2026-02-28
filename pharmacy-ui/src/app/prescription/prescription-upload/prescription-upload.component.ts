@@ -1,30 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
-
-class Prescription {
-  status: string | undefined;
-  imageUrl: any;
-}
+import {PrescriptionControllerService} from "../../services/services/prescription-controller.service";
 
 @Component({
   selector: 'app-prescription-upload',
   standalone: true,
-  imports: [
-    NgClass,
-    NgForOf,
-    NgIf
-  ],
+  imports: [],
   templateUrl: './prescription-upload.component.html',
   styleUrl: './prescription-upload.component.css'
 })
 export class PrescriptionUploadComponent {
-  selectedFile: File | null = null;
-  prescriptions: Prescription[] = [];
+  private prescriptionService = inject(PrescriptionControllerService);
+  private router = inject(Router);
 
-  constructor(private http: HttpClient,
-              private router: Router) {}
+  selectedFile: File | null = null;
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
@@ -35,17 +26,19 @@ export class PrescriptionUploadComponent {
       alert('Please select a file');
       return;
     }
-
     const formData = new FormData();
-    formData.append('file', this.selectedFile);
+    formData.append('image', this.selectedFile);
 
-    this.http.post('/api/prescriptions/upload', formData).subscribe({
+
+    this.prescriptionService.uploadPrescription({body: formData as any}).subscribe({
       next: () => {
-        alert('Prescription uploaded successfully');
+        alert('Prescription uploaded successfully')
         this.router.navigate(['prescription-approval'])
       },
       error: (err) => alert('Upload failed: ' + err.message)
-    });
+    })
+
+
   }
 
 

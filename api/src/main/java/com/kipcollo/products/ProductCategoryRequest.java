@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductCategoryRequest {
 
+    private Integer id;
     private String name;
     private String description;
     private byte[] image;

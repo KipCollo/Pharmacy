@@ -1,60 +1,70 @@
-<aside class="h-screen bg-gray-900 text-gray-300 flex flex-col transition-all duration-300"
+<aside
+  class="h-screen bg-gray-900 text-gray-300 flex flex-col transition-all duration-300"
   [ngClass]="collapsed() ? 'w-20' : 'w-64'">
 
   <!-- TOP -->
   <div class="flex items-center justify-between px-4 py-4">
     <div class="flex items-center gap-2 text-white font-semibold">
       <span class="text-xl">✕</span>
-      @if(!collapsed()) {<span>KipCollo</span>}
+      @if(!collapsed()) { <span>KipCollo</span> }
     </div>
 
-    <!-- Collapse button -->
     <button (click)="toggle()" class="text-gray-400 hover:text-white">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg>
+      ◀
     </button>
   </div>
-
-  <!-- SEARCH -->
-  @if (!collapsed()) {
-  <div class="px-3 mb-3">
-    <div class="relative">
-      <input type="text" placeholder="Search"
-        class="w-full bg-gray-800 text-sm rounded pl-9 pr-3 py-2 focus:outline-none" />
-      <svg class="w-4 h-4 absolute left-3 top-2.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M21 21l-4.35-4.35M16.65 10.5a6.15 6.15 0 11-12.3 0 6.15 6.15 0 0112.3 0z" />
-      </svg>
-    </div>
-  </div>
-  }
 
   <!-- NAV -->
   <nav class="flex-1 px-2 space-y-2">
 
     @for (group of menuItems; track $index) {
-    @for (item of group.items; track $index) {
-    <a class="nav-item" [routerLink]="item.route" routerLinkActive="active">
-      <svg class="icon" viewBox="0 0 24 24">
-        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          [attr.d]="getIconPath(item.icon)" />
-      </svg>
+      @for (item of group.items; track $index) {
 
-      @if (!collapsed()) {<span>{{ item.label }}</span>}
-      @if (item.badge && !collapsed()) {
-      <span class="badge ml-auto"> {{ item.badge }} </span>
+        <!-- Parent Item -->
+        <div
+          class="flex items-center gap-3 p-3 rounded cursor-pointer hover:bg-gray-800 transition"
+          (click)="handleItemClick(item)">
+
+          <lucide-icon [img]="item.icon" class="w-5 h-5"></lucide-icon>
+
+          @if (!collapsed()) { <span class="flex-1">{{ item.label }}</span> }
+
+          <!-- Badge -->
+          @if (item.badge && !collapsed()) {
+            <span
+                  class="text-xs px-2 py-0.5 rounded-full bg-red-600">
+              {{ item.badge }}
+            </span>
+          }
+
+          <!-- Arrow -->
+          @if (item.children && !collapsed()) {
+            <span class="transition-transform duration-200" [ngClass]="{'rotate-90': item.isOpen}">
+              ▶
+            </span>
+          }
+        </div>
+
+        <!-- Children -->
+        @if (item.children && item.isOpen && !collapsed()) {
+          <div class="ml-8 mt-1 space-y-1">
+            @for (child of item.children; track $index) {
+              <a [routerLink]="child.route"
+                 routerLinkActive="bg-gray-800 text-white"
+                 class="block p-2 rounded hover:bg-gray-800 transition">
+                {{ child.label }}
+              </a>
+            }
+          </div>
+        }
+
       }
-    </a>
-    }
 
-    <!-- divider between sections -->
-    <div class="border-t border-gray-800 my-2"></div>
+      <div class="border-t border-gray-800 my-2"></div>
 
     }
 
   </nav>
-
 
   <!-- FOOTER -->
   <div class="border-t border-gray-800 px-4 py-4 flex items-center gap-3">
@@ -63,14 +73,11 @@
     </div>
 
     @if (!collapsed()) {
-    <div class="flex-1 text-sm">
-      <p class="text-white font-medium">{{currentUser.firstName}} {{currentUser.lastName}}</p>
-      <p class="text-green-600 font-small">{{currentUser.email}}</p>
-      @for (role of currentUser.roles; track $index) { <p class="text-gray-500 text-xs">{{role.name}}</p>}
-    </div>
-  }
-
-    <button class="text-gray-400 hover:text-white">⋮</button>
+      <div class="flex-1 text-sm">
+        <p class="text-white font-medium">{{ currentUser.firstName }} {{ currentUser.lastName }}</p>
+        <p class="text-green-600 text-xs">{{ currentUser.email }}</p>
+      </div>
+    }
   </div>
 
 </aside>

@@ -1,5 +1,6 @@
 package com.kipcollo.products;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,5 +27,27 @@ public class ProductCategoryService {
     public String createProductCategory(ProductCategoryRequest productCategoryRequest) {
         var productCategory = productCategoryRepository.save(mapper.toProductCategory(productCategoryRequest));
         return "Category Created with ID" + productCategory.getId();
+    }
+
+    @Transactional
+    public void updateProductCategory(ProductCategoryRequest request) {
+        var category = productCategoryRepository.findById(request.getId())
+                .orElseThrow(() -> new RuntimeException("Medicine not found"));
+        mergeMedicine(category,request);
+    }
+
+    private void mergeMedicine(ProductCategory category, ProductCategoryRequest request) {
+        if (request.getName() != null && !request.getName().isBlank()) {
+            category.setName(request.getName());
+        }
+
+        if (request.getDescription() != null && !request.getDescription().isBlank()) {
+            category.setDescription(request.getDescription());
+        }
+
+        if (request.getImage() != null) {
+            category.setImage(request.getImage());
+        }
+
     }
 }

@@ -1,5 +1,7 @@
 package com.kipcollo.orders;
 
+import com.kipcollo.cart.CartProductResponse;
+import com.kipcollo.products.PurchaseProductRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,5 +28,12 @@ public class OrderMapper {
                 order.getCreatedAt(),
                 order.getLastModifiedDate()
         );
+    }
+    public PurchaseProductRequest fromCart(CartProductResponse products){
+        return PurchaseProductRequest
+                .builder()
+                .productId(products.getProductId())
+                .quantity(products.getQuantity())
+                .build();
     }
 }

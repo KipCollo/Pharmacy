@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {RouterLink} from "@angular/router";
 
 import {ChatListComponent} from "../chat-list/chat-list.component";
@@ -19,10 +19,8 @@ import { AuthenticationApIsService } from '../../services/services/authenticatio
   styleUrl: './menu.component.css'
 })
 export class MenuComponent implements OnInit{
+  private authService = inject(AuthenticationApIsService);
 
-  constructor(
-   private authService: AuthenticationApIsService
-  ){ }
   logout() {
     const linkColor = document.querySelectorAll("nav-link");
     linkColor.forEach(link => {

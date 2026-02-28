@@ -1,0 +1,47 @@
+<section class="max-w-8xl mx-auto px-6 py-10">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-semibold">Special Offers</h2>
+
+
+    <div class="flex gap-2">
+      <button
+        (click)="scroll(scrollRef, -1)"
+        class="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-green-50"
+      >
+        ◀
+      </button>
+      <button
+        (click)="scroll(scrollRef, 1)"
+        class="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-green-50"
+      >
+        ▶
+      </button>
+    </div>
+  </div>
+
+  <!-- Products Slider -->
+  <div
+    #scrollRef
+    class="flex gap-5 overflow-x-auto scroll-smooth no-scrollbar pb-2"
+  >
+
+    @for (medicine of topOffers(); track medicine.productId){
+    <app-product-card
+      type="special_offers"
+      [medicine]="medicine"
+    >
+    </app-product-card>
+    }
+
+  </div>
+
+    <!-- View All -->
+    <div class="text-right mt-4">
+      <a class="text-green-600 text-sm hover:underline cursor-pointer" routerLink="/offers">
+        View All Special Offers →
+      </a>
+    </div>
+
+</section>

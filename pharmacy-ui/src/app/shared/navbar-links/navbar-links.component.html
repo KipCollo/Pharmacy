@@ -123,7 +123,7 @@
     <div class="flex items-center gap-8 text-sm font-medium text-gray-700">
 
       <!-- Shop By Category -->
-      <div class="relative group cursor-pointer flex items-center gap-2" routerLink="unauthorized">
+      <div class="relative group cursor-pointer flex items-center gap-2" routerLink="products">
         <div class="grid grid-cols-2 gap-0.5">
           <span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
           <span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
@@ -135,9 +135,10 @@
 
         <!-- Dropdown -->
         <div class="absolute top-full left-0 mt-2 hidden group-hover:block bg-white shadow-lg rounded-lg w-56 p-3">
-          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Medicines</a>
-          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Supplements</a>
-          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Medical Devices</a>
+          @for (category of productCategory; track category.id) {
+            <a class="block px-3 py-2 hover:bg-gray-100 rounded">{{category.name}}</a>
+          }
+
         </div>
       </div>
 
@@ -147,23 +148,12 @@
         <span class="text-xs">⌄</span>
 
         <div class="absolute top-full left-0 mt-2 hidden group-hover:block bg-white shadow-lg rounded-lg w-56 p-3">
-          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Diabetes</a>
-          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Blood Pressure</a>
-          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Allergy</a>
+          @for (condition of condition; track condition.id){
+          <a class="block px-3 py-2 hover:bg-gray-100 rounded">{{ condition.name }}</a>
+          }
         </div>
       </div>
 
-      <!-- Brands -->
-      <div class="relative group cursor-pointer flex items-center gap-1">
-        <span>Brands</span>
-        <span class="text-xs">⌄</span>
-
-        <div class="absolute top-full left-0 mt-2 hidden group-hover:block bg-white shadow-lg rounded-lg w-56 p-3">
-          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Pfizer</a>
-          <a class="block px-3 py-2 hover:bg-gray-100 rounded">GSK</a>
-          <a class="block px-3 py-2 hover:bg-gray-100 rounded">Bayer</a>
-        </div>
-      </div>
 
       <!-- Links with badges -->
       <div class="relative">
@@ -171,7 +161,7 @@
         <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-white text-[10px] px-1.5 rounded">New</span>
       </div>
 
-      <span class="hover:text-green-600 cursor-pointer">Trending</span>
+      <span class="hover:text-green-600 cursor-pointer" routerLink="/trending">Trending</span>
 
       <div class="relative">
         <span>Offers</span>
@@ -185,7 +175,8 @@
     <div class="flex items-center gap-4">
 
       <!-- Store Location -->
-      <button class="flex items-center gap-2 text-green-600 border border-green-600 px-3 py-1.5 rounded-full text-sm hover:bg-green-50 transition">
+      <button class="flex items-center gap-2 text-green-600 border border-green-600 px-3 py-1.5 rounded-full text-sm hover:bg-green-50 transition"
+      routerLink="map">
         <lucide-icon [img]="icons.MapPin"></lucide-icon>
         <span>Store Location</span>
       </button>

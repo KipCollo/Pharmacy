@@ -1,6 +1,5 @@
 package com.kipcollo.products;
 
-//import com.kipcollo.model.Suppliers;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,16 +43,25 @@ public class Product {
    @Column(nullable = false)
    private BigDecimal price;
    @ManyToOne
-   @JoinColumn(name = "categoryId")
+   @JoinColumn(name = "category")
    private ProductCategory category;
-//   @ManyToOne
-//   @JoinColumn(name = "supplierId")
-//   private Suppliers suppliers;
+   @ManyToMany
+   @JoinTable(
+        name = "product_condition",
+        joinColumns = @JoinColumn(name = "product_id"),
+        inverseJoinColumns = @JoinColumn(name = "condition_id")
+   )
+   private Set<HealthCondition> conditions;
    @Column(updatable = false,nullable = false)
    @CreatedDate
    private LocalDateTime createdDate;
    @LastModifiedDate
    @Column(insertable = false)
    private LocalDateTime lastModifiedDate;
+
+   private Long viewCount;
+   private Long soldCount;
+   @Column(nullable = true)
+   private boolean active;
 
 }

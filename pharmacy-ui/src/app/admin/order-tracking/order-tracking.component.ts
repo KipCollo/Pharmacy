@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 
@@ -14,10 +14,10 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
   styleUrl: './order-tracking.component.css'
 })
 export class OrderTrackingComponent {
+  private http = inject(HttpClient);
+
 
   orders: any[] = [1,2];
-
-  constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.loadOrders();

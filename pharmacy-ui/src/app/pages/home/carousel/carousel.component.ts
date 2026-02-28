@@ -1,10 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { NgForOf, NgOptimizedImage } from "@angular/common";
+import { AfterViewInit, Component, OnInit, inject } from '@angular/core';
 import Swiper from "swiper";
 import { Autoplay } from 'swiper/modules';
 
 import { RouterLink } from "@angular/router";
-import { PageResponseProductResponse } from '../../../services/models/page-response-product-response';
 import {ProductCategoryControllerService} from "../../../services/services/product-category-controller.service";
 import {ProductCategoryResponse} from "../../../services/models/product-category-response";
 
@@ -18,12 +16,9 @@ import {ProductCategoryResponse} from "../../../services/models/product-category
   styleUrl: './carousel.component.css'
 })
 export class CarouselComponent implements AfterViewInit, OnInit {
-  productCategory: Array<ProductCategoryResponse> =[]
+  private medicineCategory = inject(ProductCategoryControllerService);
 
-  constructor(
-    private medicineCategory: ProductCategoryControllerService
-  ) {
-  }
+  productCategory: Array<ProductCategoryResponse> =[]
 
   ngOnInit() {
     this.getProductCategory()
@@ -38,11 +33,10 @@ export class CarouselComponent implements AfterViewInit, OnInit {
     )
   }
 
-
   ngAfterViewInit(): void {
     new Swiper('.categories-swiper', {
       modules: [Autoplay],
-      slidesPerView: 7,
+      slidesPerView: 9,
       spaceBetween: 10,
       loop: true,
       speed: 6000,

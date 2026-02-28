@@ -3,8 +3,10 @@ import { RouterOutlet } from "@angular/router";
 import { HeroComponent } from "./hero/hero.component";
 import { ProductListComponent } from '../../products/product-list/product-list.component';
 import { CarouselComponent } from "./carousel/carousel.component";
-import {GridComponent} from "./grid/grid.component";
-
+import {TrendingComponent} from "./trending/trending.component";
+import {SpecialOffersComponent} from "./special-offers/special-offers.component";
+import {FeatureComponent} from "./feature/feature.component";
+import {NewArrivalComponent} from "./new-arrival/new-arrival.component";
 
 
 @Component({
@@ -12,9 +14,11 @@ import {GridComponent} from "./grid/grid.component";
   standalone: true,
   imports: [
     HeroComponent,
-    ProductListComponent,
     CarouselComponent,
-    GridComponent
+    TrendingComponent,
+    SpecialOffersComponent,
+    FeatureComponent,
+    NewArrivalComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

@@ -4,8 +4,8 @@
 
 import { Orders } from '../models/orders';
 export interface OrderLine {
+  order?: Orders;
   orderLineId?: number;
-  orders?: Orders;
   productId?: number;
   quantity?: number;
   status?: 'PROCESSING' | 'SHIPPED' | 'DELIVERED';

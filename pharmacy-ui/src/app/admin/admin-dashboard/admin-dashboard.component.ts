@@ -6,7 +6,7 @@ import { ChartConfiguration, ChartType } from "chart.js";
 import { BaseChartDirective } from "ng2-charts";
 
 @Component({
-  selector: 'app-admin-panel',
+  selector: 'app-admin-dashboard',
   standalone: true,
   imports: [
     BaseChartDirective,
@@ -15,7 +15,7 @@ import { BaseChartDirective } from "ng2-charts";
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
-export class AdminPanelComponent {
+export class AdminDashboardComponent {
 
   // Net Revenue Line Chart
   public revenueChartData: ChartConfiguration<'line'>['data'] = {

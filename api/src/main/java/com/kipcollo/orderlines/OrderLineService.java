@@ -15,11 +15,12 @@ public class OrderLineService {
 
     public int saveOrderLine(OrderLineRequest orderLineRequest) {
         OrderLine orderLine = orderLineMapper.toOrderLine(orderLineRequest);
+        orderLine.setStatus(OrderLineStatus.PROCESSING);
         return orderLineRepository.save(orderLine).getOrderLineId();
     }
 
     public List<OrderLineResponse> findAllByOrderId(int orderId) {
-        return orderLineRepository.findAllByOrdersId(orderId)
+        return orderLineRepository.findAllByOrderId(orderId)
                 .stream()
                 .map(orderLineMapper::toOrderLineResponse)
                 .collect(Collectors.toList());

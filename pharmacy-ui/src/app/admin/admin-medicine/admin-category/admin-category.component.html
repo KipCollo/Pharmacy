@@ -1,0 +1,44 @@
+<div class="p-6 bg-white rounded shadow">
+  <h1 class="text-2xl font-bold mb-4">Categories Admin</h1>
+
+  <!-- Add / Edit Form -->
+  <form class="flex gap-2 mb-6" (ngSubmit)="newCategory.id ? updateCategory(newCategory, selectedFile) : addCategory(newCategory, selectedFile)">
+
+    <input type="text" [(ngModel)]="newCategory.name" name="name" placeholder="Category Name" required>
+    <input type="file" (change)="onFileSelected($event)">
+    <button type="submit" class="btn btn-primary">
+      {{ newCategory.id ? 'Update Category' : 'Add Category' }}
+    </button>
+
+  </form>
+
+  <!-- Categories Table -->
+  <table class="w-full border-collapse border border-gray-200">
+    <thead>
+    <tr class="bg-gray-100">
+      <th class="border p-2">ID</th>
+      <th class="border p-2">Name</th>
+      <th class="border p-2">Image</th>
+      <th class="border p-2">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (category of categories.productCategory(); track category.id){
+    <tr>
+      <td class="border p-2">{{ category.id }}</td>
+      <td class="border p-2">{{ category.name }}</td>
+      <td class="border p-2"><img [src]="'data:image/jpeg;base64,' + category.image" class="w-10 h-10 object-cover rounded"
+                                  alt="product" /></td>
+      <td class="border p-2 flex gap-2">
+        <button (click)="editCategory(category)" class="text-blue-600 flex items-center gap-1">
+          <lucide-icon [img]="Edit2" [size]="16" color="blue"></lucide-icon> Edit
+        </button>
+<!--        <button (click)="deleteCategory(category.id)" class="text-red-600 flex items-center gap-1">-->
+<!--          <lucide-icon [img]="Trash2" [size]="16" color="red"></lucide-icon> Delete-->
+<!--        </button>-->
+      </td>
+    </tr>
+    }
+    </tbody>
+  </table>
+</div>

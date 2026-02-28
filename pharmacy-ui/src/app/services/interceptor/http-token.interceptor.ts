@@ -7,16 +7,13 @@ import {
   HttpRequest
 } from '@angular/common/http';
 import {TokenService} from "../token/token.service";
-import {Injectable} from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import {Observable} from "rxjs";
 
 @Injectable()
 export class HttpTokenInterceptor implements HttpInterceptor {
+  private tokenService = inject(TokenService);
 
-  constructor(
-    private tokenService:TokenService
-  ) {
-  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.tokenService.token;

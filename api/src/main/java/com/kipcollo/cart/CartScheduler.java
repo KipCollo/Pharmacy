@@ -23,7 +23,7 @@ public class CartScheduler {
             cart.setStatus(CartStatus.ABANDONED);
             cart.setUpdateTime(LocalDateTime.now());
             cartRepository.save(cart);
-            notificationService.sendPendingCartNotification(cart.getUserId(), cart.getId());
+            notificationService.sendPendingCartNotification(cart.getUser().getName(), cart.getId());
         }
     }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import { UserResponse } from '../../services/models/user-response';
@@ -19,6 +19,11 @@ import { TokenService } from '../../services/token/token.service';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit{
+  private fb = inject(FormBuilder);
+  private customerService = inject(CustomersApIsService);
+  private tokenService = inject(TokenService);
+  private router = inject(Router);
+
 
   profileForm: FormGroup;
   customerId?: number;
@@ -35,11 +40,7 @@ export class ProfileComponent implements OnInit{
   };
   customerResponse: UserResponse ={}
 
-  constructor(private fb: FormBuilder,
-              private customerService: CustomersApIsService,
-              private tokenService: TokenService,
-              private router: Router
-  ) {
+  constructor() {
     this.profileForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],

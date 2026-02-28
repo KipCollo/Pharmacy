@@ -10,7 +10,6 @@ public class PaymentMapper {
 
     public Payment toPayment(PaymentRequest request){
         return Payment.builder()
-                .paymentId(request.getPaymentId())
                 .paymentMethod(request.getPaymentMethod())
                 .amount(request.getAmount())
                 .orderId(request.getOrderId())

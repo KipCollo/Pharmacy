@@ -1,31 +1,44 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, OnInit, signal, inject } from '@angular/core';
+import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { CustomersApIsService } from '../../services/services';
 import { UserResponse } from '../../services/models';
+import {
+  LucideAngularModule, Users, Home,
+  BarChart2,
+  Box,
+  ShoppingCart,
+  Archive,
+  CreditCard,
+  Bell,
+  HelpCircle,
+  Settings, MessageCircleQuestionMark, PillIcon,
+} from "lucide-angular/src/icons";
+import {House, icons} from "lucide-angular";
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [
     RouterLink,
-    NgClass
+    NgClass,
+    RouterLinkActive,
+    LucideAngularModule
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent implements OnInit{
+  private router = inject(Router);
+  private customerService = inject(CustomersApIsService);
+
 
   currentUser: UserResponse = {};
   collapsed = signal(false);
 
-  constructor(
-    private router: Router,
-    private customerService: CustomersApIsService
-  ) { }
-
   ngOnInit(): void {
-    this.getUser()
+    this.getUser();
+    this.autoExpandActiveMenu();
   }
 
   profileDropdownOpen: boolean = false;
@@ -55,69 +68,90 @@ export class SidebarComponent implements OnInit{
     console.log('Logged out');
   }
 
+  toggle() {
+    this.collapsed.update(v => !v);
+  }
+
+
   menuItems = [
     {
       section: 'main',
       items: [
-        { label: 'Dashboard', icon: 'home', route: '/admin/dashboard' },
-        { label: 'Reports', icon: 'reports', route: '/admin/reports' },
-        { label: 'Orders', icon: 'orders', route: '/admin/admin-orders' },
-        { label: 'Inventory', icon: 'inventory', route: '/admin/medicine' },
-        { label: 'Payments', icon: 'payments', route: '/admin/payments' },
-        { label: 'Customers', icon: 'customers', route: '/admin/customers' },
+        { label: 'Dashboard', icon: House, route: '/admin/dashboard' },
+        { label: 'Reports',
+          icon: BarChart2,
+          isOpen: false,
+          route: '/admin/reports',
+          children: [
+            { label: 'Revenue', route: '/admin/reports/revenue' },
+            { label: 'Profit', route: '/admin/reports/profit' },
+            { label: 'Orders', route: '/admin/reports/orders' },
+            { label: 'Refunds', route: '/admin/reports/refunds' },
+            { label: 'Cart', route: '/admin/reports/carts' },
+            { label: 'Customers', route: '/admin/reports/customers' },
+            { label: 'Forecast', route: '/admin/reports/forecast' }
+          ]},
         {
-          label: 'Notifications',
-          icon: 'notifications',
-          badge: 7,
-          route: '/admin/notifications',
+          label: 'Products',
+          icon: Box,
+          isOpen: false,
+          route: '/admin/medicine',
+          children: [
+            { label: 'Categories', route: '/admin/medicine/categories' },
+          ]
         },
+        { label: 'Prescriptions', icon: PillIcon, route: '/admin/prescriptions'},
+        { label: 'Orders', icon: ShoppingCart, route: '/admin/admin-orders' },
+        { label: 'Inventory', icon: Archive, route: '/admin/inventory' },
+        { label: 'Payments', icon: CreditCard, route: '/admin/payments' },
+        { label: 'Customers', icon: Users, route: '/admin/customers' },
+        { label: 'Notifications', icon: Bell, badge: 7, route: '/admin/notifications' },
       ],
     },
-
     {
       section: 'secondary',
       items: [
-        { label: 'Help & Support', icon: 'help', route: '/admin/help' },
-        { label: 'Settings', icon: 'settings', route: '/admin/settings' },
+        { label: 'Help & Support', icon: MessageCircleQuestionMark, route: '/admin/help' },
+        { label: 'Settings', icon: Settings, route: '/admin/settings' },
       ],
     },
   ];
 
 
-  onProductsClick(item: any) {
-    // Navigate to ALL PRODUCTS first
-    this.router.navigate(['/admin/medicine']);
+  handleItemClick(clickedItem: any) {
 
-    // Then open dropdown
-    item.isOpen = true;
+    // Close other submenus
+    this.menuItems.forEach(group => {
+      group.items.forEach(item => {
+        if (item !== clickedItem && item.children) {
+          item.isOpen = false;
+        }
+      });
+    });
+
+    // Toggle submenu if exists
+    if (clickedItem.children) {
+      clickedItem.isOpen = !clickedItem.isOpen;
+    }
+
+    // Navigate
+    if (clickedItem.route) {
+      this.router.navigate([clickedItem.route]);
+    }
   }
 
+  autoExpandActiveMenu() {
+    const currentUrl = this.router.url;
 
-  toggleSubMenu(item: any) {
-    item.isOpen = !item.isOpen;
+    this.menuItems.forEach(group => {
+      group.items.forEach(item => {
+        if (item.children?.some(c => currentUrl.startsWith(c.route))) {
+          item.isOpen = true;
+        } else {
+          item.isOpen = false; // optional: collapse others
+        }
+      });
+    });
   }
-
-
-  toggle() {
-    this.collapsed.update(v => !v);
-  }
-
-  getIconPath(icon: string): string {
-    const icons: Record<string, string> = {
-      home: 'M3 12l9-9 9 9',
-      reports: 'M9 17v-2m4 2V7m4 10v-4',
-      orders: 'M4 4h16v16H4z',
-      inventory: 'M20 7l-8-4-8 4v10l8 4 8-4z',
-      payments: 'M12 1v22',
-      customers: 'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2',
-      notifications:
-        'M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5',
-      help: 'M12 18h.01M12 6a4 4 0 00-4 4',
-      settings: 'M12 8v4l3 3',
-    };
-
-    return icons[icon];
-  }
-
 
 }

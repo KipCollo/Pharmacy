@@ -1,8 +1,5 @@
 name: pharmacy
 services:
-  pharmacy-admin:
-    container_name: pharmacy-admin
-
   pharmacy-ui:
     container_name: pharmacy-ui
     image: kipcollo:ui

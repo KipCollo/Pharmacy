@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import { Component, HostListener, OnInit, inject } from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {jwtDecode} from "jwt-decode";
 // import { User} from "lucide-angular"
@@ -8,7 +8,8 @@ import { CartControllerService } from '../../services/services/cart-controller.s
 // import {LucideAngularModule } from "lucide-angular";
 import {User, Heart, ShoppingCart, Search, MapPin, LucideAngularModule} from 'lucide-angular/src/icons';
 import {readonly} from "@angular/forms/signals";
-import {ChartNoAxesColumn} from "lucide-angular";
+import {ChartNoAxesColumn, icons} from "lucide-angular";
+import {CartStore} from "../../cart/cart-modal/cart.service";
 
 
 
@@ -23,14 +24,11 @@ import {ChartNoAxesColumn} from "lucide-angular";
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit{
+  private router = inject(Router);
+  cartStore = inject(CartStore);
+  private tokenService = inject(TokenService);
+  private cartService = inject(CartControllerService);
 
-  readonly icons = {
-    User,
-    MapPin,
-    ChartNoAxesColumn,
-    Heart,
-    ShoppingCart
-  }
 
   showDashboard = false; // Controls the user dashboard popup
   cartItemCount: number = 0;
@@ -41,14 +39,9 @@ export class NavbarComponent implements OnInit{
   isLoggedIn = false;
   cart: any[] = [];
 
-   constructor(private router: Router,
-              private  tokenService:TokenService,
-              private cartService: CartControllerService) {
-   }
-
   ngOnInit() {
     this.checkLoginStatus();
-   // this.loadCartCount();
+   this.loadCartCount();
   }
 
    home(){
@@ -85,11 +78,11 @@ export class NavbarComponent implements OnInit{
     this.isCartOpen = false;
   }
 
-  // loadCartCount(){
-  //   this.cartService.getUserCart({userId: this.getUserId()}).subscribe(
-  //     (items)=>{this.cartItemCount = items.length;
-  //     })
-  // }
+  loadCartCount(){
+    this.cartService.getUserCart().subscribe(
+      (items)=>{this.cartItemCount = items.length;
+      })
+  }
 
   isAccountOpen = false;
 
@@ -130,4 +123,5 @@ export class NavbarComponent implements OnInit{
   }
 
   protected readonly User = User;
+  protected readonly icons = icons;
 }

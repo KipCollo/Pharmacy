@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {FooterComponent} from "./shared/footer/footer.component";
 import { AnnouncementBarComponent } from './shared/announcement-bar/announcement-bar.component';
@@ -15,7 +15,6 @@ import {CartModalComponent} from "./cart/cart-modal/cart-modal.component";
     NavbarComponent,
     AnnouncementBarComponent,
     FooterComponent,
-    NgIf,
     NavbarLinksComponent,
     CartModalComponent
   ],
@@ -23,10 +22,10 @@ import {CartModalComponent} from "./cart/cart-modal/cart-modal.component";
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  private router = inject(Router);
+
   title = 'ui';
   loading: boolean = false;
-
-  constructor(private router: Router) {}
 
   // Check if current route is admin
   isAdminPage(): boolean {

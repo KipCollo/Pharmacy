@@ -18,6 +18,7 @@ public class ProductCategory {
    private Integer id;
    private String name;
    private String description;
+   @Lob
    private byte[] image;
    @OneToMany(mappedBy="category")
    private List<Product> products;

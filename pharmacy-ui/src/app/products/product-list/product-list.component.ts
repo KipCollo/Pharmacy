@@ -1,6 +1,5 @@
-import { Component, effect, OnInit, signal } from '@angular/core';
+import {Component, computed, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import { CommonModule, SlicePipe } from '@angular/common';
-import { jwtDecode } from 'jwt-decode';
 import { FormsModule } from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 import { PageResponseProductResponse } from '../../services/models/page-response-product-response';
@@ -9,212 +8,178 @@ import { MedicineApIsService } from '../../services/services/medicine-ap-is.serv
 import { CartControllerService } from '../../services/services/cart-controller.service';
 import { TokenService } from '../../services/token/token.service';
 import {ProductCardComponent} from "../product-card/product-card.component";
-import {CartService} from "../../cart/cart-modal/cart.service";
+import {ProductCategoryResponse} from "../../services/models/product-category-response";
+import {ProductCategoryControllerService} from "../../services/services/product-category-controller.service";
+import {LucideAngularModule, Pill} from "lucide-angular/src/icons";
+import {icons} from "lucide-angular";
+import {CategoryService} from "../../cart/cart-modal/category.service";
 
 @Component({
   selector: 'app-medicine-list',
   standalone: true,
-  imports: [CommonModule, SlicePipe, FormsModule, ProductCardComponent, RouterLink],
+  imports: [CommonModule, FormsModule, ProductCardComponent, LucideAngularModule],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
+  private medicineService = inject(MedicineApIsService);
+  private router = inject(Router);
+
   medicineResponse: PageResponseProductResponse = { content: [], totalPages: 0, totalElements: 0 };
-  selectedMedicine: ProductResponse | null = null;
-  medicineRes: ProductResponse = {}
   page = 0;
   size = 24;
   totalPages = 0;
   searchQuery = signal<string>('');
-  isAdmin: boolean = false;  // This should be determined based on the user's role
-  isLoggedIn: boolean = false;  // This should be determined based on the user's login status
-  cartCount = 0;
+  priceMinLimit = 0;
+  priceMaxLimit = 10000;
+  minPrice = signal(50);
+  maxPrice = signal(5000);
+  showInStockOnly = signal(false);
+  products = signal<ProductResponse[]>([]);
+  activeCategory = signal<ProductCategoryResponse | null>(null);
+  isLoading = true;
+  hasError = false;
+  errorMessage = '';
+  loadingMore = false;
+  popularitySort = signal<'mostPopular' | 'mostRated'>('mostPopular');
+  priceSort = signal<'lowToHigh' | 'highToLow' | null>(null); // null = no price sorting
+  sortedProducts = computed(() => {
+    let sorted = [...this.filteredProducts()];
 
-  constructor(
-    private medicineService: MedicineApIsService,
-    private cartService: CartControllerService,
-    private tokenService: TokenService,
-    private cart: CartService,
-    private router: Router
-  ) {
-    effect(() => {
-      this.filterProducts();
+    // Popularity / Trending sorting
+    if (this.popularitySort() === 'mostPopular') {
+      sorted.sort((a, b) => (b.trending ? 1 : 0) - (a.trending ? 1 : 0));
+    } else if (this.popularitySort() === 'mostRated') {
+      // no rating field → fallback to newArrival as proxy for “mostRated”
+      sorted.sort((a, b) => (b.newArrival ? 1 : 0) - (a.newArrival ? 1 : 0));
+    }
+
+    // Price sorting (safe with optional price)
+    if (this.priceSort() === 'lowToHigh') {
+      sorted.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+    } else if (this.priceSort() === 'highToLow') {
+      sorted.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+    }
+
+    return sorted;
+  });
+
+  filteredProducts = computed(() => {
+
+    const query = this.searchQuery().toLowerCase();
+    const activeCat = this.activeCategory();
+
+    return this.products().filter(medicine => {
+
+      const matchesSearch =
+        !query || medicine.name?.toLowerCase().includes(query);
+
+      const price = medicine.price ?? 0;
+
+      const withinPrice =
+        price >= this.minPrice() &&
+        price <= this.maxPrice();
+
+      const notExpired = !this.isExpired(medicine);
+
+      const stockOk =
+        !this.showInStockOnly() ||
+        (medicine.stockQuantity ?? 0) > 0;
+
+      const matchesCategory =
+        !activeCat || medicine.name === activeCat;
+
+      return (
+        matchesSearch &&
+        withinPrice &&
+        notExpired &&
+        stockOk &&
+        matchesCategory
+      );
     });
+  });
+
+  showAllProducts() {
+    this.activeCategory.set(null);
   }
 
-  private decodeToken(token: string): any {
-    try {
-      return jwtDecode(token);
-    } catch (error) {
-      console.error('Invalid token:', error);
-      return null;
-    }
+  categories = inject(CategoryService);
+
+  goHome() {
+    this.router.navigate(['/']);
   }
 
-  getUserId(): number | undefined {
-    const token = this.tokenService.token;
-    if (!token) {
-      return undefined;
-    }
-    const user = this.decodeToken(token);
-    return user?.userId ? Number(user.userId) : undefined;
+  goProducts() {
+    this.router.navigate(['/products']);
+  }
+
+  selectCategory(category: ProductCategoryResponse) {
+    this.activeCategory.set(category);
+
+    this.router.navigate(['/products'], {
+      queryParams: { category }
+    });
+
+    // this.applyFilters();
   }
 
   ngOnInit(): void {
-    const token = this.tokenService.token;
-
-    if (token) {
-      const user = this.decodeToken(token);
-      this.isLoggedIn = true;
-      this.isAdmin = user?.role === 'ADMIN';
-    } else {
-      this.isLoggedIn = false;
-      this.isAdmin = false;
-    }
-
     this.loadMedicines();
+    window.addEventListener('scroll', this.onScroll, true);
   }
 
+  ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.onScroll, true);
+  }
+
+  onScroll = (): void => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // When user scrolls within 200px of bottom
+    if (scrollTop + windowHeight >= documentHeight - 200) {
+      this.loadMore();
+    }
+  };
+
   loadMedicines() {
+    this.isLoading = true;
+    this.hasError = false;
+    this.errorMessage = '';
+
     this.medicineService.getAllMedicines({
       page: this.page,
       size: this.size
     }).subscribe({
       next: (product) => {
         this.medicineResponse = product;
+        this.products.set(product.content || [])
         this.totalPages = product.totalPages ?? 0;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.hasError = true;
+        this.errorMessage = 'Unable to load products';
+        this.isLoading = false;
       }
     });
   }
 
-  onSearch(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.searchQuery.set(target.value);
-    this.filterProducts();
+  updateMinPrice(value: number) {
+    this.minPrice.set(Math.min(Math.max(value, this.priceMinLimit), this.maxPrice()));
   }
 
-  filterProducts() {
-    if (!this.searchQuery()) return this.medicineResponse.content || [];
-    const query = this.searchQuery().toLowerCase();
-    return (this.medicineResponse.content || []).filter((medicine) =>
-      medicine.name?.toLowerCase().includes(query)
-    );
+  updateMaxPrice(value: number) {
+    this.maxPrice.set(Math.max(Math.min(value, this.priceMaxLimit), this.minPrice()));
   }
-
-  changePage(page: number): void {
-    if (page >= 0 && page < this.totalPages) {
-      this.page = page;
-      this.loadMedicines();
-    }
-  }
-
-  // addToCart(medicine: ProductResponse) {
-  //   const userId = this.getUserId();
-  //   if (!userId) {
-  //     alert('User not authenticated!');
-  //     return;
-  //   }
-  //
-  //   const cartItem = {
-  //     body: {
-  //       userId,
-  //       productId: medicine.productId
-  //     }
-  //   };
-  //
-  //   // Add item to the cart via cartService
-  //   this.cartService.addCart(cartItem).subscribe(
-  //     () => {
-  //       alert('Added to cart!');
-  //       this.updateCartCount(); // Update cart count after adding an item
-  //     },
-  //     error => {
-  //       console.error('Error adding item to cart:', error);
-  //       alert('Something went wrong, please try again.');
-  //     }
-  //   );
-  // }
-
-  // Dynamically update the cart count
-  updateCartCount() {
-    const userId = this.getUserId();
-    if (userId === undefined) {
-      console.error('User ID is not defined');
-      return;
-    }
-
-    // Proceed with the API call if userId is valid
-    // this.cartService.getUserCart({ userId }).subscribe(cartItems => {
-    //   this.cartCount = cartItems.length; // Update the count based on the current cart items
-    // });
-  }
-
-  //   addToWishlist(medicine: ProductResponse) {
-  //   const userId = this.getUserId();
-  //   if (!userId) {
-  //     alert('Please log in to add to wishlist');
-  //     this.promptLogin();
-  //     return;
-  //   }
-
-  //   const cartItem = {
-  //       body: {
-  //         userId,
-  //         productId: medicine.productId
-  //       }
-  //     };
-
-  //   this.cartService.addCart(cartItem).subscribe({
-  //     next: () => alert('Added to wishlist!'),
-  //     error: (err) => console.error('Failed to add to wishlist:', err)
-  //   });
-  // }
-
-
-  addToCart(product: any) {
-    this.cart.addToCart(product);
-  }
-
-
-  viewDetails(medicine: ProductResponse) {
-    if (!medicine.productId) return;
-    this.router.navigate(['/products', medicine.productId]);
-  }
-
-  onUpdate(medicine: ProductResponse) {
-    this.selectedMedicine = medicine;
-  }
-
-  onDelete(id: number | undefined) {
-    if (id !== undefined && confirm('Are you sure you want to delete this product?')) {
-      this.medicineService.deleteMedicine({ id }).subscribe(() => {
-        alert('Product deleted');
-        this.loadMedicines(); // Reload product list
-      });
-    } else {
-      console.error('Invalid product ID');
-    }
-  }
-
-  checkout() {
-    if (!this.isLoggedIn) {
-      this.promptLogin();  // Show login prompt or redirect to login page
-    } else {
-      // Proceed with checkout for logged-in user
-    }
-  }
-
-  promptLogin() {
-    this.router.navigate(['/login']);  // Redirect to login page
-  }
-
-  loadingMore = false;
 
   loadMore() {
     if (!this.canLoadMore() || this.loadingMore) return;
     this.loadingMore = true;
-
     this.page++;
+
     this.medicineService.getAllMedicines({ page: this.page, size: this.size }).subscribe({
       next: (product) => {
         this.medicineResponse.content = [
@@ -224,13 +189,14 @@ export class ProductListComponent implements OnInit {
         this.totalPages = product.totalPages ?? 0;
       },
       error: (err) => console.error(err),
-      complete: () => this.loadingMore = false
+      complete: () => (this.loadingMore = false)
     });
   }
 
   canLoadMore(): boolean {
     return this.page + 1 < this.totalPages;
   }
+
 
   isExpired(medicine: ProductResponse): boolean {
     if (!medicine.expiryDate) return false;
@@ -239,10 +205,6 @@ export class ProductListComponent implements OnInit {
 
   isUnavailable(medicine: ProductResponse): boolean {
     return (medicine.stockQuantity ?? 0) <= 0;
-  }
-
-  shouldDisplay(medicine: ProductResponse): boolean {
-    return !this.isExpired(medicine) && !this.isUnavailable(medicine);
   }
 
   wishlist = new Set<number>();
@@ -263,4 +225,6 @@ export class ProductListComponent implements OnInit {
   }
 
 
+  protected readonly icons = icons;
+  protected readonly Pill = Pill;
 }

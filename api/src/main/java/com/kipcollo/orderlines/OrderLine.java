@@ -20,7 +20,7 @@ public class OrderLine {
     private OrderLineStatus status;
     @ManyToOne
     @JoinColumn
-    private Orders orders;
+    private Orders order;
     private int productId;
     private int quantity;
 }

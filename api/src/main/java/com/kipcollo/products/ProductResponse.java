@@ -1,12 +1,14 @@
 package com.kipcollo.products;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
+@Builder
 @AllArgsConstructor
 public class ProductResponse {
 
@@ -19,5 +21,10 @@ public class ProductResponse {
     private LocalDate expiryDate;
     private int stockQuantity;
     private BigDecimal price;
+    private BigDecimal originalPrice;
+    private BigDecimal discount;
+    private boolean trending;
+    private ProductCategoryResponse category;
+    private boolean newArrival;
 
 }

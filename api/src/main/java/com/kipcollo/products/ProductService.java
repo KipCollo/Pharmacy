@@ -1,11 +1,16 @@
 package com.kipcollo.products;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.kipcollo.exceptions.ProductPurchaseException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +26,10 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 
    private final ProductRepository repository;
+   private final SpecialOffersRepository specialOfferRepository;
    private final ProductMapper mapper;
+   private final HealthConditionRepository healthConditionRepository;
+   private final ProductCategoryRepository categoryRepository;
 
    @Transactional
    public PageResponse<ProductResponse> getAllMedicine(int page, int size ) {
@@ -97,32 +105,123 @@ public class ProductService {
                .stream()
                .map(PurchaseProductRequest::getProductId)
                .toList();
-       var storedProducts = repository.findByIdIn(productIds);
+       var storedProducts = repository.findByIdInForUpdate(productIds);
 
        if (productIds.size() != storedProducts.size()){
            throw new ProductPurchaseException("One or more products doesn't exist");
        }
 
-       var storedRequest = requests
-               .stream()
-               .sorted(Comparator.comparing(PurchaseProductRequest::getProductId))
-               .toList();
-       var purchasedProducts = new ArrayList<PurchaseProductResponse>();
-       for (int i = 0; i < storedProducts.size();i++){
-           var product = storedProducts.get(i);
-           var productRequest = storedRequest.get(i);
+       Map<Integer, Product> productMap = storedProducts.stream()
+               .collect(Collectors.toMap(Product::getId, Function.identity()));
 
-           if(product.getStockQuantity() < productRequest.getQuantity() ){
-               throw new ProductPurchaseException("Insufficient stock quantity for product with the id::" + product.getId());
+       List<PurchaseProductResponse> purchasedProducts = new ArrayList<>();
+       List<Product> productsToUpdate = new ArrayList<>();
+
+       for (var request : requests) {
+           var product = productMap.get(request.getProductId());
+           if (product.getStockQuantity() < request.getQuantity()) {
+               throw new ProductPurchaseException("Insufficient stock for product id: " + product.getId());
            }
 
-           var newAvailableQuantity = product.getStockQuantity()- productRequest.getQuantity();
-           product.setStockQuantity(newAvailableQuantity);
-           repository.save(product);
-           purchasedProducts.add(mapper.toPurchaseProductResponse(product,productRequest.getQuantity()));
-       }
-       return purchasedProducts;
+           product.setStockQuantity(product.getStockQuantity() - request.getQuantity());
+           productsToUpdate.add(product);
+           purchasedProducts.add(mapper.toPurchaseProductResponse(product, request.getQuantity()));
        }
 
+       repository.saveAll(productsToUpdate);
+       return purchasedProducts;
+
+//       var storedRequest = requests
+//               .stream()
+//               .sorted(Comparator.comparing(PurchaseProductRequest::getProductId))
+//               .toList();
+//       var purchasedProducts = new ArrayList<PurchaseProductResponse>();
+//       for (int i = 0; i < storedProducts.size();i++){
+//           var product = storedProducts.get(i);
+//           var productRequest = storedRequest.get(i);
+//
+//           if(product.getStockQuantity() < productRequest.getQuantity() ){
+//               throw new ProductPurchaseException("Insufficient stock quantity for product with the id::" + product.getId());
+//           }
+//
+//           var newAvailableQuantity = product.getStockQuantity()- productRequest.getQuantity();
+//           product.setStockQuantity(newAvailableQuantity);
+//           repository.save(product);
+//           purchasedProducts.add(mapper.toPurchaseProductResponse(product,productRequest.getQuantity()));
+//       }
+//       return purchasedProducts;
+       }
+
+    @Transactional
+    public List<ProductResponse> getTrendingProducts() {
+        return repository
+                .findTop10ByActiveTrueOrderBySoldCountDesc()
+                .stream()
+                .map(product -> {
+                    ProductResponse response = mapper.fromProduct(product);
+                    response.setTrending(true);
+                    return response;
+                })
+                .toList();
+    }
+
+    @Transactional
+    public List<ProductResponse> getSpecialOffers() {
+        return specialOfferRepository.findActiveOffers()
+                .stream()
+                .map(offer -> {
+            ProductResponse response =
+                    mapper.fromProductWithDiscount(
+                            offer.getProduct(),
+                            offer.getDiscountPercentage()
+                    );
+
+            response.setTrending(false);
+            return response;
+        })
+                .toList();
+    }
+
+    @Transactional
+    public List<ProductResponse> getNewArrivals() {
+
+        LocalDate threshold = LocalDate.from(LocalDateTime.now().minusDays(30));
+        return repository
+                .findByActiveTrueAndCreatedDateAfter(threshold.atStartOfDay())
+                .stream()
+                .map(product -> {
+                    ProductResponse response = mapper.fromProduct(product);
+                    response.setNewArrival(true);
+                    return response;
+                })
+                .toList();
+    }
+
+
+    @Transactional
+    public List<ProductResponse> getProductsByCondition(Integer conditionId) {
+
+        if (!healthConditionRepository.existsById(conditionId)) {
+            throw new EntityNotFoundException("Condition not found");
+        }
+
+        return repository.findByCondition(conditionId)
+                .stream()
+                .map(mapper::fromProduct)
+                .toList();
+    }
+
+    @Transactional
+    public List<ProductResponse> getProductsByCategory(Integer categoryId) {
+
+        if (!categoryRepository.existsById(categoryId)) {
+            throw new EntityNotFoundException("Category not found");
+        }
+
+        return repository.findByCategoryId(categoryId)
+                .stream()
+                .map(mapper::fromProduct)
+                .toList();
+    }
 
 }

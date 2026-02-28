@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {DatePipe, DecimalPipe, NgClass, NgForOf} from "@angular/common";
 import {SidebarComponent} from "../sidebar/sidebar.component";
 import {UserResponse} from "../../services/models/user-response";
@@ -11,7 +11,6 @@ import { FormsModule} from '@angular/forms';
   selector: 'app-admin-customers',
   standalone: true,
   imports: [
-    NgForOf,
     DatePipe,
     FormsModule,
     NgClass
@@ -20,6 +19,8 @@ import { FormsModule} from '@angular/forms';
   styleUrl: './admin-customers.component.css'
 })
 export class AdminCustomersComponent implements OnInit{
+  private userService = inject(CustomersApIsService);
+
 
   customers: Array<UserResponse> = []
   totalCustomers: number = 0;
@@ -65,11 +66,6 @@ export class AdminCustomersComponent implements OnInit{
       }
     ]
   };
-
-
-
-  constructor(private userService: CustomersApIsService) {
-  }
 
   ngOnInit() {
     this.getUsers();
