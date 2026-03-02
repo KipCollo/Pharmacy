@@ -3,8 +3,8 @@ import Swiper from "swiper";
 import { Autoplay } from 'swiper/modules';
 
 import { RouterLink } from "@angular/router";
-import {ProductCategoryControllerService} from "../../../services/services/product-category-controller.service";
 import {ProductCategoryResponse} from "../../../services/models/product-category-response";
+import {CategoryService} from "../../../cart/cart-modal/category.service";
 
 @Component({
   selector: 'app-carousel',
@@ -15,23 +15,8 @@ import {ProductCategoryResponse} from "../../../services/models/product-category
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.css'
 })
-export class CarouselComponent implements AfterViewInit, OnInit {
-  private medicineCategory = inject(ProductCategoryControllerService);
-
-  productCategory: Array<ProductCategoryResponse> =[]
-
-  ngOnInit() {
-    this.getProductCategory()
-  }
-
-  getProductCategory(){
-    this.medicineCategory.getProductCategory().subscribe({
-      next: (category) =>{
-        this.productCategory = category;
-      }
-      }
-    )
-  }
+export class CarouselComponent implements AfterViewInit{
+  productCategory = inject(CategoryService);
 
   ngAfterViewInit(): void {
     new Swiper('.categories-swiper', {

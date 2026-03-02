@@ -51,9 +51,5 @@ export class TrendingComponent implements OnInit{
     })
   }
 
-  trackByProductId(index: number, item: ProductResponse) {
-    return item.productId;
-  }
-
 
 }

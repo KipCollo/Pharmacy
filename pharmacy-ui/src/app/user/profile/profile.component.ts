@@ -1,12 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
+
 import { UserResponse } from '../../services/models/user-response';
 import { UserRequest } from '../../services/models/user-request';
 import { CustomersApIsService } from '../../services/services/customers-ap-is.service';
 import { TokenService } from '../../services/token/token.service';
-
-
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +22,6 @@ export class ProfileComponent implements OnInit{
   private customerService = inject(CustomersApIsService);
   private tokenService = inject(TokenService);
   private router = inject(Router);
-
 
   profileForm: FormGroup;
   customerId?: number;
@@ -57,7 +55,6 @@ export class ProfileComponent implements OnInit{
     this.customerService.getCurrentCustomer().subscribe(
       (user) => {this.customerId = user.customerId}
     )
-
   }
 
   loadUserData(){

@@ -9,7 +9,7 @@
     <div class="swiper-container categories-swiper">
       <div class="swiper-wrapper">
 
-        @for (category of productCategory; track category.id) {
+        @for (category of productCategory.productCategory(); track category.id) {
         <div class="swiper-slide flex flex-col items-center group cursor-pointer">
           <a [routerLink]="['/category', category.id]">
             <!-- Image Circle -->
