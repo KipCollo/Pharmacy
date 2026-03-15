@@ -1,10 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 
-import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
-import {NgForOf} from "@angular/common";
+import { FormBuilder, FormGroup, FormsModule, Validators } from "@angular/forms";
+import { NgForOf } from "@angular/common";
 import { ProductRequest } from '../../services/models/product-request';
 import { MedicineApIsService } from '../../services/services';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-medicine',
@@ -15,12 +16,25 @@ import { MedicineApIsService } from '../../services/services';
   templateUrl: './medicine.component.html',
   styleUrl: './medicine.component.css'
 })
-export class MedicineComponent{
+export class MedicineComponent {
   private productService = inject(MedicineApIsService);
   private router = inject(Router);
+  private _snackBar = inject(MatSnackBar);
+  message: string = 'Product uploaded successfully!';
+  action: string = 'Close';
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action,
+      {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        duration: 5000
+      }
+    );
+  }
 
 
-  errorMsg: Array<string> =[]
+  errorMsg: Array<string> = []
 
   product: ProductRequest = {
     description: '',
@@ -39,7 +53,7 @@ export class MedicineComponent{
     this.selectedFile = event.target.files[0];
   }
 
-  uploadProduct(){
+  uploadProduct() {
 
     if (!this.selectedFile) {
       alert('Please upload a product image.');
@@ -57,18 +71,19 @@ export class MedicineComponent{
     this.productService.createMedicine({
       body: formData as any
     }).subscribe({
-        next: () =>{
-          this.router.navigate(["activate-account"]);
-        },
-        error: (err) => {
-          this.errorMsg = err.error.validationErrors;
-        }
-      })
+      next: () => {
+        this.router.navigate(["activate-account"]);
+        this.openSnackBar(this.message, this.action);
+      },
+      error: (err) => {
+        this.errorMsg = err.error.validationErrors;
+      }
+    })
 
-    }
+  }
 
-    cancel() {
-      this.router.navigate(['/admin/medicine']);
-    }
+  cancel() {
+    this.router.navigate(['/admin/medicine']);
+  }
 
 }

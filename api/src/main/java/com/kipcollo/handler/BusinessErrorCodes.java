@@ -13,6 +13,7 @@ public enum BusinessErrorCodes {
     ACCOUNT_DISABLED(302,FORBIDDEN,"Account disabled"),
     ACCOUNT_LOCKED(302,FORBIDDEN, "User Account is locked"),
     BAD_CREDENTIALS(304,FORBIDDEN,"Login/password incorrect");
+
     private final int code;
     private final String description;
     private final HttpStatus httpStatus;

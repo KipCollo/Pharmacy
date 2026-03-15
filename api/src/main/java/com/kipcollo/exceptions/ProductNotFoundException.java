@@ -5,6 +5,6 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ProductPurchaseException extends RuntimeException {
+public class ProductNotFoundException extends RuntimeException {
     private final String message;
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.kipcollo.exceptions.ProductNotFoundException;
 import com.kipcollo.exceptions.ProductPurchaseException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -52,7 +53,7 @@ public class ProductService {
    public ProductResponse getMedicineById(Integer medicineId) {
        return repository.findById(medicineId)
                .map(mapper::fromProduct)
-               .orElseThrow();
+               .orElseThrow(() -> new ProductNotFoundException("Product with ID :: " + medicineId + " NOT FOUND"));
    }
 
    @Transactional

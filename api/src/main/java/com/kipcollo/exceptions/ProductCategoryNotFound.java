@@ -3,8 +3,8 @@ package com.kipcollo.exceptions;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class ProductPurchaseException extends RuntimeException {
+@EqualsAndHashCode(callSuper = true)
+public class ProductCategoryNotFound extends RuntimeException {
     private final String message;
 }

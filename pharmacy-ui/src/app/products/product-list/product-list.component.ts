@@ -1,23 +1,25 @@
-import {Component, computed, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import { Component, computed, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule, SlicePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {Router, RouterLink} from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { PageResponseProductResponse } from '../../services/models/page-response-product-response';
 import { ProductResponse } from '../../services/models/product-response';
 import { MedicineApIsService } from '../../services/services/medicine-ap-is.service';
 import { CartControllerService } from '../../services/services/cart-controller.service';
 import { TokenService } from '../../services/token/token.service';
-import {ProductCardComponent} from "../product-card/product-card.component";
-import {ProductCategoryResponse} from "../../services/models/product-category-response";
-import {ProductCategoryControllerService} from "../../services/services/product-category-controller.service";
-import {LucideAngularModule, Pill} from "lucide-angular/src/icons";
-import {icons} from "lucide-angular";
-import {CategoryService} from "../../cart/cart-modal/category.service";
+import { ProductCardComponent } from "../product-card/product-card.component";
+import { ProductCategoryResponse } from "../../services/models/product-category-response";
+import { ProductCategoryControllerService } from "../../services/services/product-category-controller.service";
+import { LucideAngularModule, Pill } from "lucide-angular/src/icons";
+import { icons } from "lucide-angular";
+import { CategoryService } from "../../cart/cart-modal/category.service";
+import { MatSliderModule } from '@angular/material/slider';
+
 
 @Component({
   selector: 'app-medicine-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, ProductCardComponent, LucideAngularModule],
+  imports: [CommonModule, FormsModule, ProductCardComponent, LucideAngularModule, MatSliderModule],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })

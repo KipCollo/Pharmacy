@@ -1,28 +1,31 @@
-import { Component, OnInit, inject } from '@angular/core';
-import {FormsModule, NgModel} from "@angular/forms";
-import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
-import {Router} from "@angular/router";
-import {jwtDecode} from "jwt-decode";
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { FormsModule, NgModel } from "@angular/forms";
+import { NgForOf, NgIf, NgOptimizedImage } from "@angular/common";
+import { Router } from "@angular/router";
+import { jwtDecode } from "jwt-decode";
 import { AuthenticationRequest } from '../../services/models/authentication-request';
 import { AuthenticationApIsService } from '../../services/services/authentication-ap-is.service';
 import { TokenService } from '../../services/token/token.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    FormsModule
-  ],
+  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   private router = inject(Router);
   private authService = inject(AuthenticationApIsService);
   private tokenService = inject(TokenService);
+  hide = signal<boolean>(true);
 
-
-  authRequest: AuthenticationRequest = {email: '', password: ''};
+  authRequest: AuthenticationRequest = { email: '', password: '' };
   errorMsg: Array<string> = [];
   isLoggedIn = false;
 
@@ -31,6 +34,11 @@ export class LoginComponent implements OnInit{
     this.tokenService.token$.subscribe((token) => {
       this.isLoggedIn = !!token;
     });
+  }
+
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
   }
 
   login() {
@@ -45,7 +53,7 @@ export class LoginComponent implements OnInit{
         if (roles.includes('ADMIN')) {
           this.router.navigate(['/admin']);
         }
-        else if (roles.includes('USER')){
+        else if (roles.includes('USER')) {
           this.router.navigate(['/home']);
         } else {
           this.router.navigate(['/login']);
@@ -67,3 +75,5 @@ export class LoginComponent implements OnInit{
   }
 
 }
+/* Removed custom signal function. Use Angular's signal from @angular/core. */
+

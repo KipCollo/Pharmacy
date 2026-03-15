@@ -1,13 +1,15 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe, NgClass } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
 
-import {LucideAngularModule} from "lucide-angular/src/icons";
-import {Edit2, PlusCircle, Trash2} from "lucide-angular";
-import {ProductCategory} from "../../../services/models/product-category";
-import {ProductCategoryControllerService} from "../../../services/services/product-category-controller.service";
-import {ProductCategoryRequest} from "../../../services/models/product-category-request";
-import {CategoryService} from "../../../cart/cart-modal/category.service";
+import { LucideAngularModule } from "lucide-angular/src/icons";
+import { Edit2, PlusCircle, Trash2 } from "lucide-angular";
+import { ProductCategory } from "../../../services/models/product-category";
+import { ProductCategoryControllerService } from "../../../services/services/product-category-controller.service";
+import { ProductCategoryRequest } from "../../../services/models/product-category-request";
+import { CategoryService } from "../../../cart/cart-modal/category.service";
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ProductCategoryResponse } from '../../../services/models';
 
 @Component({
   selector: 'app-admin-category',
@@ -16,14 +18,25 @@ import {CategoryService} from "../../../cart/cart-modal/category.service";
   templateUrl: './admin-category.component.html',
   styleUrl: './admin-category.component.css'
 })
-export class AdminCategoryComponent{
+export class AdminCategoryComponent {
   private categoryService = inject(ProductCategoryControllerService);
-
-
-  category: ProductCategory[] =[]
-  selectedFile: File | null = null;
-  newCategory: ProductCategoryRequest = {  };
+  private _snackBar = inject(MatSnackBar);
   categories = inject(CategoryService);
+
+  category = signal<ProductCategory[]>([]);
+  selectedFile: File | null = null;
+  newCategory: ProductCategoryRequest = {};
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action,
+      {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        duration: 1000
+      }
+    );
+  }
+
 
   // Add new category
   addCategory(category: ProductCategoryRequest, file: File | null) {
@@ -31,9 +44,9 @@ export class AdminCategoryComponent{
     formData.append('product', new Blob([JSON.stringify(category)], { type: 'application/json' }));
     if (file) formData.append('image', file);
 
-    this.categoryService.createProductCategory({body: formData as any}).subscribe({
-      next: (added) => {
-        console.log('Category added', added);
+    this.categoryService.createProductCategory({ body: formData as any }).subscribe({
+      next: () => {
+        this.openSnackBar('Category added successfully!', 'Close');
       },
       error: (err) => console.error(err)
     });
@@ -47,9 +60,9 @@ export class AdminCategoryComponent{
     }
   }
 
-  editCategory(category: ProductCategory){
+  editCategory(category: ProductCategoryResponse) {
     this.newCategory = {
-      id: category.id,
+      // id: category.categoryId,
       name: category.name,
       image: category.image,
       description: category.description
@@ -64,9 +77,10 @@ export class AdminCategoryComponent{
       formData.append('image', file);
     }
 
-    this.categoryService.updateProductCategory({body: formData as any}).subscribe({
-      next: (updatedCategory) =>{
-        alert("Category updated")
+    this.categoryService.updateProductCategory({ body: formData as any }).subscribe({
+      next: () => {
+        this.category.update(list => list.map(cat => cat.categoryId === category.id ? { ...cat, ...category } : cat));
+        this.openSnackBar('Category updated successfully!', 'Close');
       }
     })
   }

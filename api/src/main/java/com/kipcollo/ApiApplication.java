@@ -1,5 +1,7 @@
 package com.kipcollo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +16,7 @@ import com.kipcollo.auth.RoleRepository;
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableAsync
 public class ApiApplication {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ApiApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiApplication.class, args);
@@ -36,8 +39,10 @@ public class ApiApplication {
 				repository.save(
 						Roles.builder().name("DOCTOR").build()
 				);
+				LOGGER.info("Completed initialising Roles..");
 			}
 		};
+
 
 	}
 

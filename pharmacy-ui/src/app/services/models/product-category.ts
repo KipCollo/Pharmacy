@@ -4,6 +4,7 @@
 
 import { Product } from '../models/product';
 export interface ProductCategory {
+  categoryId: any;
   description?: string;
   id?: number;
   image?: string;

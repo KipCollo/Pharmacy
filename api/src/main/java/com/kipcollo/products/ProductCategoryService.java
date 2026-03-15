@@ -1,5 +1,6 @@
 package com.kipcollo.products;
 
+import com.kipcollo.exceptions.ProductCategoryNotFound;
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,10 @@ public class ProductCategoryService {
     }
 
     public ProductCategoryResponse getMedicineById(Integer id) {
-        return productCategoryRepository.findById(id).map(mapper::fromProductCategory).orElseThrow();
+        return productCategoryRepository
+                .findById(id)
+                .map(mapper::fromProductCategory)
+                .orElseThrow(() ->new ProductCategoryNotFound("Category Not Found!"));
     }
 
     @Transactional
@@ -31,8 +35,9 @@ public class ProductCategoryService {
 
     @Transactional
     public void updateProductCategory(ProductCategoryRequest request) {
-        var category = productCategoryRepository.findById(request.getId())
-                .orElseThrow(() -> new RuntimeException("Medicine not found"));
+        var category = productCategoryRepository
+                .findById(request.getId())
+                .orElseThrow(() -> new ProductCategoryNotFound("Category not found"));
         mergeMedicine(category,request);
     }
 

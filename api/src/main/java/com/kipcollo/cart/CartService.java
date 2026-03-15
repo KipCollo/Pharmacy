@@ -1,5 +1,6 @@
 package com.kipcollo.cart;
 
+import com.kipcollo.exceptions.ProductNotFoundException;
 import com.kipcollo.products.Product;
 import com.kipcollo.products.ProductRepository;
 import com.kipcollo.user.UserService;
@@ -46,7 +47,7 @@ public class CartService {
         for (CartProduct p : request.getProduct()) {
 
             Product product = productRepository.findById(p.getId())
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
+                    .orElseThrow(() -> new ProductNotFoundException("Product with ID::" + p.getId() + " not found"));
 
             CartProduct cartProduct = cart
                     .getCartProducts()

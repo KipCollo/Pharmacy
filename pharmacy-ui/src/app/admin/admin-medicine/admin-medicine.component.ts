@@ -4,9 +4,10 @@ import { CommonModule, CurrencyPipe, NgClass } from '@angular/common';
 import { MedicineApIsService } from '../../services/services/medicine-ap-is.service';
 import { FormsModule, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
-import {LucideAngularModule} from "lucide-angular/src/icons";
-import {Edit2, PlusCircle, Trash2} from "lucide-angular";
-import {Product} from "../../services/models/product";
+import { LucideAngularModule } from "lucide-angular/src/icons";
+import { Edit2, PlusCircle, Trash2 } from "lucide-angular";
+import { Product } from "../../services/models/product";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-medicine',
@@ -15,14 +16,28 @@ import {Product} from "../../services/models/product";
   templateUrl: './admin-medicine.component.html',
   styleUrl: './admin-medicine.component.css'
 })
-export class AdminMedicineComponent implements OnInit{
+export class AdminMedicineComponent implements OnInit {
   private medicineService = inject(MedicineApIsService);
   private router = inject(Router);
+  private _snackBar = inject(MatSnackBar);
 
   products = signal<ProductResponse[]>([]);
   searchQuery = signal('');
   actionsOpen: { [id: number]: boolean } = {};
-  newProduct: Product = { };
+  newProduct: Product = {};
+  message: string = 'Product Deleted successfully!';
+  action: string = 'Close';
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action,
+      {
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+        duration: 1000
+      }
+    );
+  }
+
 
   ngOnInit() {
     this.loadProducts();
@@ -37,13 +52,13 @@ export class AdminMedicineComponent implements OnInit{
     });
   }
 
-    isEditOpen = false;
-    selectedProduct: any = null;
+  isEditOpen = false;
+  selectedProduct: any = null;
 
-    closeEdit() {
-      this.isEditOpen = false;
-      this.selectedProduct = null;
-    }
+  closeEdit() {
+    this.isEditOpen = false;
+    this.selectedProduct = null;
+  }
 
   // Action handlers
   //edit(product: ProductResponse){}
@@ -53,7 +68,7 @@ export class AdminMedicineComponent implements OnInit{
     this.isEditOpen = true;
   }
 
-  addProduct(){
+  addProduct() {
     this.router.navigate(['admin/medicine/add'])
   }
 
@@ -63,9 +78,9 @@ export class AdminMedicineComponent implements OnInit{
 
     this.products.update(list => list.filter(i => i.productId !== id));
 
-    this.medicineService.deleteMedicine({id: id}).subscribe({
-      next: () =>{
-        alert("Product Deleted")
+    this.medicineService.deleteMedicine({ id: id }).subscribe({
+      next: () => {
+        this.openSnackBar(this.message, this.action);
       },
       error: () => {
         console.error('Delete failed, rolling back');
@@ -89,18 +104,18 @@ export class AdminMedicineComponent implements OnInit{
 
   // Reset form
   private resetForm() {
-    this.newProduct = { };
+    this.newProduct = {};
   }
 
   showAddProductModal = false;
 
-//   addProduct() {
-//   this.showAddProductModal = true;
-// }
+  //   addProduct() {
+  //   this.showAddProductModal = true;
+  // }
 
-closeAddProduct() {
-  this.showAddProductModal = false;
-}
+  closeAddProduct() {
+    this.showAddProductModal = false;
+  }
 
   protected readonly PlusCircle = PlusCircle;
   protected readonly Edit2 = Edit2;

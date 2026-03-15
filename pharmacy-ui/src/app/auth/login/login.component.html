@@ -5,18 +5,28 @@
     <h2>Welcome back! Please sign in to your account</h2>
     <form>
       @if (errorMsg.length) {
-          <div>
-           @for (msg of errorMsg; track $index) { <p>{{ msg }}</p>}
-          </div>
-        }
+      <div>
+        @for (msg of errorMsg; track $index) { <p>{{ msg }}</p>}
+      </div>
+      }
       <div class="form-group">
         <label for="username">Email address</label>
-        <input [(ngModel)]="authRequest.email"  [ngModelOptions]="{ standalone: true }" type="email" id="username" placeholder="name@gmail.com" class="input-field">
+        <input [(ngModel)]="authRequest.email" [ngModelOptions]="{ standalone: true }" type="email" id="username"
+          placeholder="name@gmail.com" class="input-field">
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input [(ngModel)]="authRequest.password"  [ngModelOptions]="{ standalone: true } "type="password" id="password" placeholder="password" class="input-field">
+        <input [(ngModel)]="authRequest.password" [ngModelOptions]="{ standalone: true } " type="password" id="password"
+          placeholder="password" class="input-field">
       </div>
+      <mat-form-field>
+        <mat-label>Enter your password</mat-label>
+        <input matInput [type]="hide() ? 'password' : 'text'" />
+        <button matIconButton matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide()">
+          <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
       <div class="form-footer">
         <div>
           <input type="checkbox" id="remember">
@@ -24,7 +34,8 @@
         </div>
         <a href="#" class="link">Forgot password?</a>
       </div>
-      <button (click)="login()" class="w-full bg-blue-800 text-white  hover:cursor-pointer btn-primary" type="submit">Sign in</button>
+      <button (click)="login()" class="w-full bg-blue-800 text-white  hover:cursor-pointer btn-primary"
+        type="submit">Sign in</button>
     </form>
     <div class="flex items-center divider">
       <div class="line"></div>
@@ -38,7 +49,8 @@
     </div>
     <div>
       Don't have an account?&nbsp;
-      <button (click)="register()" style="color: white; background-color: green" type="button" class=" btn-social hover:cursor-pointer"> Register</button>
+      <button (click)="register()" style="color: white; background-color: green" type="button"
+        class=" btn-social hover:cursor-pointer"> Register</button>
     </div>
   </div>
 

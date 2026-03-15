@@ -1,7 +1,12 @@
 package com.kipcollo.handler;
 
 import com.kipcollo.exceptions.CustomerNotFoundException;
+import com.kipcollo.exceptions.ProductCategoryNotFound;
+import com.kipcollo.exceptions.ProductNotFoundException;
+
 import jakarta.mail.MessagingException;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +21,8 @@ import java.util.Set;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(LockedException.class)
     public ResponseEntity<ExceptionResponse> handleException(LockedException exp){
@@ -39,14 +46,30 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomerNotFoundException.class)
     public ResponseEntity<String> handleException(CustomerNotFoundException exp){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(exp.getMessage());
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<String> handleException(ProductNotFoundException exp){
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(exp.getMessage());
+    }
+
+    @ExceptionHandler(ProductCategoryNotFound.class)
+    public ResponseEntity<String> handleException(ProductCategoryNotFound exp){
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(exp.getMessage());
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ExceptionResponse> handleException(BadCredentialsException exp){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ExceptionResponse.builder()
+                .body(ExceptionResponse
+                        .builder()
                         .businessErrorCode(BusinessErrorCodes.BAD_CREDENTIALS.getCode())
                         .businessErrorDescription(BusinessErrorCodes.BAD_CREDENTIALS.getDescription())
                         .error(BusinessErrorCodes.BAD_CREDENTIALS.getDescription())
@@ -68,15 +91,17 @@ public class GlobalExceptionHandler {
             var errorMessage = error.getDefaultMessage();
             errors.add(errorMessage);
         });
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ExceptionResponse.builder()
+                .body(ExceptionResponse
+                        .builder()
                         .validationErrors(errors)
                         .build());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleException(Exception exp){
-        exp.printStackTrace();
+        LOGGER.error(exp.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionResponse.builder()
                         .businessErrorDescription("Internal Error,Contact the admin")

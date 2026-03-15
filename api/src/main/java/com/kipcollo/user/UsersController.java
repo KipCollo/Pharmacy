@@ -40,7 +40,7 @@ public class UsersController {
 
 
    @GetMapping("/{customerId}")
-   public ResponseEntity<UserResponse> getCustomer(@PathVariable("customerId") Integer customerId){
+   public ResponseEntity<UserResponse> getCustomer(@PathVariable Integer customerId){
        return ResponseEntity.ok(service.getCustomerById(customerId));
    }
 
@@ -68,13 +68,13 @@ public class UsersController {
     }
 
     @DeleteMapping("/{customerId}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable("customerId") Integer customerId) {
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Integer customerId) {
        service.deleteCustomer(customerId);
        return ResponseEntity.ok().build();
     }
 
 
-    @GetMapping
+    @GetMapping("/reports")
     public ResponseEntity<List<CustomerReportResponse>> getCustomerReport(
             @RequestParam(defaultValue = "week") String period
     ) {
@@ -127,11 +127,11 @@ public class UsersController {
         return ResponseEntity.ok(report);
     }
 
-    @GetMapping("/dashboard/customers")
-    public ResponseEntity<CustomerDashboardResponse> getCustomerDashboard() {
-        CustomerDashboardResponse dto = service.getCustomerDashboardMetrics();
-        return ResponseEntity.ok(dto);
-    }
+//    @GetMapping("/dashboard/customers")
+//    public ResponseEntity<CustomerDashboardResponse> getCustomerDashboard() {
+//        CustomerDashboardResponse dto = service.getCustomerDashboardMetrics();
+//        return ResponseEntity.ok(dto);
+//    }
 
 
 }

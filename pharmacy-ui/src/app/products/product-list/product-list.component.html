@@ -1,21 +1,16 @@
-
 <div class="max-w-7xl mx-auto p-4 md:p-6 bg-white font-sans">
 
   <nav class="flex items-center text-sm text-gray-500 mb-6">
 
     <!-- Home -->
-    <button
-      (click)="goHome()"
-      class="flex items-center hover:text-red-500 cursor-pointer">
+    <button (click)="goHome()" class="flex items-center hover:text-red-500 cursor-pointer">
       <lucide-icon [img]="icons.House"></lucide-icon>
     </button>
 
     <span class="mx-2">></span>
 
     <!-- Products -->
-    <button
-      (click)="goProducts()"
-      class="hover:text-red-500 cursor-pointer">
+    <button (click)="goProducts()" class="hover:text-red-500 cursor-pointer">
       Products
     </button>
 
@@ -23,8 +18,8 @@
 
     <!-- Active Category -->
     <span class="text-black font-semibold">
-    {{ activeCategory()?.name }}
-  </span>
+      {{ activeCategory()?.name }}
+    </span>
 
   </nav>
 
@@ -39,7 +34,9 @@
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
           <input type="checkbox" [(ngModel)]="showInStockOnly" class="sr-only peer">
-          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-red-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+          <div
+            class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-red-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all">
+          </div>
         </label>
       </div>
 
@@ -49,59 +46,38 @@
         <div class="absolute h-2 w-full bg-gray-200 rounded"></div>
 
         <!-- Active range track -->
-        <div
-          class="absolute h-2 bg-red-500 rounded"
-          [style.left.%]="(minPrice() / priceMaxLimit) * 100"
+        <div class="absolute h-2 bg-red-500 rounded" [style.left.%]="(minPrice() / priceMaxLimit) * 100"
           [style.width.%]="((maxPrice() - minPrice()) / priceMaxLimit) * 100">
         </div>
 
         <!-- Min handle -->
-        <input
-          type="range"
-          min="{{priceMinLimit}}"
-          max="{{priceMaxLimit}}"
-          [ngModel]="minPrice()"
+        <input type="range" min="{{priceMinLimit}}" max="{{priceMaxLimit}}" [ngModel]="minPrice()"
           (ngModelChange)="updateMinPrice($event)"
-          class="absolute w-full h-2 appearance-none bg-transparent pointer-events-auto z-10"
-        />
+          class="absolute w-full h-2 appearance-none bg-transparent pointer-events-auto z-10" />
 
         <!-- Max handle -->
-        <input
-          type="range"
-          min="{{priceMinLimit}}"
-          max="{{priceMaxLimit}}"
-          [ngModel]="maxPrice()"
+        <input type="range" min="{{priceMinLimit}}" max="{{priceMaxLimit}}" [ngModel]="maxPrice()"
           (ngModelChange)="updateMaxPrice($event)"
-          class="absolute w-full h-2 appearance-none bg-transparent pointer-events-auto z-20"
-        />
+          class="absolute w-full h-2 appearance-none bg-transparent pointer-events-auto z-20" />
       </div>
+
+      <mat-slider min="200" max="500">
+        <input value="300" matSliderStartThumb>
+        <input value="400" matSliderEndThumb>
+      </mat-slider>
 
       <!-- Number inputs -->
       <div class="flex items-center gap-2 mt-2">
-        <input
-          type="number"
-          [min]="priceMinLimit"
-          [max]="maxPrice()"
-          [(ngModel)]="minPrice"
-          (ngModelChange)="updateMinPrice($event)"
-          class="w-20 border rounded p-1 text-center text-sm"
-        >
+        <input type="number" [min]="priceMinLimit" [max]="maxPrice()" [(ngModel)]="minPrice"
+          (ngModelChange)="updateMinPrice($event)" class="w-20 border rounded p-1 text-center text-sm">
         <span>-</span>
-        <input
-          type="number"
-          [min]="minPrice()"
-          [max]="priceMaxLimit"
-          [(ngModel)]="maxPrice"
-          (ngModelChange)="updateMaxPrice($event)"
-          class="w-20 border rounded p-1 text-center text-sm"
-        >
+        <input type="number" [min]="minPrice()" [max]="priceMaxLimit" [(ngModel)]="maxPrice"
+          (ngModelChange)="updateMaxPrice($event)" class="w-20 border rounded p-1 text-center text-sm">
       </div>
 
 
       <div>
-        <h3
-          (click)="showAllProducts()"
-          class="cursor-pointer hover:text-red-500 font-semibold">
+        <h3 (click)="showAllProducts()" class="cursor-pointer hover:text-red-500 font-semibold">
           All Products
         </h3>
         <h3 class="font-bold text-gray-800 mb-4 mt-5">Categories</h3>
@@ -109,17 +85,14 @@
         <ul class="space-y-3">
 
           @for (category of categories.productCategory(); track category.id){
-          <li
-            (click)="selectCategory(category)"
-            class="flex items-center text-sm cursor-pointer transition"
+          <li (click)="selectCategory(category)" class="flex items-center text-sm cursor-pointer transition"
             [class.text-red-500]="activeCategory() === category.name"
             [class.font-semibold]="activeCategory() === category.name"
-            [class.text-gray-600]="activeCategory() !== category.name"
-          >
+            [class.text-gray-600]="activeCategory() !== category.name">
             <span class="mr-2 text-gray-300 text-xs">+</span>
             {{ category.name }}
           </li>
-            }
+          }
         </ul>
       </div>
 
@@ -128,7 +101,8 @@
 
     <main class="flex-1">
       <div class="relative rounded-xl overflow-hidden mb-8 h-48 md:h-64">
-        <img [src]="'data:image/jpeg;base64,' + activeCategory()?.image" class="w-full h-full object-cover" alt="{{activeCategory()?.name}}">
+        <img [src]="'data:image/jpeg;base64,' + activeCategory()?.image" class="w-full h-full object-cover"
+          alt="{{activeCategory()?.name}}">
         <div class="absolute bottom-4 left-4 bg-white p-2 rounded-lg shadow-lg flex items-center gap-3">
           <div class="w-12 h-12 bg-gray-100 rounded flex items-center justify-center">
             <lucide-icon [img]="Pill" class="h-5 w-5 text-red-500"></lucide-icon>
@@ -142,54 +116,36 @@
       <div class="flex flex-wrap items-center justify-between mb-6 border-b pb-4">
         <div class="flex items-center gap-2">
           <h2 class="text-xl font-bold text-gray-900">{{ activeCategory()?.name}}</h2>
-<!--          <span class="text-sm text-gray-400">(Showing {{activeCategory()?..length}} out of {{activeCategory().}})</span>-->
+          <!--          <span class="text-sm text-gray-400">(Showing {{activeCategory()?..length}} out of {{activeCategory().}})</span>-->
         </div>
         <div class="flex items-center gap-4 text-sm mt-4 md:mt-0">
           <span class="text-gray-500">Sort by:</span>
 
           <!-- Popularity / Rating -->
-          <button
-            (click)="popularitySort.set('mostPopular')"
+          <button (click)="popularitySort.set('mostPopular')"
             [class.text-green-600]="popularitySort() === 'mostPopular'"
             [class.font-bold]="popularitySort() === 'mostPopular'"
             [class.border-b-2]="popularitySort() === 'mostPopular'"
-            [class.border-green-600]="popularitySort() === 'mostPopular'"
-            class="text-gray-500 hover:text-black"
-          >
+            [class.border-green-600]="popularitySort() === 'mostPopular'" class="text-gray-500 hover:text-black">
             Most Popular
           </button>
 
-          <button
-            (click)="popularitySort.set('mostRated')"
-            [class.text-green-600]="popularitySort() === 'mostRated'"
-            [class.font-bold]="popularitySort() === 'mostRated'"
-            [class.border-b-2]="popularitySort() === 'mostRated'"
-            [class.border-green-600]="popularitySort() === 'mostRated'"
-            class="text-gray-500 hover:text-black"
-          >
+          <button (click)="popularitySort.set('mostRated')" [class.text-green-600]="popularitySort() === 'mostRated'"
+            [class.font-bold]="popularitySort() === 'mostRated'" [class.border-b-2]="popularitySort() === 'mostRated'"
+            [class.border-green-600]="popularitySort() === 'mostRated'" class="text-gray-500 hover:text-black">
             Most Rated
           </button>
 
           <!-- Price -->
-          <button
-            (click)="priceSort.set('lowToHigh')"
-            [class.text-green-600]="priceSort() === 'lowToHigh'"
-            [class.font-bold]="priceSort() === 'lowToHigh'"
-            [class.border-b-2]="priceSort() === 'lowToHigh'"
-            [class.border-green-600]="priceSort() === 'lowToHigh'"
-            class="text-gray-500 hover:text-black"
-          >
+          <button (click)="priceSort.set('lowToHigh')" [class.text-green-600]="priceSort() === 'lowToHigh'"
+            [class.font-bold]="priceSort() === 'lowToHigh'" [class.border-b-2]="priceSort() === 'lowToHigh'"
+            [class.border-green-600]="priceSort() === 'lowToHigh'" class="text-gray-500 hover:text-black">
             Price: Low to High
           </button>
 
-          <button
-            (click)="priceSort.set('highToLow')"
-            [class.text-green-600]="priceSort() === 'highToLow'"
-            [class.font-bold]="priceSort() === 'highToLow'"
-            [class.border-b-2]="priceSort() === 'highToLow'"
-            [class.border-green-600]="priceSort() === 'highToLow'"
-            class="text-gray-500 hover:text-black"
-          >
+          <button (click)="priceSort.set('highToLow')" [class.text-green-600]="priceSort() === 'highToLow'"
+            [class.font-bold]="priceSort() === 'highToLow'" [class.border-b-2]="priceSort() === 'highToLow'"
+            [class.border-green-600]="priceSort() === 'highToLow'" class="text-gray-500 hover:text-black">
             Price: High to Low
           </button>
         </div>
@@ -201,41 +157,38 @@
         <div class="bg-purple-100 text-purple-600 text-xs px-3 py-1 rounded-full flex items-center gap-2">
           Categories: {{ activeCategory()?.name }} <i class="fas fa-times cursor-pointer"></i>
         </div>
-        <button class="text-xs text-gray-400 underline ml-2" >Reset all</button>
+        <button class="text-xs text-gray-400 underline ml-2">Reset all</button>
       </div>
 
       @if (isLoading) {
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          @for (i of [1,2,3,4,5,6,7,8]; track i) {
-            <div class="h-60 product-card bg-gray-200 animate-pulse rounded-lg"></div>
-          }
-        </div>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        @for (i of [1,2,3,4,5,6,7,8]; track i) {
+        <div class="h-60 product-card bg-gray-200 animate-pulse rounded-lg"></div>
+        }
+      </div>
       }
 
       @if (hasError) {
-        <div class="text-center py-20">
-          <p class="text-red-500 font-semibold">Server unavailable</p>
-          <p class="text-gray-400 text-sm">{{ errorMessage }}</p>
-        </div>
+      <div class="text-center py-20">
+        <p class="text-red-500 font-semibold">Server unavailable</p>
+        <p class="text-gray-400 text-sm">{{ errorMessage }}</p>
+      </div>
       }
 
 
       <!--      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 w-full max-w-7xl px-4">-->
       @if (!isLoading && !hasError) {
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
 
         @for (medicine of sortedProducts(); track medicine.productId) {
-            <div class="bg-white p-4 shadow rounded-lg flex flex-col relative cursor-pointer" >
-              <app-product-card
-                [medicine]="medicine"
-                type="list"
-              ></app-product-card>
-            </div>
+        <div class="bg-white p-4 shadow rounded-lg flex flex-col relative cursor-pointer">
+          <app-product-card [medicine]="medicine" type="list"></app-product-card>
+        </div>
 
         }
       </div>
 
-        @if (loadingMore) { <span> Show More...</span>}
+      @if (loadingMore) { <span> Show More...</span>}
 
       }
     </main>
