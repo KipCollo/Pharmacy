@@ -1,1 +1,202 @@
+<section class="settings-shell">
+    <header class="settings-header card">
+        <div>
+            <h1>Platform Settings</h1>
+            <p>Manage pharmacy profile, security, notifications, and operational preferences.</p>
+        </div>
 
+        <div class="header-actions">
+            <button type="button" class="btn ghost">Reset</button>
+            <button type="button" class="btn primary">Save Changes</button>
+        </div>
+    </header>
+
+    <div class="settings-grid">
+        <article class="card panel">
+            <div class="panel-head">
+                <h2>Organization</h2>
+                <span class="chip">Required</span>
+            </div>
+
+            <div class="field-grid two-col">
+                <label class="field">
+                    <span>Pharmacy Name</span>
+                    <input type="text" value="MediCore Pharmacy" />
+                </label>
+
+                <label class="field">
+                    <span>License Number</span>
+                    <input type="text" value="PH-004289-L" />
+                </label>
+
+                <label class="field">
+                    <span>Support Email</span>
+                    <input type="email" value="support@medicore.example" />
+                </label>
+
+                <label class="field">
+                    <span>Support Phone</span>
+                    <input type="text" value="+1 (555) 120-9041" />
+                </label>
+
+                <label class="field full-width">
+                    <span>Business Address</span>
+                    <input type="text" value="142 Market Road, Central District" />
+                </label>
+            </div>
+        </article>
+
+        <article class="card panel">
+            <div class="panel-head">
+                <h2>Security</h2>
+                <span class="chip neutral">Recommended</span>
+            </div>
+
+            <div class="stack-list">
+                <label class="toggle-row">
+                    <div>
+                        <strong>Two-Factor Authentication</strong>
+                        <p>Require 2FA for all admin accounts during sign in.</p>
+                    </div>
+                    <input type="checkbox" checked />
+                </label>
+
+                <label class="toggle-row">
+                    <div>
+                        <strong>Session Timeout</strong>
+                        <p>Automatically sign out inactive users after 20 minutes.</p>
+                    </div>
+                    <input type="checkbox" checked />
+                </label>
+
+                <label class="field inline">
+                    <span>Password Rotation</span>
+                    <select>
+                        <option>Every 30 days</option>
+                        <option selected>Every 60 days</option>
+                        <option>Every 90 days</option>
+                    </select>
+                </label>
+            </div>
+        </article>
+
+        <article class="card panel">
+            <div class="panel-head">
+                <h2>Notifications</h2>
+                <span class="chip">Active</span>
+            </div>
+
+            <div class="stack-list">
+                <label class="toggle-row">
+                    <div>
+                        <strong>Order Alerts</strong>
+                        <p>Notify admins when new orders are placed.</p>
+                    </div>
+                    <input type="checkbox" checked />
+                </label>
+
+                <label class="toggle-row">
+                    <div>
+                        <strong>Low Stock Alerts</strong>
+                        <p>Send warning when medicine count drops below threshold.</p>
+                    </div>
+                    <input type="checkbox" checked />
+                </label>
+
+                <label class="toggle-row">
+                    <div>
+                        <strong>Prescription Queue Alerts</strong>
+                        <p>Notify pharmacists when pending approvals exceed 10 items.</p>
+                    </div>
+                    <input type="checkbox" />
+                </label>
+            </div>
+        </article>
+
+        <article class="card panel">
+            <div class="panel-head">
+                <h2>Operations</h2>
+                <span class="chip neutral">Configurable</span>
+            </div>
+
+            <div class="field-grid two-col">
+                <label class="field">
+                    <span>Default Currency</span>
+                    <select>
+                        <option selected>USD</option>
+                        <option>EUR</option>
+                        <option>GBP</option>
+                    </select>
+                </label>
+
+                <label class="field">
+                    <span>Time Zone</span>
+                    <select>
+                        <option selected>UTC-05:00 (Eastern Time)</option>
+                        <option>UTC+00:00 (GMT)</option>
+                        <option>UTC+01:00 (West Africa Time)</option>
+                    </select>
+                </label>
+
+                <label class="field">
+                    <span>Auto-Approve Refill Orders</span>
+                    <select>
+                        <option>Disabled</option>
+                        <option selected>Enabled for trusted customers</option>
+                        <option>Enabled for all customers</option>
+                    </select>
+                </label>
+
+                <label class="field">
+                    <span>Inventory Refresh Interval</span>
+                    <select>
+                        <option>Every 15 minutes</option>
+                        <option selected>Every 30 minutes</option>
+                        <option>Every 60 minutes</option>
+                    </select>
+                </label>
+            </div>
+        </article>
+
+        <article class="card panel wide">
+            <div class="panel-head">
+                <h2>Data and Backup</h2>
+                <span class="chip">Critical</span>
+            </div>
+
+            <div class="field-grid three-col">
+                <label class="field">
+                    <span>Backup Frequency</span>
+                    <select>
+                        <option>Every 6 hours</option>
+                        <option selected>Every 12 hours</option>
+                        <option>Daily</option>
+                    </select>
+                </label>
+
+                <label class="field">
+                    <span>Retention Policy</span>
+                    <select>
+                        <option>14 days</option>
+                        <option selected>30 days</option>
+                        <option>90 days</option>
+                    </select>
+                </label>
+
+                <label class="field">
+                    <span>Export Format</span>
+                    <select>
+                        <option selected>CSV</option>
+                        <option>JSON</option>
+                        <option>PDF</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="actions-inline">
+                <button type="button" class="btn ghost">Run Backup Now</button>
+                <button type="button" class="btn ghost">Download Audit Log</button>
+            </div>
+        </article>
+    </div>
+</section>

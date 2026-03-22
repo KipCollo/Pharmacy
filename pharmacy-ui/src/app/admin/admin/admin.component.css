@@ -1,27 +1,28 @@
-/* Admin Layout - Fullscreen and Flexbox */
 .admin-layout {
   display: flex;
-  height: 100vh; /* Make the layout cover the full viewport height */
+  height: 100vh;
+  overflow: hidden;
+  background: #ffffff;
 }
 
-/* Main Content Styles - Occupy the remaining space */
+.admin-sidebar {
+  flex: 0 0 auto;
+}
+
 .admin-content {
-  padding: 1.5rem;
-  background-color: #fff;
+  flex: 1;
+  padding: 0;
+  background: #ffffff;
   height: 100vh;
   overflow-y: auto;
 }
 
-/* Adjust for smaller screens (optional) */
 @media (max-width: 768px) {
-  .sidebar {
-    position: static;
-    width: 100%;
-    height: auto;
-    padding: 1rem;
+  .admin-layout {
+    flex-direction: column;
   }
 
   .admin-content {
-    margin-left: 0; /* Content takes full width on small screens */
+    padding: 0;
   }
 }

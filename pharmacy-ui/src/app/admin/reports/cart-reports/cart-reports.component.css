@@ -1,10 +1,174 @@
-.container {
-  width: 80%;
-  margin: auto;
-  text-align: center;
+:host {
+  display: block;
 }
 
-.chart-container {
-  width: 600px;  /* Adjust width */
-  height: 500px; /* Adjust height */
+.report-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(320px, 1fr);
+  gap: 24px;
+  padding: 16px;
+  background: #f4f4f4;
+}
+
+.report-panel {
+  background: #f4f4f4;
+  border-top: 1px solid #d3d3d3;
+}
+
+.panel-header {
+  border-bottom: 1px solid #bdbdbd;
+  padding: 0 0 8px;
+  margin-bottom: 8px;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1;
+  color: #0c6d6b;
+  font-weight: 700;
+}
+
+.panel-header-split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.meta-actions {
+  display: flex;
+  gap: 16px;
+  font-size: 24px;
+  color: #303b44;
+}
+
+.meta-actions .active {
+  color: #6d3f62;
+  font-weight: 600;
+}
+
+.table-head,
+.customer-row {
+  display: grid;
+  grid-template-columns: 1fr 88px 140px;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.table-head {
+  padding: 8px 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #353535;
+}
+
+.customer-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.customer-row {
+  min-height: 46px;
+  font-size: 30px;
+  color: #444;
+}
+
+.name-cell {
+  position: relative;
+  overflow: hidden;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+}
+
+.revenue-highlight {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  background: #ebe6de;
+}
+
+.name-cell span {
+  position: relative;
+  z-index: 1;
+  padding: 0 8px;
+}
+
+.orders-cell,
+.revenue-cell {
+  text-align: right;
+}
+
+.treemap-grid {
+  display: grid;
+  grid-template-columns: 56% 44%;
+  grid-template-rows: 78% 22%;
+  min-height: 420px;
+  height: calc(100% - 56px);
+}
+
+.tree-tile {
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.tree-tile strong {
+  font-weight: 500;
+}
+
+.tile-large-left {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+
+.tile-large-right {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.tile-small-left {
+  grid-column: 2;
+  grid-row: 2;
+  margin-right: 35%;
+}
+
+.tile-small-right {
+  grid-column: 2;
+  grid-row: 2;
+  margin-left: 65%;
+}
+
+@media (max-width: 1280px) {
+  .panel-header h2 {
+    font-size: 28px;
+  }
+
+  .meta-actions,
+  .table-head,
+  .customer-row,
+  .tree-tile {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 900px) {
+  .report-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .table-head,
+  .customer-row {
+    grid-template-columns: 1fr 72px 100px;
+  }
+
+  .treemap-grid {
+    min-height: 300px;
+  }
 }

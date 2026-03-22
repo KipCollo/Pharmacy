@@ -1,8 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from "@angular/router";
 
-import { FormBuilder, FormGroup, FormsModule, Validators } from "@angular/forms";
-import { NgForOf } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 import { ProductRequest } from '../../services/models/product-request';
 import { MedicineApIsService } from '../../services/services';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -56,7 +55,7 @@ export class MedicineComponent {
   uploadProduct() {
 
     if (!this.selectedFile) {
-      alert('Please upload a product image.');
+      this.openSnackBar('Please upload a product image.', this.action);
       return;
     }
 
@@ -72,11 +71,12 @@ export class MedicineComponent {
       body: formData as any
     }).subscribe({
       next: () => {
-        this.router.navigate(["activate-account"]);
+        this.router.navigate(["/admin/medicine"]);
         this.openSnackBar(this.message, this.action);
       },
       error: (err) => {
-        this.errorMsg = err.error.validationErrors;
+        this.errorMsg = err?.error?.validationErrors ?? ['Unable to upload product. Please try again.'];
+        this.openSnackBar(this.errorMsg[0], this.action);
       }
     })
 

@@ -1,0 +1,283 @@
+.admin-prescriptions-shell {
+    display: grid;
+    gap: 16px;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.toolbar label {
+    font-size: 14px;
+    color: #334155;
+    font-weight: 600;
+}
+
+.toolbar input[type='date'] {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 8px;
+    background: #fff;
+}
+
+.page-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #0f172a;
+}
+
+.page-header p {
+    margin: 6px 0 0;
+    color: #475569;
+}
+
+.state-box {
+    border: 1px dashed #cbd5e1;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 14px;
+    color: #475569;
+}
+
+.prescription-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #fff;
+    padding: 14px;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+}
+
+.list-view {
+    display: grid;
+    gap: 10px;
+}
+
+.list-row {
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #fff;
+    padding: 14px;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.list-row:hover {
+    border-color: #93c5fd;
+    transform: translateY(-1px);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.meta {
+    margin: 2px 0;
+    color: #334155;
+}
+
+.status-pill {
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-approved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.card-body {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 14px;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    display: grid;
+    place-items: center;
+    z-index: 50;
+    padding: 16px;
+}
+
+.modal-card {
+    width: min(980px, 100%);
+    max-height: calc(100vh - 32px);
+    overflow: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #fff;
+    padding: 14px;
+    box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #0f172a;
+}
+
+.prescription-image {
+    width: 100%;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    object-fit: contain;
+    background: #fff;
+}
+
+.review-panel {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px;
+    background: #f8fafc;
+}
+
+.panel-title {
+    margin: 0 0 10px;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.product-picker {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 88px auto;
+    gap: 8px;
+}
+
+.product-picker select,
+.product-picker input {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 8px;
+    background: #fff;
+}
+
+.selected-products {
+    margin-top: 10px;
+    display: grid;
+    gap: 8px;
+}
+
+.selected-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px;
+    background: #fff;
+}
+
+.empty-text {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.card-actions {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.action-link {
+    border: 0;
+    background: transparent;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 6px 8px;
+}
+
+.action-link:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.action-approve {
+    color: #15803d;
+}
+
+.action-cancel {
+    color: #b91c1c;
+}
+
+.btn {
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-weight: 600;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: #fff;
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: #fff;
+}
+
+.btn-muted {
+    background: #fff;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+@media (max-width: 920px) {
+    .card-body {
+        grid-template-columns: 1fr;
+    }
+
+    .product-picker {
+        grid-template-columns: 1fr;
+    }
+
+    .card-actions {
+        flex-direction: column;
+    }
+
+    .list-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

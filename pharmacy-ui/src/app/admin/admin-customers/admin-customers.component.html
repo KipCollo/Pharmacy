@@ -1,182 +1,288 @@
-<!-- <div class="flex">
-  <div class="flex-1 p-6 min-h-screen">
-    <h3 class="text-2xl">Customer</h3>
-    <p class="font-bold">{{ totalCustomers }} <span>Customers</span></p> -->
-
-    <!-- ANALYTICS OVERVIEW -->
-    <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <div class="bg-white p-4 rounded-lg shadow-md">
-        <h2 class="text-lg font-semibold">Total Customers</h2>
-        <p class="text-2xl font-bold">{{ totalCustomers }}</p>
+<section class="min-h-screen bg-white p-4 md:p-6">
+  <div class="relative">
+    <header class="mb-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div>
+        <h2 class="m-0 text-2xl font-semibold text-slate-800">Customer</h2>
+        <p class="mt-1 text-sm text-slate-500">{{ getFilteredCustomers().length }} of {{ customers.length }} customers
+        </p>
       </div>
 
-      <div class="bg-white p-4 rounded-lg shadow-md">
-        <h2 class="text-lg font-semibold">Total Revenue</h2>
-        <p class="text-2xl font-bold">KSH {{ totalRevenue | number: '1.0-2' }}</p>
-      </div>
+      <label class="grid min-w-0 gap-1 md:min-w-70">
+        <span class="text-xs font-semibold uppercase tracking-[0.06em] text-slate-500">Search</span>
+        <input type="text" placeholder="Search name, email, phone, location" [(ngModel)]="searchTerm"
+          class="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-200" />
+      </label>
+    </header>
 
-      <div class="bg-white p-4 rounded-lg shadow-md">
-        <h2 class="text-lg font-semibold">Average Sales</h2>
-        <p class="text-2xl font-bold">KSH {{ averageLTV | number: '1.0-2' }}</p>
-      </div>
-    </div>
+    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_30px_rgba(22,44,74,0.08)]">
 
-    < CHARTS -->
-    <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-white p-4 rounded-lg shadow-md max-w-xl mx-auto">
-        <h2 class="text-lg font-semibold">Order Trends</h2>
-        <canvas baseChart [data]="orderChartData" [options]="chartOptions" [type]="'line'" class="w-full h-64">
-        </canvas>
-      </div>
+      <div class="overflow-auto">
+        <table class="min-w-240 w-full border-collapse text-left text-sm">
+          <thead>
+            <tr class="h-10 bg-slate-50 text-[0.74rem] font-bold uppercase tracking-[0.06em] text-slate-500">
+              <th class="w-9 border-b border-slate-200 px-3 py-2 align-middle">
+                <input type="checkbox" aria-label="Select all customers" [checked]="areAllVisibleSelected()"
+                  [indeterminate]="isSomeVisibleSelected()"
+                  (change)="toggleSelectAllVisible($any($event.target).checked)" />
+              </th>
+              <th class="border-b border-slate-200 px-3 py-2 align-middle">
+                <button class="inline-flex items-center gap-1" type="button" (click)="toggleSort('name')">
+                  Name <span class="w-2 text-[0.62rem] text-slate-400">{{ getSortIcon('name') }}</span>
+                </button>
+              </th>
+              <th class="border-b border-slate-200 px-3 py-2 align-middle">
+                <button class="inline-flex items-center gap-1" type="button" (click)="toggleSort('email')">
+                  Email <span class="w-2 text-[0.62rem] text-slate-400">{{ getSortIcon('email') }}</span>
+                </button>
+              </th>
+              <th class="border-b border-slate-200 px-3 py-2 align-middle">
+                <button class="inline-flex items-center gap-1" type="button" (click)="toggleSort('phone')">
+                  Phone <span class="w-2 text-[0.62rem] text-slate-400">{{ getSortIcon('phone') }}</span>
+                </button>
+              </th>
+              <th class="border-b border-slate-200 px-3 py-2 align-middle">
+                <button class="inline-flex items-center gap-1" type="button" (click)="toggleSort('location')">
+                  Location <span class="w-2 text-[0.62rem] text-slate-400">{{ getSortIcon('location') }}</span>
+                </button>
+              </th>
+              <th class="border-b border-slate-200 px-3 py-2 align-middle">
+                <button class="inline-flex items-center gap-1" type="button" (click)="toggleSort('roles')">
+                  Roles <span class="w-2 text-[0.62rem] text-slate-400">{{ getSortIcon('roles') }}</span>
+                </button>
+              </th>
+              <th class="border-b border-slate-200 px-3 py-2 align-middle">
+                <button class="inline-flex items-center gap-1" type="button" (click)="toggleSort('created')">
+                  Created <span class="w-2 text-[0.62rem] text-slate-400">{{ getSortIcon('created') }}</span>
+                </button>
+              </th>
+              <th class="w-24 border-b border-slate-200 px-3 py-2 text-right align-middle">Action</th>
+            </tr>
+          </thead>
 
-      <div class="bg-white p-4 rounded-lg shadow-md max-w-xl mx-auto">
-        <h2 class="text-lg font-semibold">Revenue Trends</h2>
-        <canvas baseChart [data]="revenueChartData" [options]="chartOptions" [type]="'bar'" class="w-full h-64">
-        </canvas>
-      </div>
-    </div> -->
+          <tbody>
+            @for (customer of getFilteredCustomers(); track customer.customerId) {
+            <tr class="h-11.5 cursor-pointer transition-colors hover:bg-sky-50"
+              [class.bg-sky-100]="selectedCustomer?.customerId === customer.customerId"
+              (click)="openCustomerPreview(customer)">
+              <td class="w-9 border-b border-slate-100 px-3 py-2 align-middle" (click)="$event.stopPropagation()">
+                <input type="checkbox" [aria-label]="'Select ' + getFullName(customer)"
+                  [checked]="isCustomerSelected(customer)" (click)="$event.stopPropagation()"
+                  (change)="toggleCustomerSelection(customer, $any($event.target).checked)" />
+              </td>
 
+              <td class="border-b border-slate-100 px-3 py-2 align-middle">
+                <div class="flex items-center gap-2.5">
+                  <img [src]="getAvatar(customer)" [alt]="getInitials(customer.firstName, customer.lastName)"
+                    class="h-6 w-6 rounded-full border border-slate-300 object-cover" />
+                  <div class="text-[0.86rem] font-semibold leading-none text-slate-800">{{ getFullName(customer) }}
+                  </div>
+                </div>
+              </td>
 
-    <!-- CUSTOMER LIST -->
-    <!-- <div class="bg-white p-4 rounded-lg shadow-md mt-2">
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr class="border-b">
-            <th class="p-2">Customer</th>
-            <th class="p-2">Contact Details</th>
-            <th class="p-2">Location</th>
-            <th class="p-2">Total Spent</th>
-            <th class="p-2">Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (customer of customers; track customer.customerId) {
-          <tr class="border-b">
-            <td class="p-2 font-semibold flex items-center">
-              <span class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center mr-2">
-                {{ getInitials(customer.firstName, customer.lastName) }}
-              </span>
-              {{ customer.firstName }} {{ customer.lastName }}
-            </td>
+              <td class="border-b border-slate-100 px-3 py-2 align-middle text-sky-700">{{ customer.email || 'N/A' }}
+              </td>
+              <td class="border-b border-slate-100 px-3 py-2 align-middle">{{ customer.phone || 'N/A' }}</td>
+              <td class="border-b border-slate-100 px-3 py-2 align-middle">{{ customer.location || 'N/A' }}</td>
+              <td class="border-b border-slate-100 px-3 py-2 align-middle">{{ formatRoleNames(customer) }}</td>
+              <td class="border-b border-slate-100 px-3 py-2 align-middle">{{ formatDate(customer.createdDate) }}</td>
+              <td class="w-24 border-b border-slate-100 px-3 py-2 text-right align-middle"
+                (click)="$event.stopPropagation()">
+                <div class="relative inline-flex justify-end">
+                  <button
+                    class="h-7 w-7 rounded-lg border border-slate-300 bg-slate-50 text-base leading-none text-slate-600 hover:bg-sky-50"
+                    type="button" aria-label="Open customer actions" (click)="toggleActionMenu(customer.customerId)">
+                    ⋮
+                  </button>
 
-            <td class="p-2">
-              <a href="mailto:{{ customer.email }}" class="text-blue-500 hover:underline">{{ customer.email }}</a><br>
-              <span class="text-gray-500">{{ customer.phone }}</span>
-            </td>
-
-            <td class="p-2">{{ customer.location || 'N/A' }}</td>
-
-            <td class="p-2 font-bold">
-              KES {{ customer.customerId | number: '1.0-2' }}
-            </td>
-
-            <td class="p-2 font-semibold">
-              <div *ngFor="let role of customer.roles">
-                <span class="px-2 py-1 rounded text-white text-xs" [ngClass]="{
-                        'bg-green-500': role.name === 'ADMIN',
-                        'bg-blue-500': role.name === 'USER',
-                        'bg-yellow-500': role.name === 'DOCTOR'
-                      }">
-                  {{ role.name }}
-                </span>
-              </div>
-            </td>
-          </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div> -->
-
-<div class="bg-white rounded-lg shadow overflow-hidden">
-  <!-- Table Header -->
-  <div class="flex items-center justify-between px-6 py-4 border-b">
-    <h2 class="text-lg font-semibold text-gray-700">
-      Customers
-      <span class="text-sm text-gray-400 ml-2">{{ customers.length }} Customers</span>
-    </h2>
-
-    <input
-      type="text"
-      placeholder="Search customer..."
-      class="border rounded-lg px-3 py-2 text-sm w-64 focus:outline-none focus:ring"
-      [(ngModel)]="searchTerm"
-    />
-  </div>
-
-  <!-- Table -->
-  <div class="overflow-x-auto">
-    <table class="min-w-full text-sm">
-      <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
-        <tr>
-          <th class="px-6 py-3 text-left">Name</th>
-          <th class="px-6 py-3 text-left">Email</th>
-          <th class="px-6 py-3 text-left">Phone</th>
-          <th class="px-6 py-3 text-left">DOB</th>
-          <th class="px-6 py-3 text-left">Location</th>
-          <th class="px-6 py-3 text-left">Role</th>
-          <th class="px-6 py-3 text-left">Created</th>
-          <th class="px-6 py-3 text-left">Modified</th>
-        </tr>
-      </thead>
-
-      <tbody class="divide-y">
-        @for (customer of filteredCustomers(); track customer.customerId){
-        <tr
-          class="hover:bg-gray-50 cursor-pointer"
-          (click)="openCustomerPreview(customer)"
-        >
-          <td class="px-4 py-2 flex items-center gap-2">
-            <img
-              [src]="'https://ui-avatars.com/api/?name=' + customer"
-              class="w-8 h-8 rounded-full"
-             [alt]="getInitials(customer.firstName, customer.lastName)"/>
-            <span class="font-medium text-gray-700">
-              {{ customer.firstName }}  {{ customer.lastName }}
-            </span>
-          </td>
-
-          <td class="px-5 py-2 text-blue-600">
-            {{ customer.email }}
-          </td>
-
-          <td class="px-6 py-4">
-            {{ customer.phone }}
-          </td>
-
-          <td class="px-6 py-4">
-            {{ customer.dateOfBirth }}
-          </td>
-
-          <td class="px-6 py-4">
-            {{ customer.location }}
-          </td>
-
-          <td class="px-6 py-4 font-semibold">
-            @for (role of customer.roles; track role.roleId) {
-            <div >
-                <span class="px-2 py-1 rounded bg-gray-200 text-xs" [ngClass]="{
-                        'text-green-500': role.name === 'ADMIN',
-                        'text-blue-500': role.name === 'USER',
-                        'text-yellow-500': role.name === 'DOCTOR'
-                      }">
-                  {{ role.name }}
-                </span>
-            </div>
+                  @if (openActionMenuId === customer.customerId) {
+                  <div
+                    class="absolute right-0 top-[calc(100%+0.35rem)] z-10 flex min-w-max items-center gap-1 whitespace-nowrap rounded-xl border border-slate-200 bg-white p-1 shadow-xl">
+                    <button class="rounded-lg px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-sky-50"
+                      type="button" (click)="viewCustomer(customer)">View customer</button>
+                    <button class="rounded-lg px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-sky-50"
+                      type="button" (click)="deactivateCustomer(customer)">Deactivate account</button>
+                    <button class="rounded-lg px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-sky-50"
+                      type="button" (click)="resetCustomerPassword(customer)">Reset password</button>
+                  </div>
+                  }
+                </div>
+              </td>
+            </tr>
             }
-          </td>
 
-          <td class="px-6 py-4 text-gray-400">
-            {{ customer.createdDate | date:'medium' }}
-          </td>
+            @if (getFilteredCustomers().length === 0) {
+            <tr>
+              <td colspan="9" class="px-3 py-6 text-center text-sm text-slate-500">No customers found for this search.
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-          <td class="px-6 py-4 text-gray-400">
-            {{ customer.lastModifiedDate | date:'medium' }}
-          </td>
-        </tr>
+    @if (isPreviewOpen) {
+    <div class="fixed inset-0 z-30 bg-slate-900/30" (click)="closePreview()"></div>
+    <aside
+      class="fixed inset-y-3 right-3 left-3 z-40 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_10px_30px_rgba(22,44,74,0.08)] sm:left-auto sm:w-[calc(100vw-2rem)] sm:max-w-165 xl:max-w-190"
+      aria-label="Customer info preview" (click)="$event.stopPropagation()">
+      @if (selectedCustomer) {
+      <header class="flex items-center justify-between border-b border-slate-200 pb-3">
+        <p class="m-0 text-[0.95rem] font-bold text-slate-800">Customer Info</p>
+        <button type="button" aria-label="Close customer preview"
+          class="rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1 text-sm font-semibold text-slate-700"
+          (click)="closePreview()">✕</button>
+      </header>
+
+      <div class="mt-4 flex items-center gap-3">
+        <img [src]="getAvatar(selectedCustomer)"
+          [alt]="getInitials(selectedCustomer.firstName, selectedCustomer.lastName)"
+          class="h-13 w-13 rounded-full border-2 border-slate-200" />
+
+        <div>
+          <h3 class="m-0 text-xl font-semibold text-slate-800">{{ getFullName(selectedCustomer) }}</h3>
+          <p class="mt-1 text-sm text-slate-500">{{ selectedCustomer.email || 'N/A' }}</p>
+        </div>
+      </div>
+
+      <section class="mt-4 grid grid-cols-2 gap-2.5 xl:grid-cols-4">
+        <article class="rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2">
+          <span class="mb-1 block text-[0.73rem] text-slate-500">Customer ID</span>
+          <strong class="text-[0.92rem] text-slate-800">#{{ selectedCustomer.customerId || 'N/A' }}</strong>
+        </article>
+        <article class="rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2">
+          <span class="mb-1 block text-[0.73rem] text-slate-500">Roles</span>
+          <strong class="text-[0.92rem] text-slate-800">{{ formatRoleNames(selectedCustomer) }}</strong>
+        </article>
+        <article class="rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2">
+          <span class="mb-1 block text-[0.73rem] text-slate-500">Created</span>
+          <strong class="text-[0.92rem] text-slate-800">{{ formatDate(selectedCustomer.createdDate) }}</strong>
+        </article>
+        <article class="rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2">
+          <span class="mb-1 block text-[0.73rem] text-slate-500">Updated</span>
+          <strong class="text-[0.92rem] text-slate-800">{{ formatDate(selectedCustomer.lastModifiedDate) }}</strong>
+        </article>
+      </section>
+
+      <section class="mt-4 border-t border-slate-200 pt-3.5">
+        <h4 class="mb-2.5 text-[0.92rem] font-semibold text-slate-800">Customer Details</h4>
+
+        <div class="grid overflow-hidden rounded-xl border border-slate-200 sm:grid-cols-2">
+          <article
+            class="border-b border-r border-slate-200 bg-white px-3 py-2.5 even:border-r-0 sm:nth-last-[-n+2]:border-b-0">
+            <span class="mb-1 block text-[0.72rem] text-slate-500">Phone Number</span>
+            <p class="m-0 wrap-break-word text-[0.83rem] font-semibold text-slate-800">{{ selectedCustomer.phone ||
+              'N/A' }}
+            </p>
+          </article>
+          <article
+            class="border-b border-slate-200 bg-white px-3 py-2.5 sm:border-b sm:border-r-0 sm:nth-last-[-n+2]:border-b-0">
+            <span class="mb-1 block text-[0.72rem] text-slate-500">Date Of Birth</span>
+            <p class="m-0 wrap-break-word text-[0.83rem] font-semibold text-slate-800">{{
+              formatDate(selectedCustomer.dateOfBirth) }}</p>
+          </article>
+          <article
+            class="border-b border-r border-slate-200 bg-white px-3 py-2.5 even:border-r-0 sm:nth-last-[-n+2]:border-b-0">
+            <span class="mb-1 block text-[0.72rem] text-slate-500">Email</span>
+            <p class="m-0 wrap-break-word text-[0.83rem] font-semibold text-slate-800">{{ selectedCustomer.email ||
+              'N/A' }}
+            </p>
+          </article>
+          <article
+            class="border-b border-slate-200 bg-white px-3 py-2.5 sm:border-b sm:border-r-0 sm:nth-last-[-n+2]:border-b-0">
+            <span class="mb-1 block text-[0.72rem] text-slate-500">Location</span>
+            <p class="m-0 wrap-break-word text-[0.83rem] font-semibold text-slate-800">{{ selectedCustomer.location ||
+              'N/A'
+              }}</p>
+          </article>
+          <article
+            class="border-b border-r border-slate-200 bg-white px-3 py-2.5 even:border-r-0 sm:nth-last-[-n+2]:border-b-0">
+            <span class="mb-1 block text-[0.72rem] text-slate-500">Customer ID</span>
+            <p class="m-0 wrap-break-word text-[0.83rem] font-semibold text-slate-800">#{{ selectedCustomer.customerId
+              ||
+              'N/A' }}</p>
+          </article>
+          <article
+            class="border-b border-slate-200 bg-white px-3 py-2.5 sm:border-b sm:border-r-0 sm:nth-last-[-n+2]:border-b-0">
+            <span class="mb-1 block text-[0.72rem] text-slate-500">Primary Role</span>
+            <p class="m-0 wrap-break-word text-[0.83rem] font-semibold text-slate-800">{{
+              formatRoleNames(selectedCustomer)
+              }}</p>
+          </article>
+          <article class="border-r border-slate-200 bg-white px-3 py-2.5 even:border-r-0">
+            <span class="mb-1 block text-[0.72rem] text-slate-500">Created Date</span>
+            <p class="m-0 wrap-break-word text-[0.83rem] font-semibold text-slate-800">{{
+              formatDateTime(selectedCustomer.createdDate) }}</p>
+          </article>
+          <article class="bg-white px-3 py-2.5">
+            <span class="mb-1 block text-[0.72rem] text-slate-500">Last Modified</span>
+            <p class="m-0 wrap-break-word text-[0.83rem] font-semibold text-slate-800">{{
+              formatDateTime(selectedCustomer.lastModifiedDate) }}</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="mt-4 border-t border-slate-200 pt-3.5">
+        <h4 class="mb-2.5 text-[0.92rem] font-semibold text-slate-800">Role Access</h4>
+        <div class="flex flex-wrap gap-2">
+          @for (role of selectedCustomer.roles || []; track role.roleId) {
+          <span [class]="getRoleBadgeClass(role.name)">{{ role.name }}</span>
+          }
+
+          @if (!selectedCustomer.roles?.length) {
+          <span
+            class="rounded-full bg-slate-100 px-2.5 py-1 text-[0.72rem] font-bold tracking-[0.03em] text-slate-600">CUSTOMER</span>
+          }
+        </div>
+      </section>
+
+      <!-- PREVIOUS ORDERS TABLE SECTION -->
+      <section class="mt-4 border-t border-slate-200 pt-3.5">
+        <h4 class="mb-2.5 text-[0.92rem] font-semibold text-slate-800">Previous Orders</h4>
+
+        @if (loadingOrders) {
+        <div class="text-center py-4">
+          <p class="text-sm text-slate-500">Loading orders...</p>
+        </div>
+        } @else if (customerOrders.length === 0) {
+        <p class="text-sm text-slate-500">No previous orders found.</p>
+        } @else {
+        <div class="overflow-auto rounded-lg border border-slate-200">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 border-b border-slate-200">
+              <tr class="text-[0.75rem] font-semibold text-slate-600 uppercase tracking-[0.03em]">
+                <th class="px-3 py-2.5 text-left">Order ID</th>
+                <th class="px-3 py-2.5 text-left">Amount</th>
+                <th class="px-3 py-2.5 text-left">Date</th>
+                <th class="px-3 py-2.5 text-left">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (order of customerOrders; track order.orderId) {
+              <tr class="border-b border-slate-200 hover:bg-slate-50 transition">
+                <td class="px-3 py-2.5 font-semibold text-slate-800">#{{ order.orderId || 'N/A' }}</td>
+                <td class="px-3 py-2.5 font-semibold text-slate-800">{{ order.totalAmount |
+                  currency:'KES':'symbol':'1.2-2' }}</td>
+                <td class="px-3 py-2.5 text-slate-700">{{ order.createdAt | date:'short' }}</td>
+                <td class="px-3 py-2.5">
+                  <span [ngClass]="getOrderStatusClass(order.approvalStatus)">
+                    {{ order.approvalStatus || 'N/A' }}
+                  </span>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
         }
-      </tbody>
-    </table>
+      </section>
+      } @else {
+      <div class="p-5">
+        <h3 class="m-0 text-lg font-semibold text-slate-800">Customer Info</h3>
+        <p class="mt-2 text-slate-500">Select a customer from the table to view details.</p>
+      </div>
+      }
+    </aside>
+    }
   </div>
-</div>
+</section>

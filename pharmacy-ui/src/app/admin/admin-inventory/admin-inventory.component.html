@@ -1,195 +1,368 @@
-<div class="h-screen p-2 flex flex-col">
-   <h1 class="text-2xl font-bold mb-4">Inventory</h1>
-
-   <!-- Statistics -->
-   <div class="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
-
-      <!-- Total Products -->
-      <div class="border rounded-lg p-4 bg-white">
-         <p class="text-sm text-gray-500">Total Products</p>
-         <p class="text-2xl font-semibold text-gray-900">
-            {{ totalProducts }}
-         </p>
+<section
+   class="min-h-[calc(100vh-2rem)] rounded-[18px] border border-gray-200 bg-white p-4 text-gray-900 shadow-[0_15px_30px_-20px_rgba(15,23,42,0.35)] sm:p-5">
+   <header class="mb-4 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+         <span class="text-base text-gray-700">≡</span>
+         <h1 class="m-0 text-2xl font-bold text-gray-900">Inventory</h1>
+         <button class="border-0 bg-transparent text-base text-gray-700" type="button"
+            aria-label="More actions">•••</button>
       </div>
 
-      <!-- Expired Products -->
-      <div class="border rounded-lg p-4 bg-white">
-         <p class="text-sm text-gray-500">Expired Products</p>
-         <p class="text-2xl font-semibold text-orange-600">
-            {{ expiredProducts }}
-         </p>
-      </div>
+      <button
+         class="inline-flex cursor-pointer items-center gap-2 rounded-[10px] bg-orange-500 px-4 py-2 font-semibold text-white hover:bg-orange-600"
+         type="button" (click)="addProduct()">
+         <span>+</span>
+         Reorder
+      </button>
+   </header>
 
-      <!-- Out of Stock -->
-      <div class="border rounded-lg p-4 bg-white">
-         <p class="text-sm text-gray-500">Out of Stock</p>
-         <p class="text-2xl font-semibold text-red-600">
-            {{ outOfStockProducts }}
-         </p>
-      </div>
-
+   @if (actionMessage) {
+   <div class="mb-3 rounded-lg border px-3 py-2 text-sm" [ngClass]="actionMessageType === 'success'
+      ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
+      : 'border-red-200 bg-red-50 text-red-700'">
+      {{ actionMessage }}
    </div>
+   }
 
-   <!-- Search & Filters + Actions -->
-   <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+   <section class="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <article class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+         <p class="m-0 text-xs text-gray-700">Total product</p>
+         <h3 class="m-0 mt-1 text-xl font-semibold text-gray-900">{{ totalProducts }}</h3>
+      </article>
+      <article class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+         <p class="m-0 text-xs text-gray-700">Expired</p>
+         <h3 class="m-0 mt-1 text-xl font-semibold text-gray-900">{{ expiredProducts }}</h3>
+      </article>
+      <article class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+         <p class="m-0 text-xs text-gray-700">Out of stock</p>
+         <h3 class="m-0 mt-1 text-xl font-semibold text-gray-900">{{ outOfStockProducts }}</h3>
+      </article>
+   </section>
 
-      <!-- LEFT: Search & Filters -->
-      <div class="flex flex-wrap items-center gap-3">
+   <nav class="mb-3 flex gap-4 border-b border-slate-200" aria-label="Inventory views">
+      <button class="border-0 border-b-2 border-orange-500 bg-transparent py-1 text-sm font-semibold text-gray-900"
+         type="button">All product</button>
+      <button class="border-0 bg-transparent py-1 text-sm font-semibold text-gray-800" type="button">+ View</button>
+   </nav>
 
-         <!-- Search -->
-         <input type="text" placeholder="Search products..." [(ngModel)]="searchQuery"
-            class="border px-3 py-2 rounded w-full md:w-64" />
+   <section class="mb-3 flex flex-wrap items-center gap-2">
+      <label
+         class="inline-flex w-full max-w-55 items-center gap-2 rounded-lg border border-gray-200 px-2.5 py-1.5 text-gray-700"
+         for="inventorySearch">
+         <span>⌕</span>
+         <input id="inventorySearch" type="text" placeholder="Search"
+            class="w-full border-0 bg-transparent text-sm text-gray-900 outline-none" [ngModel]="searchQuery()"
+            (ngModelChange)="searchQuery.set($event)" />
+      </label>
 
-         <!-- Date Range Filter -->
-         <button class="flex items-center gap-2 border px-3 py-2 rounded text-gray-700 hover:bg-gray-50">
-            <span class="text-sm">2 Feb – 14 Apr</span>
-            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-         </button>
+      <button class="cursor-pointer rounded-lg border border-gray-900 bg-gray-900 px-2.5 py-1.5 text-xs text-white"
+         type="button">2 Feb - 14 Apr</button>
+      <button class="cursor-pointer rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs text-gray-800"
+         type="button">Category</button>
+      <button class="cursor-pointer rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs text-gray-800"
+         type="button">Supplier</button>
+      <button class="cursor-pointer rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs text-gray-800"
+         type="button">Stock level</button>
 
-         <!-- Category Filter -->
-         <button class="flex items-center gap-2 border px-3 py-2 rounded text-gray-700 hover:bg-gray-50">
-            <span class="text-sm">Category</span>
-            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-         </button>
+      <div class="hidden flex-1 md:block"></div>
 
-         <!-- Supplier Filter -->
-         <button class="flex items-center gap-2 border px-3 py-2 rounded text-gray-700 hover:bg-gray-50">
-            <span class="text-sm">Supplier</span>
-            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-         </button>
+      <button
+         class="ml-auto cursor-pointer rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs text-gray-800 md:ml-0"
+         type="button">Manage Table</button>
+   </section>
 
-         <!-- Stock Level Filter -->
-         <button class="flex items-center gap-2 border px-3 py-2 rounded text-gray-700 hover:bg-gray-50">
-            <span class="text-sm">Stock Level</span>
-            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-         </button>
+   <div class="max-h-[60vh] overflow-auto rounded-xl border border-slate-200 md:max-h-[calc(100vh-17rem)]">
+      <table class="min-w-245 w-full border-collapse">
+         <thead>
+            <tr>
+               <th
+                  class="sticky top-0 border-b border-slate-200 bg-slate-50 px-3 py-2.5 text-left text-xs font-semibold text-gray-700">
+                  Product name</th>
+               <th
+                  class="sticky top-0 border-b border-slate-200 bg-slate-50 px-3 py-2.5 text-left text-xs font-semibold text-gray-700">
+                  SKU</th>
+               <th
+                  class="sticky top-0 border-b border-slate-200 bg-slate-50 px-3 py-2.5 text-left text-xs font-semibold text-gray-700">
+                  Category</th>
+               <th
+                  class="sticky top-0 border-b border-slate-200 bg-slate-50 px-3 py-2.5 text-left text-xs font-semibold text-gray-700">
+                  Supplier</th>
+               <th
+                  class="sticky top-0 border-b border-slate-200 bg-slate-50 px-3 py-2.5 text-left text-xs font-semibold text-gray-700">
+                  Current Stock</th>
+               <th
+                  class="sticky top-0 border-b border-slate-200 bg-slate-50 px-3 py-2.5 text-left text-xs font-semibold text-gray-700">
+                  Unit Price</th>
+               <th
+                  class="sticky top-0 border-b border-slate-200 bg-slate-50 px-3 py-2.5 text-left text-xs font-semibold text-gray-700">
+               </th>
+            </tr>
+         </thead>
 
-      </div>
+         <tbody>
+            @for (product of filteredProducts(); track product.productId ?? $index) {
+            <tr class="hover:bg-slate-50/60">
+               <td class="border-b border-slate-100 px-3 py-2.5 align-middle text-sm text-gray-900">
+                  <div class="flex items-center gap-2.5">
+                     <img [src]="productImage(product.image)" alt="product"
+                        class="h-7 w-7 rounded-md border border-gray-200 bg-slate-100 object-cover" />
+                     <span>{{ product.name || '-' }}</span>
+                  </div>
+               </td>
 
-      <!-- RIGHT: Actions -->
-      <div class="flex items-center gap-2">
+               <td class="border-b border-slate-100 px-3 py-2.5 align-middle text-sm text-gray-900">{{ product.productId
+                  || '-' }}</td>
 
-         <!-- Manage Table -->
-         <button class="flex items-center gap-2 border px-4 py-2 rounded text-gray-700 hover:bg-gray-50">
-            Manage Table
-         </button>
+               <td class="border-b border-slate-100 px-3 py-2.5 align-middle text-sm text-gray-900">
+                  <span class="inline-block rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700">{{ product.type ||
+                     'Medicine' }}</span>
+               </td>
 
-         <!-- Add Product -->
-         <button (click)="addProduct()"
-            class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 hover:cursor-pointer">
-            New Product
-         </button>
+               <td class="border-b border-slate-100 px-3 py-2.5 align-middle text-sm text-gray-900">
+                  <div class="flex items-center gap-1.5">
+                     <span class="h-2.5 w-2.5 shrink-0 rounded-full"
+                        [style.backgroundColor]="supplierColor(product.manufacturer)"></span>
+                     <span>{{ product.manufacturer || 'Unknown Supplier' }}</span>
+                  </div>
+               </td>
 
-      </div>
-
-   </div>
-
-
-   <!-- Table Container (fills remaining height) -->
-   <div class="flex-1 border border-gray-300 rounded-lg overflow-hidden">
-      <div class="h-full overflow-y-auto">
-         <table class="w-full text-left border-separate border-spacing-0">
-
-            <!-- Sticky Header -->
-            <thead class="bg-gray-200 sticky top-0 z-10">
-               <tr>
-                  <th class="px-4 py-2">Product ID</th>
-                  <th class="px-4 py-2">Product</th>
-                  <th class="px-4 py-2">Category</th>
-                  <th class="px-4 py-2">Supplier</th>
-                  <th class="px-4 py-2">Quantity</th>
-                  <th class="px-4 py-2">Unit Price</th>
-                  <th class="px-4 py-2">Actions</th>
-               </tr>
-            </thead>
-
-            <tbody>
-               @for (product of filteredProducts(); track product.productId) {
-               <tr class="hover:bg-gray-50 border-b border-gray-300/70 last:border-b-0">
-                 <td>{{product.productId}}</td>
-
-                  <!-- Product -->
-                  <td class="px-4 py-1.5 flex items-center space-x-2">
-                     <img [src]="'data:image/jpeg;base64,' + product.image" class="w-10 h-10 object-cover rounded"
-                        alt="product" />
-                     <span>{{ product.name }}</span>
-                  </td>
-
-                  <!-- Category -->
-                  <td class="px-4 py-1.5">
-                     <span class="bg-gray-200 text-gray-700 text-opacity-70 px-2 py-0.5 rounded text-sm">
-                        {{ product.type || "-" }}
-                     </span>
-                  </td>
-
-                  <!-- Supplier -->
-                  <td class="px-4 py-1.5 text-gray-700">
-                     {{ product.manufacturer || "-" }}
-                  </td>
-
-                  <!-- Quantity -->
-                  <td class="px-4 py-1.5">
-                     <span [ngClass]="{
-                  'text-red-600 font-semibold': lowStock(product),
-                  'text-gray-800': !lowStock(product)
-                }">
-                        {{ product.stockQuantity }} unit
-                     </span>
-                    @if (lowStock(product)) {
-                      <span class="text-red-500">- Low</span>
-                    }
-                     <div class="w-24 h-1 mt-1 bg-gray-200 rounded">
-                        <div class="h-1 rounded transition-all" [ngStyle]="{
-                    width: ((product.stockQuantity ?? 0) / 100 * 100) + '%',
-                    backgroundColor: lowStock(product) ? '#dc2626' : '#16a34a'
-                  }"></div>
+               <td class="border-b border-slate-100 px-3 py-2.5 align-middle text-sm text-gray-900">
+                  <div class="min-w-38.75">
+                     <div class="mb-1 flex items-center gap-2 text-xs">
+                        <span>{{ product.stockQuantity ?? 0 }} unit</span>
+                        <strong class="font-semibold" [ngClass]="lowStock(product) ? 'text-red-600' : 'text-green-700'">
+                           {{ lowStock(product) ? 'Low' : 'High' }}
+                        </strong>
                      </div>
-                  </td>
+                     <div class="h-0.75 w-21 overflow-hidden rounded-full bg-gray-200">
+                        <span class="block h-full rounded-full"
+                           [ngClass]="lowStock(product) ? 'bg-red-600' : 'bg-green-500'"
+                           [style.width.%]="stockPercent(product.stockQuantity ?? 0)"></span>
+                     </div>
+                  </div>
+               </td>
 
-                  <!-- Unit Price -->
-                  <td class="px-4 py-1.5">KES {{ product.price }}</td>
+               <td class="border-b border-slate-100 px-3 py-2.5 align-middle text-sm text-gray-900">KES {{ product.price
+                  ?? 0 }}</td>
 
-                  <!-- Actions -->
-                  <td class="px-4 py-1.5 relative">
-                    @if (product.productId != null){
-                     <button (click)="toggleActions(product.productId)"
-                        class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">
-                        ⋮
-                     </button>
-                    }
+               <td class="relative border-b border-slate-100 px-3 py-2.5 text-right align-middle">
+                  @if (product.productId != null) {
+                  <button class="border-0 bg-transparent text-2xl leading-none text-gray-700" type="button"
+                     (click)="toggleActions(product.productId)">
+                     ⋯
+                  </button>
+                  }
 
-                    @if (product.productId != null && actionsOpen[product.productId]) {
-                     <ul class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-20">
-                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="edit(product)">Edit</li>
-                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="reorder(product)">
-                           Reorder
-                        </li>
-                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="auditStock(product)">
-                           Audit Stock
-                        </li>
-                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="createStockAlert(product)">
-                           Create Stock Alert
-                        </li>
-                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="stockHistory(product)">
-                           Stock History
-                        </li>
-                     </ul>
-                    }
-                  </td>
-               </tr>
-               }
-            </tbody>
-
-         </table>
-      </div>
+                  @if (product.productId != null && actionsOpen[product.productId]) {
+                  <ul
+                     class="absolute right-2 top-7 z-10 m-0 w-45 list-none rounded-[10px] border border-gray-200 bg-white p-1.5 shadow-[0_10px_24px_-16px_rgba(15,23,42,0.6)]">
+                     <li class="rounded-lg px-2 py-2 text-xs" [ngClass]="reorderLoading[product.productId]
+                        ? 'cursor-not-allowed text-gray-400'
+                        : 'cursor-pointer text-gray-900 hover:bg-gray-100'"
+                        (click)="!reorderLoading[product.productId] && reorder(product)">
+                        {{ reorderLoading[product.productId] ? 'Reordering...' : 'Reorder' }}
+                     </li>
+                     <li class="cursor-pointer rounded-lg px-2 py-2 text-xs text-gray-900 hover:bg-gray-100"
+                        (click)="auditStock(product)">Audit Stock</li>
+                     <li class="cursor-pointer rounded-lg px-2 py-2 text-xs text-gray-900 hover:bg-gray-100"
+                        (click)="createStockAlert(product)">Create Stock Alert</li>
+                     <li class="cursor-pointer rounded-lg px-2 py-2 text-xs text-gray-900 hover:bg-gray-100"
+                        (click)="stockHistory(product)">Stock History</li>
+                  </ul>
+                  }
+               </td>
+            </tr>
+            }
+         </tbody>
+      </table>
    </div>
 
-</div>
+   <!-- Audit Stock Modal -->
+   @if (isAuditStockOpen && auditStockProduct) {
+   <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div class="relative h-auto max-h-[90vh] w-full max-w-5xl overflow-auto rounded-2xl bg-white p-8 shadow-2xl mx-4">
+         <!-- Close Button -->
+         <button class="absolute right-6 top-6 border-0 bg-transparent text-2xl text-gray-400 hover:text-gray-600"
+            type="button" (click)="closeAuditStock()">×</button>
+
+         <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <!-- Left Section: Form -->
+            <div class="col-span-2">
+               <div class="mb-6 flex items-center gap-3">
+                  <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-100">
+                     <span class="text-xl">📦</span>
+                  </div>
+                  <div>
+                     <h2 class="m-0 text-2xl font-bold text-gray-900">Audit Stock</h2>
+                     <p class="m-0 mt-1 text-sm text-gray-600">Effortlessly import products and update your inventory.
+                     </p>
+                  </div>
+               </div>
+
+               <!-- Adjustment Type -->
+               <div class="mb-8">
+                  <label class="mb-4 block text-sm font-semibold text-gray-900">Adjustment Type</label>
+                  <div class="flex gap-6">
+                     <label class="flex items-center gap-3">
+                        <input type="radio" name="adjustmentType" value="quantity" [(ngModel)]="adjustmentType"
+                           class="h-4 w-4" />
+                        <span class="text-sm text-gray-700">Quantity Adjustment</span>
+                     </label>
+                     <label class="flex items-center gap-3">
+                        <input type="radio" name="adjustmentType" value="value" [(ngModel)]="adjustmentType"
+                           class="h-4 w-4" />
+                        <span class="text-sm text-gray-700">Value Adjustment</span>
+                     </label>
+                  </div>
+               </div>
+
+               <!-- Physical Count -->
+               <div class="mb-8">
+                  <label class="mb-3 block text-sm font-semibold text-gray-900">Physical Count</label>
+                  <div class="grid grid-cols-3 gap-4">
+                     <div>
+                        <label class="mb-2 block text-xs text-gray-600">Physical Count</label>
+                        <input type="number" [(ngModel)]="physicalCount"
+                           class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" />
+                     </div>
+                     <div>
+                        <label class="mb-2 block text-xs text-gray-600">Available</label>
+                        <div
+                           class="flex items-center rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-700">
+                           {{ auditStockProduct.stockQuantity ?? 0 }}
+                        </div>
+                     </div>
+                     <div>
+                        <label class="mb-2 block text-xs text-gray-600">Discrepancy</label>
+                        <div
+                           class="flex items-center rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-700">
+                           {{ getDiscrepancy() }}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Adjustment Reason -->
+               <div class="mb-8">
+                  <label class="mb-4 block text-sm font-semibold text-gray-900">Adjustment Reason</label>
+                  <div class="grid grid-cols-2 gap-4">
+                     <label
+                        class="flex items-center gap-3 rounded-lg border border-gray-300 px-3 py-2 hover:bg-gray-50">
+                        <input type="checkbox" [(ngModel)]="adjustmentReasons.damage" class="h-4 w-4" />
+                        <span class="text-sm text-gray-700">Damage</span>
+                     </label>
+                     <label
+                        class="flex items-center gap-3 rounded-lg border border-gray-300 px-3 py-2 hover:bg-gray-50">
+                        <input type="checkbox" [(ngModel)]="adjustmentReasons.expiration" class="h-4 w-4" />
+                        <span class="text-sm text-gray-700">Expiration</span>
+                     </label>
+                     <label
+                        class="flex items-center gap-3 rounded-lg border border-gray-300 px-3 py-2 hover:bg-gray-50">
+                        <input type="checkbox" [(ngModel)]="adjustmentReasons.misplacement" class="h-4 w-4" />
+                        <span class="text-sm text-gray-700">Misplacement</span>
+                     </label>
+                     <label
+                        class="flex items-center gap-3 rounded-lg border border-gray-300 px-3 py-2 hover:bg-gray-50">
+                        <input type="checkbox" [(ngModel)]="adjustmentReasons.thief" class="h-4 w-4" />
+                        <span class="text-sm text-gray-700">Thief</span>
+                     </label>
+                     <label
+                        class="flex items-center gap-3 rounded-lg border border-gray-300 px-3 py-2 hover:bg-gray-50">
+                        <input type="checkbox" [(ngModel)]="adjustmentReasons.stocktakeVariance" class="h-4 w-4" />
+                        <span class="text-sm text-gray-700">Stocktake Variance</span>
+                     </label>
+                     <label
+                        class="flex items-center gap-3 rounded-lg border border-gray-300 px-3 py-2 hover:bg-gray-50">
+                        <input type="checkbox" [(ngModel)]="adjustmentReasons.custom" class="h-4 w-4" />
+                        <span class="text-sm text-gray-700">Custom</span>
+                     </label>
+                  </div>
+               </div>
+
+               <!-- Note -->
+               <div class="mb-6">
+                  <label class="mb-3 block text-sm font-semibold text-gray-900">Note</label>
+                  <textarea [(ngModel)]="noteText"
+                     class="h-32 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                     placeholder="Evaluate if the damage is repairable or if the item needs to be written off."></textarea>
+               </div>
+            </div>
+
+            <!-- Right Section: Product Detail -->
+            <div class="col-span-1 border-l border-gray-200 pl-8">
+               <h3 class="mb-4 text-sm font-semibold text-gray-900">Product detail</h3>
+
+               <div class="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <img [src]="productImage(auditStockProduct.image)" alt="product"
+                     class="mb-3 h-16 w-16 rounded-lg object-cover" />
+                  <p class="mb-2 font-semibold text-gray-900">{{ auditStockProduct.name }}</p>
+                  <div class="mb-2 flex items-center gap-2 text-sm text-gray-600">
+                     <span>⭐ 4.8 (886)</span>
+                     <span>|</span>
+                     <span>SKU: {{ auditStockProduct.productId }}</span>
+                  </div>
+               </div>
+
+               <div>
+                  <h4 class="mb-3 text-sm font-semibold text-gray-900">Stock adjustment history</h4>
+                  <div class="space-y-3">
+                     <div class="flex items-start gap-2 border-l-2 border-orange-500 py-1 pl-3">
+                        <div>
+                           <p class="m-0 text-xs font-semibold text-gray-900">10 Jun 2024</p>
+                           <p class="m-0 text-xs text-gray-600">Adjust Stock -10 Unit</p>
+                           <div class="mt-1 flex items-center gap-2">
+                              <img src="https://i.pravatar.cc/24?u=bagus" alt="user" class="h-5 w-5 rounded-full" />
+                              <span class="text-xs text-gray-700">Bagus Fikri</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="flex items-start gap-2 border-l-2 border-orange-500 py-1 pl-3">
+                        <div>
+                           <p class="m-0 text-xs font-semibold text-gray-900">09 Jun 2024</p>
+                           <p class="m-0 text-xs text-gray-600">Adjust Stock +17 Unit</p>
+                           <div class="mt-1 flex items-center gap-2">
+                              <img src="https://i.pravatar.cc/24?u=bagus" alt="user" class="h-5 w-5 rounded-full" />
+                              <span class="text-xs text-gray-700">Bagus Fikri</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="flex items-start gap-2 border-l-2 border-orange-500 py-1 pl-3">
+                        <div>
+                           <p class="m-0 text-xs font-semibold text-gray-900">08 Jun 2024</p>
+                           <p class="m-0 text-xs text-gray-600">Adjust Stock +28 Unit</p>
+                           <div class="mt-1 flex items-center gap-2">
+                              <img src="https://i.pravatar.cc/24?u=bagus" alt="user" class="h-5 w-5 rounded-full" />
+                              <span class="text-xs text-gray-700">Bagus Fikri</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="flex items-start gap-2 border-l-2 border-orange-500 py-1 pl-3">
+                        <div>
+                           <p class="m-0 text-xs font-semibold text-gray-900">07 Jun 2024</p>
+                           <p class="m-0 text-xs text-gray-600">Adjust Stock +35 Unit</p>
+                           <div class="mt-1 flex items-center gap-2">
+                              <img src="https://i.pravatar.cc/24?u=bagus" alt="user" class="h-5 w-5 rounded-full" />
+                              <span class="text-xs text-gray-700">Bagus Fikri</span>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <!-- Footer Buttons -->
+         <div class="mt-8 flex justify-end gap-3 border-t border-gray-200 pt-6">
+            <button type="button" (click)="closeAuditStock()"
+               class="rounded-lg border border-gray-300 bg-white px-6 py-2 font-semibold text-gray-900 hover:bg-gray-50">
+               Cancel
+            </button>
+            <button type="button" (click)="saveAuditStock()"
+               class="rounded-lg bg-orange-500 px-6 py-2 font-semibold text-white hover:bg-orange-600">
+               Save
+            </button>
+         </div>
+      </div>
+   </div>
+   }
+</section>

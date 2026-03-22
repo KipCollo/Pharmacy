@@ -1,83 +1,68 @@
-<aside
-  class="h-screen bg-gray-900 text-gray-300 flex flex-col transition-all duration-300"
-  [ngClass]="collapsed() ? 'w-20' : 'w-64'">
-
-  <!-- TOP -->
-  <div class="flex items-center justify-between px-4 py-4">
-    <div class="flex items-center gap-2 text-white font-semibold">
-      <span class="text-xl">✕</span>
-      @if(!collapsed()) { <span>KipCollo</span> }
+<aside class="admin-sidebar" [ngClass]="collapsed() ? 'collapsed' : ''">
+  <header class="sidebar-header">
+    <div class="brand-wrap">
+      <span class="brand-dot"></span>
+      @if (!collapsed()) {
+      <h2>KipCollo Pharmacy</h2>
+      }
     </div>
 
-    <button (click)="toggle()" class="text-gray-400 hover:text-white">
-      ◀
-    </button>
-  </div>
+    <button type="button" (click)="toggle()" class="collapse-btn"
+      [attr.aria-label]="collapsed() ? 'Expand' : 'Collapse'">
+      {{ collapsed() ? '>' : '<' }} </button>
+  </header>
 
-  <!-- NAV -->
-  <nav class="flex-1 px-2 space-y-2">
-
-    @for (group of menuItems; track $index) {
-      @for (item of group.items; track $index) {
-
-        <!-- Parent Item -->
-        <div
-          class="flex items-center gap-3 p-3 rounded cursor-pointer hover:bg-gray-800 transition"
-          (click)="handleItemClick(item)">
-
-          <lucide-icon [img]="item.icon" class="w-5 h-5"></lucide-icon>
-
-          @if (!collapsed()) { <span class="flex-1">{{ item.label }}</span> }
-
-          <!-- Badge -->
-          @if (item.badge && !collapsed()) {
-            <span
-                  class="text-xs px-2 py-0.5 rounded-full bg-red-600">
-              {{ item.badge }}
-            </span>
-          }
-
-          <!-- Arrow -->
-          @if (item.children && !collapsed()) {
-            <span class="transition-transform duration-200" [ngClass]="{'rotate-90': item.isOpen}">
-              ▶
-            </span>
-          }
-        </div>
-
-        <!-- Children -->
-        @if (item.children && item.isOpen && !collapsed()) {
-          <div class="ml-8 mt-1 space-y-1">
-            @for (child of item.children; track $index) {
-              <a [routerLink]="child.route"
-                 routerLinkActive="bg-gray-800 text-white"
-                 class="block p-2 rounded hover:bg-gray-800 transition">
-                {{ child.label }}
-              </a>
-            }
-          </div>
-        }
-
+  <nav class="sidebar-nav">
+    @for (group of menuItems; track group.section) {
+    <section>
+      @if (!collapsed()) {
+      <h3 class="group-title">{{ group.section === 'main' ? 'Main Menu' : 'Preferences' }}</h3>
       }
 
-      <div class="border-t border-gray-800 my-2"></div>
+      <div class="group-items">
+        @for (item of group.items; track item.label) {
+        <div class="item-wrap">
+          <button type="button" class="item-btn" [ngClass]="{ 'opened': item.children && item.isOpen }"
+            (click)="handleItemClick(item)">
+            <lucide-icon [img]="item.icon" class="item-icon"></lucide-icon>
 
+            @if (!collapsed()) {
+            <span class="item-label">{{ item.label }}</span>
+            }
+
+            @if (item.badge && !collapsed()) {
+            <span class="item-badge">{{ item.badge }}</span>
+            }
+
+            @if (item.children && !collapsed()) {
+            <span class="arrow" [ngClass]="{ 'rotate': item.isOpen }">></span>
+            }
+          </button>
+
+          @if (item.children && item.isOpen && !collapsed()) {
+          <div class="child-menu">
+            @for (child of item.children; track child.label) {
+            <a [routerLink]="child.route" routerLinkActive="active-link" class="child-link">
+              {{ child.label }}
+            </a>
+            }
+          </div>
+          }
+        </div>
+        }
+      </div>
+    </section>
     }
-
   </nav>
 
-  <!-- FOOTER -->
-  <div class="border-t border-gray-800 px-4 py-4 flex items-center gap-3">
-    <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-green-500 text-sm">
-      {{ getInitials(currentUser.firstName, currentUser.lastName) }}
-    </div>
+  <footer class="sidebar-footer">
+    <div class="avatar">{{ getInitials(currentUser.firstName, currentUser.lastName) }}</div>
 
     @if (!collapsed()) {
-      <div class="flex-1 text-sm">
-        <p class="text-white font-medium">{{ currentUser.firstName }} {{ currentUser.lastName }}</p>
-        <p class="text-green-600 text-xs">{{ currentUser.email }}</p>
-      </div>
+    <div class="user-meta">
+      <p>{{ currentUser.firstName }} {{ currentUser.lastName }}</p>
+      <small>{{ currentUser.email }}</small>
+    </div>
     }
-  </div>
-
+  </footer>
 </aside>

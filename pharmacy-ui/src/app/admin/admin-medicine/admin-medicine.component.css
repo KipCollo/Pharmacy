@@ -1,0 +1,52 @@
+/* Card Styles */
+.grid {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Product card hover effect */
+:host ::ng-deep .bg-white.rounded-lg.shadow-md {
+    transition: all 0.3s ease-in-out;
+}
+
+:host ::ng-deep .bg-white.rounded-lg.shadow-md:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Stock bar animation */
+:host ::ng-deep .bg-green-500,
+:host ::ng-deep .bg-red-500 {
+    transition: all 0.3s ease;
+}
+
+/* Table row hover */
+:host ::ng-deep table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+/* View toggle button active state */
+:host ::ng-deep button.bg-white.shadow-sm {
+    animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: scale(0.95);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}

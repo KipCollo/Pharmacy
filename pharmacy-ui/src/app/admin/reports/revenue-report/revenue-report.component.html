@@ -1,1 +1,46 @@
-<p>revenue-report works!</p>
+<section class="revenue-wrapper">
+	<header class="revenue-header">
+		<h1>Revenue Report</h1>
+		<div class="actions">
+			<button (click)="setPeriod('day')" [class.active]="selectedPeriod() === 'day'">Day</button>
+			<button (click)="setPeriod('week')" [class.active]="selectedPeriod() === 'week'">Week</button>
+			<button (click)="setPeriod('month')" [class.active]="selectedPeriod() === 'month'">Month</button>
+			<button (click)="exportCsv()" class="export">Export CSV</button>
+		</div>
+	</header>
+
+	<article class="total-card">
+		<p>Total Revenue</p>
+		<strong>{{ formatCurrency(totalRevenue) }}</strong>
+	</article>
+
+	<article class="table-card">
+		<table>
+			<thead>
+			<tr>
+				<th>Date</th>
+				<th>Revenue</th>
+			</tr>
+			</thead>
+			<tbody>
+				@if (isLoading) {
+					<tr>
+						<td colspan="2">Loading...</td>
+					</tr>
+				} @else {
+					@for (row of revenueRows; track row.date) {
+						<tr>
+							<td>{{ row.date | date:'mediumDate' }}</td>
+							<td>{{ formatCurrency(row.revenue) }}</td>
+						</tr>
+					}
+					@if (revenueRows.length === 0) {
+						<tr>
+							<td colspan="2">No revenue data available</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</article>
+</section>

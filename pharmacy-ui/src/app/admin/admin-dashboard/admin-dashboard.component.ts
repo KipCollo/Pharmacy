@@ -1,105 +1,286 @@
-import { Component } from '@angular/core';
-import { RouterLink } from "@angular/router";
-import {NgClass, NgForOf} from "@angular/common";
-import { SidebarComponent } from "../sidebar/sidebar.component";
-import { ChartConfiguration, ChartType } from "chart.js";
-import { BaseChartDirective } from "ng2-charts";
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule, NgClass } from "@angular/common";
+import { forkJoin, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { CustomersApIsService } from '../../services/services/customers-ap-is.service';
+import { MedicineApIsService } from '../../services/services/medicine-ap-is.service';
+import { OrderApIsService } from '../../services/services/order-ap-is.service';
+import { PrescriptionControllerService } from '../../services/services/prescription-controller.service';
+import { ShipmentTrackingApIsService } from '../../services/services/shipment-tracking-ap-is.service';
+import { OrderResponse } from '../../services/models/order-response';
+import { PrescriptionResponse } from '../../services/models/prescription-response';
+import { ProductResponse } from '../../services/models/product-response';
+import { ShipmentResponse } from '../../services/models/shipment-response';
+import { UserResponse } from '../../services/models/user-response';
+
+type StatCard = {
+  label: string;
+  value: number;
+  trend: number;
+  bars: number[];
+};
+
+type TaskItem = {
+  title: string;
+  assignee: string;
+  status: string;
+  statusClass: 'status-overdue' | 'status-todo' | 'status-doing';
+  dueDate: string;
+};
+
+type ComplianceItem = {
+  name: string;
+  progress: number;
+};
+
+type PrescriptionItem = {
+  patient: string;
+  medicine: string;
+};
+
+type DeliveryEvent = {
+  day: string;
+  time: string;
+  orderId: string;
+  rider: string;
+};
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [
-    BaseChartDirective,
-    NgClass
+    NgClass,
+    CommonModule
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnInit {
+  private readonly orderService = inject(OrderApIsService);
+  private readonly prescriptionService = inject(PrescriptionControllerService);
+  private readonly medicineService = inject(MedicineApIsService);
+  private readonly shipmentService = inject(ShipmentTrackingApIsService);
+  private readonly customerService = inject(CustomersApIsService);
 
-  // Net Revenue Line Chart
-  public revenueChartData: ChartConfiguration<'line'>['data'] = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [{ data: [100, 200, 150, 300, 250, 400], label: 'Net Revenue' }]
-  };
-  public revenueChartType: ChartType = 'line';
-  //public isRevenueUp = this.checkTrend(this.revenueChartData.datasets[0].data);
+  welcomeName = 'Pharmacy Team';
+  loading = signal(true);
+  loadError = signal('');
+  lastUpdated = signal<Date | null>(null);
 
-  // Profit Pie Chart
-  public profitChartData: ChartConfiguration<'pie'>['data'] = {
-    labels: ['Profit', 'Loss'],
-    datasets: [{ data: [67.2, 32.8] }]
-  };
-  public profitChartType: ChartType = 'pie';
-  public isProfitUp = this.checkTrend(this.profitChartData.datasets[0].data);
+  statsCards = signal<StatCard[]>([]);
+  upcomingTasks = signal<TaskItem[]>([]);
+  complianceItems = signal<ComplianceItem[]>([]);
+  recentPrescriptions = signal<PrescriptionItem[]>([]);
+  deliveryEvents = signal<DeliveryEvent[]>([]);
 
-  // Orders Bar Chart
-  public ordersChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [{ data: [500, 600, 750, 900, 850, 1000], label: 'Orders' }]
-  };
-  public ordersChartType: ChartType = 'bar';
-  public isOrdersUp = this.checkTrend(this.ordersChartData.datasets[0].data);
+  totalCustomers = signal(0);
+  totalRevenue = signal(0);
 
-  // Carts Radar Chart
-  public cartsChartData: ChartConfiguration<'radar'>['data'] = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [{ data: [200, 300, 250, 350, 400, 450], label: 'Carts' }]
-  };
-  public cartsChartType: ChartType = 'radar';
-  public isCartsUp = this.checkTrend(this.cartsChartData.datasets[0].data);
+  ngOnInit(): void {
+    this.refreshDashboard();
+  }
 
-  // Customers Doughnut Chart
-  public customersChartData: ChartConfiguration<'doughnut'>['data'] = {
-    labels: ['Active', 'Inactive'],
-    datasets: [{ data: [80, 20] }]
-  };
-  public customersChartType: ChartType = 'doughnut';
-  public isCustomersUp = this.checkTrend(this.customersChartData.datasets[0].data);
+  refreshDashboard(): void {
+    this.loading.set(true);
+    this.loadError.set('');
 
-  // New Medicine Arrivals Bar Chart
-  public medicineArrivalsChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [{ data: [20, 35, 30, 45, 40, 50], label: 'New Arrivals' }]
-  };
-  public medicineArrivalsChartType: ChartType = 'bar';
-  public isMedicineArrivalsUp = this.checkTrend(this.medicineArrivalsChartData.datasets[0].data);
-
-  constructor() {}
-
-  // Method to check trend
-  checkTrend(data: (number | [number, number] | null | { y: number })[]): boolean {
-    // Filter out null and handle Point objects and [number, number] tuples
-    const validData = data.filter((value): value is number => {
-      // Ensure value is a number (not null or Point or [number, number])
-      if (value === null) return false;
-      if (typeof value === 'number') return true;
-      if (Array.isArray(value) && value.length === 2 && typeof value[0] === 'number' && typeof value[1] === 'number') {
-        return true;
-      }
-      if ((value as any).y !== undefined) {
-        return typeof (value as any).y === 'number';
-      }
-      return false;
-    }).map(value => {
-      // Return the value, ensuring we get the correct number if it's a tuple or a Point
-      if (Array.isArray(value)) {
-        return value[1]; // Use the second number in the tuple [x, y]
-      } else if (typeof value === 'number') {
-        return value;
-      } else {
-        return (value as any).y; // Extract the y value if it's a Point
+    forkJoin({
+      orders: this.orderService.findAll().pipe(catchError(() => of([] as OrderResponse[]))),
+      prescriptions: this.prescriptionService.getAllPrescriptions().pipe(catchError(() => of([] as PrescriptionResponse[]))),
+      medicines: this.medicineService.getAllMedicines({ page: 0, size: 500 }).pipe(
+        map((res) => res.content ?? []),
+        catchError(() => of([] as ProductResponse[]))
+      ),
+      shipments: this.shipmentService.getShipments().pipe(catchError(() => of([] as ShipmentResponse[]))),
+      customers: this.customerService.getAllCustomers().pipe(catchError(() => of([] as UserResponse[])))
+    }).subscribe({
+      next: ({ orders, prescriptions, medicines, shipments, customers }) => {
+        this.applyDashboardData(orders, prescriptions, medicines, shipments, customers);
+        this.loading.set(false);
+        this.lastUpdated.set(new Date());
+      },
+      error: () => {
+        this.loadError.set('Unable to load dashboard metrics right now.');
+        this.loading.set(false);
       }
     });
+  }
 
-    // Ensure there are at least two data points to compare
-    if (validData.length < 2) {
-      return false; // Cannot determine trend if less than 2 valid points
+  exportSummary(): void {
+    const summary = [
+      `Generated At,${new Date().toISOString()}`,
+      `Total Customers,${this.totalCustomers()}`,
+      `Total Revenue,${this.totalRevenue()}`,
+      `Orders Today,${this.findStat('Total Orders Today')}`,
+      `Pending Prescriptions,${this.findStat('Pending Prescriptions')}`,
+      `Low Stock Items,${this.findStat('Low Stock Items')}`,
+      `Active Deliveries,${this.findStat('Active Deliveries')}`
+    ].join('\n');
+
+    const blob = new Blob([summary], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'admin_dashboard_summary.csv';
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  private applyDashboardData(
+    orders: OrderResponse[],
+    prescriptions: PrescriptionResponse[],
+    medicines: ProductResponse[],
+    shipments: ShipmentResponse[],
+    customers: UserResponse[]
+  ): void {
+    const now = Date.now();
+    const oneDayMs = 1000 * 60 * 60 * 24;
+    const twoDayMs = oneDayMs * 2;
+
+    const ordersToday = orders.filter((order) => this.isWithin(order.createdAt ?? order.localDateTime, now, oneDayMs));
+    const ordersYesterdayWindow = orders.filter((order) => this.isWithin(order.createdAt ?? order.localDateTime, now - oneDayMs, oneDayMs));
+
+    const pendingPrescriptions = prescriptions.filter((item) => item.status === 'PENDING');
+    const recentPendingPrescriptions = prescriptions.filter((item) => item.status === 'PENDING' && this.isWithin(item.uploadedAt, now, twoDayMs));
+
+    const lowStockItems = medicines.filter((item) => (item.stockQuantity ?? 0) <= 10);
+    const activeDeliveries = shipments.filter((item) => item.status === 'IN_PROGRESS' || item.status === 'DRAFT' || item.status === 'DELAYED');
+
+    this.totalCustomers.set(customers.length);
+    this.totalRevenue.set(orders.reduce((sum, item) => sum + (item.totalAmount ?? 0), 0));
+
+    this.statsCards.set([
+      {
+        label: 'Total Orders Today',
+        value: ordersToday.length,
+        trend: this.computeTrend(ordersToday.length, ordersYesterdayWindow.length),
+        bars: this.makeBars([ordersToday.length, ordersYesterdayWindow.length, orders.length])
+      },
+      {
+        label: 'Pending Prescriptions',
+        value: pendingPrescriptions.length,
+        trend: this.computeTrend(recentPendingPrescriptions.length, pendingPrescriptions.length - recentPendingPrescriptions.length),
+        bars: this.makeBars([pendingPrescriptions.length, recentPendingPrescriptions.length])
+      },
+      {
+        label: 'Low Stock Items',
+        value: lowStockItems.length,
+        trend: lowStockItems.length > 0 ? -Math.min(99, lowStockItems.length * 2) : 0,
+        bars: this.makeBars(lowStockItems.slice(0, 7).map((item) => item.stockQuantity ?? 0), true)
+      },
+      {
+        label: 'Active Deliveries',
+        value: activeDeliveries.length,
+        trend: this.computeTrend(activeDeliveries.length, shipments.length - activeDeliveries.length),
+        bars: this.makeBars(activeDeliveries.slice(0, 7).map((item) => item.progressStep ?? 0))
+      }
+    ]);
+
+    this.complianceItems.set(
+      lowStockItems
+        .sort((a, b) => (a.stockQuantity ?? 0) - (b.stockQuantity ?? 0))
+        .slice(0, 5)
+        .map((item) => ({
+          name: item.name ?? 'Unknown medicine',
+          progress: Math.max(5, Math.min(100, (item.stockQuantity ?? 0) * 10))
+        }))
+    );
+
+    this.recentPrescriptions.set(
+      prescriptions
+        .sort((a, b) => this.toMillis(b.uploadedAt) - this.toMillis(a.uploadedAt))
+        .slice(0, 5)
+        .map((item) => ({
+          patient: this.formatName(item.user?.firstName, item.user?.lastName),
+          medicine: item.prescriptionItem?.map((entry) => entry.product?.name).filter(Boolean).slice(0, 2).join(' + ') || 'Pending assignment'
+        }))
+    );
+
+    this.deliveryEvents.set(
+      shipments
+        .filter((item) => item.status === 'IN_PROGRESS' || item.status === 'DRAFT' || item.status === 'DELAYED')
+        .sort((a, b) => this.toMillis(a.expectedArrival) - this.toMillis(b.expectedArrival))
+        .slice(0, 5)
+        .map((item) => {
+          const eta = this.toDate(item.expectedArrival);
+          return {
+            day: String(eta.getDate()),
+            time: `${eta.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ETA`,
+            orderId: item.orderRef ?? 'N/A',
+            rider: item.carrier ?? 'Carrier unassigned'
+          };
+        })
+    );
+
+    this.upcomingTasks.set([
+      {
+        title: `Review ${pendingPrescriptions.length} pending prescriptions`,
+        assignee: 'Clinical Team',
+        status: pendingPrescriptions.length > 0 ? 'Overdue' : 'Todo',
+        statusClass: pendingPrescriptions.length > 0 ? 'status-overdue' : 'status-todo',
+        dueDate: 'Today'
+      },
+      {
+        title: `Restock ${lowStockItems.length} low-stock products`,
+        assignee: 'Inventory Team',
+        status: lowStockItems.length > 0 ? 'Doing' : 'Todo',
+        statusClass: lowStockItems.length > 0 ? 'status-doing' : 'status-todo',
+        dueDate: 'Today'
+      },
+      {
+        title: `Monitor ${activeDeliveries.length} active deliveries`,
+        assignee: 'Logistics',
+        status: activeDeliveries.length > 0 ? 'Doing' : 'Todo',
+        statusClass: activeDeliveries.length > 0 ? 'status-doing' : 'status-todo',
+        dueDate: 'Today'
+      }
+    ]);
+  }
+
+  private findStat(label: string): number {
+    return this.statsCards().find((card) => card.label === label)?.value ?? 0;
+  }
+
+  private computeTrend(current: number, previous: number): number {
+    if (previous <= 0) {
+      return current > 0 ? 100 : 0;
     }
+    return Math.round(((current - previous) / previous) * 100);
+  }
 
-    const last = validData[validData.length - 1];
-    const previous = validData[validData.length - 2];
+  private makeBars(values: number[], invert = false): number[] {
+    const safe = values.length ? values : [0];
+    const max = Math.max(...safe, 1);
 
-    return last > previous;
+    return [...Array(7)].map((_, idx) => {
+      const source = safe[idx % safe.length];
+      const normalized = Math.round((source / max) * 100);
+      return invert ? 100 - normalized : Math.max(8, normalized);
+    });
+  }
+
+  private isWithin(value: string | undefined, anchorMs: number, windowMs: number): boolean {
+    const time = this.toMillis(value);
+    if (!time) {
+      return false;
+    }
+    return anchorMs - time <= windowMs && anchorMs - time >= 0;
+  }
+
+  private toMillis(value: string | undefined): number {
+    if (!value) {
+      return 0;
+    }
+    const parsed = new Date(value).getTime();
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  private toDate(value: string | undefined): Date {
+    const parsed = new Date(value ?? '');
+    return Number.isNaN(parsed.getTime()) ? new Date() : parsed;
+  }
+
+  private formatName(firstName?: string, lastName?: string): string {
+    const fullName = `${firstName ?? ''} ${lastName ?? ''}`.trim();
+    return fullName || 'Unknown patient';
   }
 }

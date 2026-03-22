@@ -1,52 +1,113 @@
-<h2>Prescription Approval</h2>
+<section class="admin-prescriptions-shell">
+  <header class="page-header">
+    <h2>Prescription Review</h2>
+    <p>Review uploads in list view. Open a prescription to assign items and approve or cancel.</p>
+  </header>
 
-@if (loading){
-<div>Loading prescriptions...</div>
-}
-
-@for (prescription of prescriptions; track prescription.id){
-<div style="border:1px solid #ccc; padding:15px; margin-bottom:10px">
-
-  <p><strong>ID:</strong> {{prescription.id}}</p>
-  <p><strong>Status:</strong> {{prescription.status}}</p>
-  <p><strong>Uploaded:</strong> {{prescription.uploadedAt | date:'short'}}</p>
-
-  <img [src]="'data:image/jpeg;base64,' + prescription.image" width="250">
-
-  <!-- Product Selection -->
-  <div style="margin-top:10px">
-    <select [(ngModel)]="newProductId">
-      <option [ngValue]="null">Select Product</option>
-      @for (product of availableProducts; track  product.productId){
-      <option [ngValue]="product.productId">
-        {{product.name}} - Kes {{product.price}}
-      </option>
-      }
-    </select>
-
-    <input type="number" [(ngModel)]="newQuantity" min="1" style="width:60px">
-
-    <button (click)="addProduct()">Add</button>
+  <div class="toolbar">
+    <label for="date-filter">Filter by upload date</label>
+    <input id="date-filter" type="date" [(ngModel)]="selectedDateFilter">
+    @if (selectedDateFilter) {
+    <button class="btn btn-muted" (click)="selectedDateFilter = ''">Clear</button>
+    }
   </div>
 
-  <!-- Selected Products List -->
-  <ul>
-    @for (p of selectedProducts; track p.productId){
-    <li>
-      {{ getProductName(p.productId) }} x {{p.quantity}}
-      <button (click)="removeProduct(p.productId)">Remove</button>
-    </li>
+  @if (loading) {
+  <div class="state-box">Loading prescriptions...</div>
+  }
+
+  @if (!loading && prescriptions.length === 0) {
+  <div class="state-box">No prescriptions found.</div>
+  }
+
+  @if (!loading && prescriptions.length > 0 && filteredPrescriptions.length === 0) {
+  <div class="state-box">No prescriptions match the selected date.</div>
+  }
+
+  <div class="list-view" role="list">
+    @for (prescription of filteredPrescriptions; track prescription.id) {
+    <article class="list-row" role="listitem" (click)="openPrescriptionModal(prescription)">
+      <div>
+        <p class="meta"><strong>ID:</strong> #{{ prescription.id }}</p>
+        <p class="meta"><strong>Uploaded:</strong> {{ prescription.uploadedAt | date:'medium' }}</p>
+        <p class="meta"><strong>Uploaded By:</strong> {{ getUploaderName(prescription) }}</p>
+      </div>
+      <span class="status-pill" [class.status-approved]="prescription.status === 'APPROVED'"
+        [class.status-rejected]="prescription.status === 'REJECTED'"
+        [class.status-pending]="prescription.status !== 'APPROVED' && prescription.status !== 'REJECTED'">
+        {{ prescription.status || 'PENDING' }}
+      </span>
+    </article>
     }
-  </ul>
+  </div>
 
-  <button (click)="approve(prescription.id!)">
-<!--          [disabled]="selectedProducts.length === 0"-->
-    Approve Prescription
-  </button>
+  @if (activePrescription) {
+  <div class="modal-overlay" (click)="closePrescriptionModal()">
+    <section class="modal-card" (click)="$event.stopPropagation()">
+      <header class="modal-header">
+        <div>
+          <h3>Prescription #{{ activePrescription.id }}</h3>
+          <p class="meta"><strong>Uploaded By:</strong> {{ getUploaderName(activePrescription) }}</p>
+          <p class="meta"><strong>Uploaded:</strong> {{ activePrescription.uploadedAt | date:'medium' }}</p>
+        </div>
+        <button class="btn btn-muted" (click)="closePrescriptionModal()">Close</button>
+      </header>
 
-  <button >
-    Reject Prescription
-  </button>
+      <div class="card-body">
+        <img [src]="'data:image/jpeg;base64,' + activePrescription.image" class="prescription-image" alt="Prescription">
 
-</div>
-}
+        <div class="review-panel">
+          <p class="panel-title">Assign Products (required for approval)</p>
+
+          <div class="product-picker">
+            <select [ngModel]="getDraftProductId(activePrescription.id!)"
+              (ngModelChange)="setDraftProductId(activePrescription.id!, $event)">
+              <option [ngValue]="null">Select Product</option>
+              @for (product of availableProducts; track product.productId) {
+              <option [ngValue]="product.productId">
+                {{ product.name }} - Kes {{ product.price }}
+              </option>
+              }
+            </select>
+
+            <input type="number" [ngModel]="getDraftQuantity(activePrescription.id!)"
+              (ngModelChange)="setDraftQuantity(activePrescription.id!, $event)" min="1">
+
+            <button class="btn btn-muted" (click)="addProduct(activePrescription.id!)"
+              [disabled]="isSubmitting(activePrescription.id!)">
+              Add
+            </button>
+          </div>
+
+          <div class="selected-products">
+            @if (getSelectedProducts(activePrescription.id!).length === 0) {
+            <p class="empty-text">No products selected.</p>
+            }
+
+            @for (p of getSelectedProducts(activePrescription.id!); track p.productId) {
+            <div class="selected-item">
+              <span>{{ getProductName(p.productId) }} x {{ p.quantity }}</span>
+              <button class="btn btn-danger" (click)="removeProduct(activePrescription.id!, p.productId)"
+                [disabled]="isSubmitting(activePrescription.id!)">
+                Remove
+              </button>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="action-link action-cancel" (click)="reject(activePrescription.id!)"
+          [disabled]="isSubmitting(activePrescription.id!)">
+          {{ isSubmitting(activePrescription.id!) ? 'Submitting...' : '✗ Cancel' }}
+        </button>
+        <button class="action-link action-approve" (click)="approve(activePrescription.id!)"
+          [disabled]="isSubmitting(activePrescription.id!)">
+          {{ isSubmitting(activePrescription.id!) ? 'Submitting...' : '✓ Approve' }}
+        </button>
+      </div>
+    </section>
+  </div>
+  }
+</section>

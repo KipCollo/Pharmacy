@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
-import {Router, RouterLink, RouterLinkActive} from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { CustomersApIsService } from '../../services/services';
 import { UserResponse } from '../../services/models';
@@ -11,10 +11,11 @@ import {
   Archive,
   CreditCard,
   Bell,
+  Truck,
   HelpCircle,
   Settings, MessageCircleQuestionMark, PillIcon,
 } from "lucide-angular/src/icons";
-import {House, icons} from "lucide-angular";
+import { House, icons } from "lucide-angular";
 
 @Component({
   selector: 'app-sidebar',
@@ -28,7 +29,7 @@ import {House, icons} from "lucide-angular";
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent implements OnInit{
+export class SidebarComponent implements OnInit {
   private router = inject(Router);
   private customerService = inject(CustomersApIsService);
 
@@ -48,12 +49,12 @@ export class SidebarComponent implements OnInit{
     this.profileDropdownOpen = !this.profileDropdownOpen;
   }
 
-  getUser(){
+  getUser() {
     this.customerService.getCurrentCustomer().subscribe({
-      next: (user)=>{
+      next: (user) => {
         this.currentUser = user;
       },
-      error: (err) =>console.log(err)
+      error: (err) => console.log(err)
     })
   }
 
@@ -78,7 +79,8 @@ export class SidebarComponent implements OnInit{
       section: 'main',
       items: [
         { label: 'Dashboard', icon: House, route: '/admin/dashboard' },
-        { label: 'Reports',
+        {
+          label: 'Reports',
           icon: BarChart2,
           isOpen: false,
           route: '/admin/reports',
@@ -90,7 +92,8 @@ export class SidebarComponent implements OnInit{
             { label: 'Cart', route: '/admin/reports/carts' },
             { label: 'Customers', route: '/admin/reports/customers' },
             { label: 'Forecast', route: '/admin/reports/forecast' }
-          ]},
+          ]
+        },
         {
           label: 'Products',
           icon: Box,
@@ -100,8 +103,9 @@ export class SidebarComponent implements OnInit{
             { label: 'Categories', route: '/admin/medicine/categories' },
           ]
         },
-        { label: 'Prescriptions', icon: PillIcon, route: '/admin/prescriptions'},
-        { label: 'Orders', icon: ShoppingCart, route: '/admin/admin-orders' },
+        { label: 'Prescriptions', icon: PillIcon, route: '/admin/prescriptions' },
+        { label: 'Orders', icon: ShoppingCart, route: '/admin/orders' },
+        { label: 'Order Tracking', icon: Truck, route: '/admin/order-tracking' },
         { label: 'Inventory', icon: Archive, route: '/admin/inventory' },
         { label: 'Payments', icon: CreditCard, route: '/admin/payments' },
         { label: 'Customers', icon: Users, route: '/admin/customers' },

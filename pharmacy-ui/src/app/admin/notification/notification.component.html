@@ -1,0 +1,74 @@
+<section class="p-6 md:p-8 space-y-6">
+    <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl md:text-3xl font-semibold text-slate-800">Notifications</h1>
+            <p class="text-slate-500 mt-1">Track activity across medicines, prescriptions, and payments.</p>
+            @if (lastUpdated()) {
+            <p class="text-xs text-slate-400 mt-1">Last updated: {{ lastUpdated() | date: 'MMM d, y, h:mm:ss a' }}</p>
+            }
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button type="button" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100"
+                (click)="refreshNotifications()" [disabled]="loading()">
+                {{ loading() ? 'Refreshing...' : 'Refresh' }}
+            </button>
+            <span class="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-700">
+                {{ unreadCount() }} unread
+            </span>
+            <button type="button" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100"
+                (click)="markAllAsRead()">
+                Mark all read
+            </button>
+            <button type="button" class="px-4 py-2 rounded-lg bg-slate-800 text-white hover:bg-slate-700"
+                (click)="clearRead()">
+                Clear read
+            </button>
+        </div>
+    </header>
+
+    <div class="space-y-3">
+        @if (loading()) {
+        <div class="rounded-xl border border-slate-200 p-8 text-center text-slate-500 bg-white">
+            Loading notifications...
+        </div>
+        } @else if (loadError()) {
+        <div class="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
+            {{ loadError() }}
+        </div>
+        } @else if (notifications().length === 0) {
+        <div class="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
+            No notifications to display.
+        </div>
+        } @else {
+        @for (item of notifications(); track item.id) {
+        <article class="rounded-xl border p-4 md:p-5 transition"
+            [ngClass]="item.read ? 'border-slate-200 bg-white' : 'border-blue-200 bg-blue-50/40'">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2">
+                        <h2 class="font-semibold text-slate-800">{{ item.title }}</h2>
+                        <span class="px-2 py-0.5 text-xs rounded-full font-medium" [ngClass]="badgeClass(item.type)">
+                            {{ item.type }}
+                        </span>
+                        @if (!item.read) {
+                        <span class="h-2 w-2 rounded-full bg-blue-500" aria-label="Unread"></span>
+                        }
+                    </div>
+                    <p class="text-slate-600">{{ item.message }}</p>
+                    <p class="text-xs text-slate-500">{{ item.createdAt | date: 'MMM d, y, h:mm a' }}</p>
+                </div>
+
+                <div>
+                    <button type="button"
+                        class="text-sm px-3 py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-100 disabled:opacity-50"
+                        (click)="markAsRead(item.id)" [disabled]="item.read">
+                        Mark as read
+                    </button>
+                </div>
+            </div>
+        </article>
+        }
+        }
+    </div>
+</section>

@@ -1,52 +1,119 @@
-<div class="min-h-screen bg-gray-100 p-6">
-  <!-- Header -->
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-semibold">Customer Registration Report</h1>
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Header Section -->
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-6">Report Customers by Date</h1>
 
-    <div class="flex items-center space-x-4">
-      <!-- Filter By Dropdown -->
-      <div class="flex items-center space-x-2 bg-white shadow-md p-2 rounded-lg">
-        <label class="text-gray-700 font-medium">Filter By:</label>
-        <select
-          [(ngModel)]="filterType"
-          (change)="onFilterChange(filterType)"
-          class="border rounded px-2 py-1 text-gray-700">
-          <option value="week">This Week</option>
-          <option value="month">This Month</option>
-          <option value="year">This Year</option>
-        </select>
+    <!-- Date Range & Controls -->
+    <div class="flex flex-wrap items-center gap-4 mb-6">
+      <!-- Date Range -->
+      <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-lg border border-gray-200">
+        <span class="text-sm text-gray-700">{{ dateRangeDisplay }}</span>
+      </div>
+
+      <!-- Time Period Buttons -->
+      <div class="flex items-center gap-2 bg-white p-1 rounded-lg border border-gray-200">
+        <button (click)="setPeriod('day')" [class.bg-blue-100]="selectedPeriod() === 'day'"
+          [class.text-blue-600]="selectedPeriod() === 'day'"
+          class="px-4 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded transition">
+          Day
+        </button>
+        <button (click)="setPeriod('week')" [class.bg-blue-100]="selectedPeriod() === 'week'"
+          [class.text-blue-600]="selectedPeriod() === 'week'"
+          class="px-4 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded transition">
+          Week
+        </button>
+        <button (click)="setPeriod('month')" [class.bg-blue-100]="selectedPeriod() === 'month'"
+          [class.text-blue-600]="selectedPeriod() === 'month'"
+          class="px-4 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded transition">
+          Month
+        </button>
       </div>
 
       <!-- Export Button -->
-      <button class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700">
+      <button (click)="exportCsv()"
+        class="ml-auto px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">
         Export
       </button>
     </div>
   </div>
 
-  <!-- Chart -->
-  <div class="bg-white p-6 shadow rounded-lg h-96">
-    <canvas baseChart
-            [data]="chartData"
-            [type]="'bar'"
-            [options]="chartOptions">
+  <!-- Main Chart Area -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">New Customers</h2>
+    <canvas baseChart [data]="customerChartData" [type]="chartType" [options]="chartOptions" class="h-80">
     </canvas>
   </div>
 
-  <!-- Stats -->
-  <div class="grid grid-cols-3 gap-6 mt-6">
-    <div class="p-4 bg-white shadow rounded">
-      <p class="text-lg font-semibold">
-        KSH97490.84</p>
-      <p class="text-sm text-gray-500">Lifetime Value</p>
+  <!-- Metrics Section -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Who Spent On To Make -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h3 class="text-sm text-gray-600 font-semibold uppercase mb-4">Who Spent On To Make</h3>
+      <div class="space-y-4">
+        <div>
+          <div class="flex items-baseline justify-between mb-1">
+            <span class="text-2xl font-bold text-gray-900">{{ totalCustomers }}</span>
+            <span class="text-sm font-semibold text-blue-600">Live</span>
+          </div>
+          <p class="text-xs text-gray-600">Customers in period</p>
+        </div>
+        <div>
+          <div class="flex items-baseline justify-between mb-1">
+            <span class="text-2xl font-bold text-gray-900">{{ customerChartData.labels?.length || 0 }}</span>
+            <span class="text-sm font-semibold text-blue-600">Range</span>
+          </div>
+          <p class="text-xs text-gray-600">Data points</p>
+        </div>
+        <div>
+          <div class="flex items-baseline justify-between mb-1">
+            <span class="text-2xl font-bold text-gray-900">{{ averageCustomers | number:'1.0-2' }}</span>
+            <span class="text-sm font-semibold text-blue-600">Avg</span>
+          </div>
+          <p class="text-xs text-gray-600">Average per point</p>
+        </div>
+      </div>
     </div>
-    <div class="p-4 bg-white shadow rounded">
-      <p class="text-lg font-semibold">-75%</p>
-      <p class="text-sm text-gray-500">Orders Decline</p>
+
+    <!-- KPI Cards -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h3 class="text-sm text-gray-600 font-semibold uppercase mb-4">Customer Average</h3>
+      <div class="space-y-4">
+        <div>
+          <div class="flex items-baseline justify-between mb-1">
+            <span class="text-2xl font-bold text-gray-900">{{ isLoading ? '...' : totalCustomers }}</span>
+            <span class="text-sm font-semibold text-blue-600">API</span>
+          </div>
+          <p class="text-xs text-gray-600">Latest total</p>
+        </div>
+        <div>
+          <div class="flex items-baseline justify-between mb-1">
+            <span class="text-2xl font-bold text-gray-900">{{ averageCustomers | number:'1.0-2' }}</span>
+            <span class="text-sm font-semibold text-blue-600">API</span>
+          </div>
+          <p class="text-xs text-gray-600">Latest average</p>
+        </div>
+      </div>
     </div>
-    <div class="p-4 bg-white shadow rounded">
-      <p class="text-lg font-semibold">1.00</p>
-      <p class="text-sm text-gray-500">Lifetime Orders</p>
+
+    <!-- Additional Metrics -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h3 class="text-sm text-gray-600 font-semibold uppercase mb-4">Additional Metrics</h3>
+      <div class="space-y-4">
+        <div>
+          <div class="flex items-baseline justify-between mb-1">
+            <span class="text-2xl font-bold text-gray-900">{{ selectedPeriod() | titlecase }}</span>
+            <span class="text-sm font-semibold text-blue-600">Period</span>
+          </div>
+          <p class="text-xs text-gray-600">Selected period</p>
+        </div>
+        <div>
+          <div class="flex items-baseline justify-between mb-1">
+            <span class="text-2xl font-bold text-gray-900">{{ dateRangeDisplay }}</span>
+            <span class="text-sm font-semibold text-blue-600">Range</span>
+          </div>
+          <p class="text-xs text-gray-600">Current range</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

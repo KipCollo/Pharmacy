@@ -1,103 +1,162 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {CustomersApIsService} from "../../../services/services/customers-ap-is.service";
-import {BaseChartDirective} from "ng2-charts";
-import {Chart, ChartData, ChartOptions, registerables} from "chart.js";
-import {FormsModule} from "@angular/forms";
+import { CommonModule } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartConfiguration } from 'chart.js';
+import { CustomerReportResponse } from '../../../services/models/customer-report-response';
+import { CustomersApIsService } from '../../../services/services/customers-ap-is.service';
 
-Chart.register(...registerables);
+type ReportPeriod = 'day' | 'week' | 'month';
 
 @Component({
   selector: 'app-customers-report',
   standalone: true,
-  imports: [
-    FormsModule,
-    BaseChartDirective
-  ],
+  imports: [CommonModule, BaseChartDirective],
   templateUrl: './customers-report.component.html',
   styleUrl: './customers-report.component.css'
 })
-export class CustomersReportComponent implements OnInit{
+export class CustomersReportComponent {
+  private readonly customersService = inject(CustomersApIsService);
 
-  filterType: 'week' | 'month' | 'year' = 'week';
+  selectedPeriod = signal<ReportPeriod>('month');
+  dateRangeDisplay = '';
+  isLoading = false;
 
-  customerData: { date: string, customers: number }[] = [];
+  // Chart Configuration
+  chartType: 'line' = 'line';
+  chartOptions: ChartConfiguration<'line'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      filler: { propagate: true }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 200,
+        ticks: { color: '#9ca3af' },
+        grid: { color: '#e5e7eb' }
+      },
+      x: {
+        ticks: { color: '#9ca3af' },
+        grid: { display: false }
+      }
+    }
+  };
 
-  chart: any;
-
-  chartData: ChartData<'bar'> = {
+  customerChartData: ChartConfiguration<'line'>['data'] = {
     labels: [],
     datasets: [
       {
-        label: 'New Customers',
         data: [],
-        backgroundColor: 'rgba(37, 99, 235, 0.3)',
-        borderColor: '#2563EB',
-        borderWidth: 1
+        label: 'Customers',
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: '#3b82f6',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointHoverRadius: 6
       }
     ]
   };
 
-  chartOptions: ChartOptions<'bar'> = {
-    responsive: true,
-    plugins: { legend: { display: true } }
-  };
-
-  ngOnInit() {
-    this.generateCustomerData();
-    this.updateChart();
+  constructor() {
+    this.loadReport();
   }
 
-  /** Generate random data based on selected filter */
-  generateCustomerData() {
-    const today = new Date();
-    const data: { date: string, customers: number }[] = [];
+  get totalCustomers(): number {
+    return (this.customerChartData.datasets[0].data as number[]).reduce((sum, value) => sum + value, 0);
+  }
 
-    if (this.filterType === 'week') {
-      // Last 7 days
-      for (let i = 6; i >= 0; i--) {
-        const date = new Date(today);
-        date.setDate(today.getDate() - i);
-        data.push({ date: date.toISOString().split('T')[0], customers: this.randomCustomers() });
-      }
-    } else if (this.filterType === 'month') {
-      // Every 3 days in current month
-      const month = today.getMonth();
-      const year = today.getFullYear();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-      for (let d = 1; d <= daysInMonth; d += 3) {
-        const date = new Date(year, month, d);
-        data.push({ date: date.toISOString().split('T')[0], customers: this.randomCustomers() });
-      }
-    } else if (this.filterType === 'year') {
-      // Every month
-      const year = today.getFullYear();
-      for (let m = 0; m < 12; m++) {
-        const date = new Date(year, m, 1);
-        data.push({ date: date.toISOString().split('T')[0], customers: this.randomCustomers() });
-      }
+  get averageCustomers(): number {
+    const values = this.customerChartData.datasets[0].data as number[];
+    if (values.length === 0) {
+      return 0;
     }
-
-    this.customerData = data;
+    return this.totalCustomers / values.length;
   }
 
-  /** Returns a random number of customers between 2 and 8 */
-  randomCustomers() {
-    return Math.floor(Math.random() * 7) + 2;
+  setPeriod(period: ReportPeriod): void {
+    this.selectedPeriod.set(period);
+    this.loadReport();
   }
 
-  /** Update chart based on filtered data */
-  updateChart() {
-    this.generateCustomerData();
+  async exportCsv(): Promise<void> {
+    const Papa = await import('papaparse');
+    const labels = this.customerChartData.labels ?? [];
+    const values = this.customerChartData.datasets[0].data as number[];
 
-    this.chartData.labels = this.customerData.map(d => d.date);
-    this.chartData.datasets[0].data = this.customerData.map(d => d.customers);
+    const csv = Papa.unparse(
+      labels.map((label, index) => ({
+        date: label,
+        customers: values[index] ?? 0
+      }))
+    );
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `customers_report_${this.selectedPeriod()}.csv`;
+    link.click();
   }
 
-  onFilterChange(newFilter: 'week' | 'month' | 'year') {
-    this.filterType = newFilter;
-    this.updateChart();
+  private loadReport(): void {
+    this.isLoading = true;
+    const period = this.selectedPeriod();
+
+    this.customersService
+      .getCustomerReport({ period })
+      .subscribe({
+        next: (report) => {
+          const labels = report.map((entry) => this.formatDateLabel(entry.date ?? '', period));
+          const values = report.map((entry) => entry.customers ?? 0);
+          this.customerChartData = {
+            ...this.customerChartData,
+            labels,
+            datasets: [
+              {
+                ...this.customerChartData.datasets[0],
+                data: values
+              }
+            ]
+          };
+          this.dateRangeDisplay = this.buildDateRangeDisplay(labels);
+          this.isLoading = false;
+        },
+        error: () => {
+          this.customerChartData = {
+            ...this.customerChartData,
+            labels: [],
+            datasets: [{ ...this.customerChartData.datasets[0], data: [] }]
+          };
+          this.dateRangeDisplay = 'No data available';
+          this.isLoading = false;
+        }
+      });
   }
 
+  private formatDateLabel(value: string, period: ReportPeriod): string {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+    if (period === 'day') {
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+  }
 
+  private buildDateRangeDisplay(labels: string[]): string {
+    if (labels.length === 0) {
+      return 'No data available';
+    }
+    if (labels.length === 1) {
+      return labels[0];
+    }
+    return `${labels[0]} - ${labels[labels.length - 1]}`;
+  }
 }
