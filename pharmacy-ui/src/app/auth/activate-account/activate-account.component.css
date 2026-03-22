@@ -1,11 +1,45 @@
-.container{
+.container {
   height: 100vh;
 }
 
-.activate-error, .activate-message{
+.activate-error,
+.activate-message {
   text-align: center;
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  width: min(90vw, 480px);
+  padding: 1.5rem;
 }
 
-.activate-error{
-  color: red;
+.activate-error {
+  color: #b91c1c;
+}
+
+.activate-message {
+  color: #065f46;
+}
+
+.activate-error button,
+.activate-message button {
+  margin-top: 1rem;
+  border: 0;
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  background: #334155;
+  color: #fff;
+  cursor: pointer;
+}
+
+.code-box {
+  width: min(90vw, 420px);
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.code-box p {
+  margin: 0 0 0.85rem;
+  color: #475569;
 }

@@ -100,7 +100,7 @@ export class ProfileComponent implements OnInit{
       this.customerService.deleteCustomer({customerId: this.customerId}).subscribe({
         next: () => {
           alert('Account deleted successfully.');
-          localStorage.removeItem(this.tokenService.token)
+          this.tokenService.clearAuthTokens();
           this.router.navigate(['/']); // Redirect to homepage
         },
         error: () => {

@@ -1,25 +1,25 @@
 <div class="min-h-screen flex flex-col">
 
   <!-- NAVBAR -->
-  @if (!isAdminPage()) {
-    <header class="fixed top-0 left-0 right-0 z-50 bg-white shadow">
-      <app-announcement-bar></app-announcement-bar>
-      <app-navbar></app-navbar>
-      <app-navbar-links></app-navbar-links>
-    </header>
+  @if (!isAdminPage() && !isAuthPage()) {
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white shadow">
+    <app-announcement-bar></app-announcement-bar>
+    <app-navbar></app-navbar>
+    <app-navbar-links></app-navbar-links>
+  </header>
   }
 
   <!-- MAIN CONTENT -->
-  <main
-      class="flex-1"
-      [class.pt-40]="!isAdminPage()">
-    <router-outlet></router-outlet>
+  <main class="flex-1 w-full" [class.pt-40]="!isAdminPage() && !isAuthPage()">
+    <div class="w-full">
+      <router-outlet></router-outlet>
+    </div>
     <app-cart-modal></app-cart-modal>
   </main>
 
   <!-- FOOTER -->
-  @if (!isAdminPage()) {
-    <app-footer></app-footer>
+  @if (!isAdminPage() && !isAuthPage()) {
+  <app-footer></app-footer>
   }
 
 </div>

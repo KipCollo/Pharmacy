@@ -2,22 +2,29 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi} from "@angular/common/http";
-import {HttpTokenInterceptor} from "./services/interceptor/http-token.interceptor";
-import {provideNativeDateAdapter} from "@angular/material/core";
-import {provideAnimations} from "@angular/platform-browser/animations";
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from "@angular/common/http";
+import { HttpTokenInterceptor } from "./services/interceptor/http-token.interceptor";
+import { provideNativeDateAdapter } from "@angular/material/core";
+import { provideAnimations } from "@angular/platform-browser/animations";
+import { ApiConfiguration } from './services/api-configuration';
 // import { provideLucideIcons } from 'lucide-angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-     provideZoneChangeDetection({ eventCoalescing: true }),
-     provideRouter(routes),
-     //provideNativeDateAdapter(),
-     provideAnimations(),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    //provideNativeDateAdapter(),
+    provideAnimations(),
     // provideLucideIcons(),
-     provideHttpClient(
-       withInterceptorsFromDi(),
-     ),
+    provideHttpClient(
+      withInterceptorsFromDi(),
+    ),
+    {
+      provide: ApiConfiguration,
+      useValue: {
+        rootUrl: 'http://localhost:8080'
+      }
+    },
 
     {
       provide: HTTP_INTERCEPTORS,

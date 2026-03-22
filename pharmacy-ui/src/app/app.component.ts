@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import {Router, RouterOutlet} from '@angular/router';
-import {FooterComponent} from "./shared/footer/footer.component";
+import { Router, RouterOutlet } from '@angular/router';
+import { FooterComponent } from "./shared/footer/footer.component";
 import { AnnouncementBarComponent } from './shared/announcement-bar/announcement-bar.component';
-import {NgIf} from "@angular/common";
+import { NgIf } from "@angular/common";
 import { NavbarLinksComponent } from "./shared/navbar-links/navbar-links.component";
 import { NavbarComponent } from './shared/navbar/navbar.component';
-import {CartModalComponent} from "./cart/cart-modal/cart-modal.component";
+import { CartModalComponent } from "./cart/cart-modal/cart-modal.component";
 
 @Component({
   selector: 'app-root',
@@ -42,5 +42,10 @@ export class AppComponent {
 
     return adminPaths.some(path => this.router.url.startsWith(path));
     //return this.router.url.startsWith('/admin');
+  }
+
+  isAuthPage(): boolean {
+    const authPaths = ['/login', '/register', '/activate-account'];
+    return authPaths.some(path => this.router.url.startsWith(path));
   }
 }

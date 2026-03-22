@@ -1,1 +1,99 @@
-<p>orders</p>
+<section class="orders-shell">
+    <header class="orders-header">
+        <h1>Order Tracking</h1>
+        <p>Track your current order progress and review your previous orders.</p>
+    </header>
+
+    @if (successMessage) {
+    <div class="success-banner">{{ successMessage }}</div>
+    }
+
+    @if (error) {
+    <div class="error-banner">{{ error }}</div>
+    }
+
+    @if (loading) {
+    <div class="state-card">Loading your orders...</div>
+    } @else if (!orders.length) {
+    <div class="state-card">
+        <p>You do not have any orders yet.</p>
+        <a href="/products" class="primary-link">Start shopping</a>
+    </div>
+    } @else {
+    <div class="orders-layout">
+        <article class="tracking-card">
+            @if (selectedOrder) {
+            <div class="tracking-meta">
+                <div>
+                    <p class="meta-label">Order</p>
+                    <h2>#{{ selectedOrder.orderId }} · {{ selectedOrder.reference }}</h2>
+                </div>
+                <span class="status-pill" [ngClass]="getStatusClass(selectedOrder.shipmentStatus)">
+                    {{ selectedOrder.progressLabel }}
+                </span>
+            </div>
+
+            <div class="tracking-details">
+                <p><span>Placed:</span> {{ selectedOrder.createdAt | date:'medium' }}</p>
+                <p><span>Total:</span> Kes {{ selectedOrder.totalAmount | number:'1.2-2' }}</p>
+                @if (selectedOrder.shipmentEta) {
+                <p><span>Estimated arrival:</span> {{ selectedOrder.shipmentEta | date:'mediumDate' }}</p>
+                }
+                @if (selectedOrder.origin) {
+                <p><span>From:</span> {{ selectedOrder.origin }}</p>
+                }
+                @if (selectedOrder.destination) {
+                <p><span>To:</span> {{ selectedOrder.destination }}</p>
+                }
+            </div>
+
+            @if (selectedOrder.originLat !== undefined && selectedOrder.originLng !== undefined &&
+            selectedOrder.destinationLat !== undefined && selectedOrder.destinationLng !== undefined) {
+            <a class="primary-link" [routerLink]="['/map']" [queryParams]="{
+                originLat: selectedOrder.originLat,
+                originLng: selectedOrder.originLng,
+                destinationLat: selectedOrder.destinationLat,
+                destinationLng: selectedOrder.destinationLng,
+                originLabel: selectedOrder.origin,
+                destinationLabel: selectedOrder.destination,
+                orderRef: selectedOrder.reference
+              }">
+                View shipment route on map
+            </a>
+            }
+
+            <p class="tracking-message">{{ selectedOrder.message }}</p>
+
+            <ol class="timeline">
+                @for (step of selectedOrder.steps; track step.label) {
+                <li class="timeline-item" [class.done]="step.done" [class.active]="step.active">
+                    <div class="timeline-dot"></div>
+                    <p>{{ step.label }}</p>
+                </li>
+                }
+            </ol>
+            }
+        </article>
+
+        <aside class="history-card">
+            <h3>Previous orders</h3>
+            <div class="history-list">
+                @for (order of orders; track order.orderId) {
+                <button class="history-item" [class.selected]="selectedOrder?.orderId === order.orderId"
+                    (click)="selectOrder(order)">
+                    <div>
+                        <p class="history-title">#{{ order.orderId }} · {{ order.reference }}</p>
+                        <p class="history-subtitle">{{ order.createdAt | date:'mediumDate' }}</p>
+                    </div>
+                    <div class="history-right">
+                        <span class="history-status" [ngClass]="getStatusClass(order.shipmentStatus)">{{
+                            order.progressLabel }}</span>
+                        <span class="history-total">Kes {{ order.totalAmount | number:'1.2-2' }}</span>
+                    </div>
+                </button>
+                }
+            </div>
+        </aside>
+    </div>
+    }
+</section>

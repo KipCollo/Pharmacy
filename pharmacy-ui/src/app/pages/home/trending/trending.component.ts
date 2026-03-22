@@ -1,22 +1,20 @@
 import { Component, OnInit, inject } from '@angular/core';
-import {SlicePipe} from "@angular/common";
-import {ProductCardComponent} from "../../../products/product-card/product-card.component";
-import {RouterLink} from "@angular/router";
-import {ProductResponse} from "../../../services/models/product-response";
-import {MedicineApIsService} from "../../../services/services/medicine-ap-is.service";
+import { SlicePipe } from "@angular/common";
+import { RouterLink } from "@angular/router";
+import { ProductResponse } from "../../../services/models/product-response";
+import { MedicineApIsService } from "../../../services/services/medicine-ap-is.service";
 
 @Component({
   selector: 'app-trending',
   standalone: true,
   imports: [
-    ProductCardComponent,
     RouterLink,
     SlicePipe
   ],
   templateUrl: './trending.component.html',
   styleUrl: './trending.component.css'
 })
-export class TrendingComponent implements OnInit{
+export class TrendingComponent implements OnInit {
   private trendingService = inject(MedicineApIsService);
 
   trendingProducts: ProductResponse[] = []
@@ -25,14 +23,18 @@ export class TrendingComponent implements OnInit{
   errorMessage = '';
 
   scroll(container: HTMLElement, direction: number) {
-    container.scrollBy({ left: direction * 300, behavior: 'smooth' });
+    container.scrollBy({ left: direction * 220, behavior: 'smooth' });
+  }
+
+  getProductCount(product: ProductResponse): number {
+    return product.stockQuantity ?? 6;
   }
 
   ngOnInit() {
     this.getSpecialOffers();
   }
 
-  getSpecialOffers(){
+  getSpecialOffers() {
     this.isLoading = true;
     this.hasError = false;
     this.errorMessage = '';

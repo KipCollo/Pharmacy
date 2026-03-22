@@ -14,18 +14,18 @@ export interface CreatePayment$Params {
       body: PaymentRequest
 }
 
-export function createPayment(http: HttpClient, rootUrl: string, params: CreatePayment$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+export function createPayment(http: HttpClient, rootUrl: string, params: CreatePayment$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, createPayment.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
 
   return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
+    rb.build({ responseType: 'text', accept: '*/*', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return (r as HttpResponse<any>).clone({ body: parseFloat(String((r as HttpResponse<any>).body)) }) as StrictHttpResponse<number>;
+      return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
     })
   );
 }

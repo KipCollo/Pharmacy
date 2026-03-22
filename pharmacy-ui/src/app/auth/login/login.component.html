@@ -1,57 +1,63 @@
-<div class="flex justify-center p-6 max-w-6xl mx-auto">
-  <div class="p-10 left-section">
-    <div class="text-4xl text-blue-600 font-bold">&#12638;</div>
-    <h1>LOG IN</h1>
-    <h2>Welcome back! Please sign in to your account</h2>
-    <form>
-      @if (errorMsg.length) {
-      <div>
-        @for (msg of errorMsg; track $index) { <p>{{ msg }}</p>}
-      </div>
-      }
-      <div class="form-group">
-        <label for="username">Email address</label>
-        <input [(ngModel)]="authRequest.email" [ngModelOptions]="{ standalone: true }" type="email" id="username"
-          placeholder="name@gmail.com" class="input-field">
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input [(ngModel)]="authRequest.password" [ngModelOptions]="{ standalone: true } " type="password" id="password"
-          placeholder="password" class="input-field">
-      </div>
-      <mat-form-field>
-        <mat-label>Enter your password</mat-label>
-        <input matInput [type]="hide() ? 'password' : 'text'" />
-        <button matIconButton matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hide()">
-          <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-      </mat-form-field>
-      <div class="form-footer">
-        <div>
-          <input type="checkbox" id="remember">
-          <label for="remember">Remember me</label>
-        </div>
-        <a href="#" class="link">Forgot password?</a>
-      </div>
-      <button (click)="login()" class="w-full bg-blue-800 text-white  hover:cursor-pointer btn-primary"
-        type="submit">Sign in</button>
-    </form>
-    <div class="flex items-center divider">
-      <div class="line"></div>
-      <span>Or continue with</span>
-      <div class="line"></div>
+<div class="auth-shell">
+  <section class="auth-hero">
+    <div class="hero-copy">
+      <h1>Take charge of your well-being with Afyangu</h1>
+      <p>
+        Afyangu simplifies medical record management, insurance tracking, and health monitoring.
+        Seamlessly organize your healthcare data, appointments, and insurance covers.
+      </p>
     </div>
-    <div class="social-buttons">
-      <button class="btn-social  hover:cursor-pointer">
-        <img src="https://www.svgrepo.com/show/355037/google.svg" class="icon"> Google
-      </button>
-    </div>
-    <div>
-      Don't have an account?&nbsp;
-      <button (click)="register()" style="color: white; background-color: green" type="button"
-        class=" btn-social hover:cursor-pointer"> Register</button>
-    </div>
-  </div>
+    <img src="/login.jpg" alt="Family smiling together" class="hero-image" />
+  </section>
 
+  <section class="auth-panel">
+    <div class="auth-card">
+      <div class="brand-row">
+        <span class="brand-primary">DHA</span>
+        <span class="brand-separator"></span>
+        <span class="brand-secondary">Afyangu</span>
+      </div>
+
+      <h2>Sign in</h2>
+      <p class="subtitle">Sign in to your KipCollo account</p>
+
+      <form (ngSubmit)="login()" novalidate>
+        @if (errorMsg.length) {
+        <div class="error-list">
+          @for (msg of errorMsg; track $index) {
+          <p>{{ msg }}</p>
+          }
+        </div>
+        }
+
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>Email address</mat-label>
+          <input [(ngModel)]="authRequest.email" [ngModelOptions]="{ standalone: true }" matInput type="email"
+            autocomplete="email" placeholder="name@gmail.com" required />
+        </mat-form-field>
+
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input [(ngModel)]="authRequest.password" [ngModelOptions]="{ standalone: true }" matInput
+            [type]="hide() ? 'password' : 'text'" autocomplete="current-password" placeholder="Enter your password"
+            required />
+          <button type="button" mat-icon-button matSuffix (click)="clickEvent($event)"
+            [attr.aria-label]="'Toggle password visibility'" [attr.aria-pressed]="hide()">
+            <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <div class="form-footer">
+          <a href="#" class="link">Forgot password?</a>
+        </div>
+
+        <button class="w-full btn-primary" type="submit">Login</button>
+      </form>
+
+      <p class="register-copy">
+        Don't have an account?
+        <button (click)="register()" type="button" class="register-btn">Sign up</button>
+      </p>
+    </div>
+  </section>
 </div>

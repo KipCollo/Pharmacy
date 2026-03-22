@@ -5,6 +5,7 @@
 import { Product } from '../models/product';
 import { Users } from '../models/users';
 export interface OrderResponse {
+  approvalStatus?: 'PENDING' | 'APPROVED' | 'PREPARING' | 'DISPATCHED' | 'DELIVERED' | 'CANCELED';
   createdAt?: string;
   customers?: Users;
   lastModifiedDate?: string;

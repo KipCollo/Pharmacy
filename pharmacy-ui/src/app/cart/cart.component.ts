@@ -1,22 +1,24 @@
-import { Component, EventEmitter, OnInit, Output, signal, inject } from '@angular/core';
-import {DecimalPipe} from "@angular/common";
-import {Router, RouterLink} from "@angular/router";
-import { CartControllerService } from "../services/services/cart-controller.service";
-import { TokenService } from "../services/token/token.service";
-import { jwtDecode } from "jwt-decode";
-import { MedicineApIsService } from "../services/services/medicine-ap-is.service";
+
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { DecimalPipe } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { Router, RouterLink } from "@angular/router";
+import { LucideAngularModule } from "lucide-angular/src/icons";
+import { icons } from "lucide-angular";
+import { finalize } from "rxjs";
+import { CartStore } from "./cart-modal/cart.service";
+import { OrderRequest } from "../services/models/order-request";
+import { UserRequest } from "../services/models/user-request";
+import { UserResponse } from "../services/models/user-response";
+import { CustomersApIsService } from "../services/services/customers-ap-is.service";
 import { OrderApIsService } from "../services/services/order-ap-is.service";
-import {OrderRequest} from "../services/models/order-request";
-import {CartResponse} from "../services/models/cart-response";
-import {LucideAngularModule} from "lucide-angular/src/icons";
-import {icons} from "lucide-angular";
-import {CartStore} from "./cart-modal/cart.service";
 
 @Component({
   selector: 'app-cart',
   standalone: true,
   imports: [
     DecimalPipe,
+    FormsModule,
     RouterLink,
     LucideAngularModule
   ],
@@ -25,87 +27,146 @@ import {CartStore} from "./cart-modal/cart.service";
 })
 
 
-export class CartComponent{
-  private cartService = inject(CartControllerService);
-  private orderService = inject(OrderApIsService);
-  private tokenService = inject(TokenService);
-  private productService = inject(MedicineApIsService);
+export class CartComponent implements OnInit {
   cartStore = inject(CartStore);
+  private customerService = inject(CustomersApIsService);
+  private orderService = inject(OrderApIsService);
   private router = inject(Router);
 
+  checkoutSteps: string[] = ['Cart', 'Address', 'Checkout'];
+  currentStepIndex = 0;
+  customer: UserResponse | null = null;
+  address = '';
+  paymentMethod: 'MPESA' | 'BANK' | 'BITCOIN' | 'VISA' = 'MPESA';
+  reference = `REF-${Date.now()}`;
+  loading = true;
+  submitting = false;
+  error = '';
 
-  totalPrice: number = 0;
   @Output() closeCart = new EventEmitter<void>();
-  cartItems = signal<CartResponse[]>([]);
 
-  private decodeToken(token: string): any {
-    try {
-      return jwtDecode(token);
-    } catch (error) {
-      console.error('Invalid token:', error);
-      return null;
-    }
+  ngOnInit(): void {
+    this.cartStore.loadCart();
+
+    this.customerService.getCurrentCustomer().pipe(
+      finalize(() => {
+        this.loading = false;
+      })
+    ).subscribe({
+      next: (res) => {
+        this.customer = res;
+        this.address = res.location?.trim() ?? '';
+      },
+      error: () => {
+        this.error = 'Unable to load your details. Please try again.';
+      }
+    });
   }
 
-  getUserId() {
-    const user = this.decodeToken(this.tokenService.token);
-    return user?.userId;
+  isAddressValid(): boolean {
+    return this.address.trim().length >= 3;
   }
 
-  placeOrder(): void {
-    //const userId = this.getUserId();
-    if (this.cartItems().length === 0) {
+  goToAddress(): void {
+    if (!this.cartStore.cart().length) {
       alert('Cart is empty!');
       return;
     }
-    else {
-      this.router.navigate(['checkout'])
+    this.currentStepIndex = 1;
+  }
+
+  goToCheckoutStep(): void {
+    if (!this.isAddressValid()) {
+      this.error = 'Please provide a valid delivery address.';
+      return;
+    }
+    this.error = '';
+    this.currentStepIndex = 2;
+  }
+
+  goToStep(index: number): void {
+    if (index < 0 || index > 2) {
+      return;
+    }
+    this.currentStepIndex = index;
+  }
+
+  placeOrder(): void {
+    if (!this.customer?.customerId) {
+      this.error = 'Unable to identify your account. Please log in again.';
+      return;
     }
 
-    const orderRequest: OrderRequest = {
-      customers: this.getUserId(),
-      paymentMethod: 'MPESA', // You can make this dynamic via a dropdown in the UI
-      reference: `REF-${Date.now()}`, // Example unique reference
-      products: this.cartItems().flatMap(item =>
-        (item.product ?? []).map(p => ({
-          productId: p.productId as number,
-          quantity: p.quantity ?? 1
+    const products = this.cartStore.cart().flatMap(cart =>
+      (cart.product ?? [])
+        .filter(product => !!product.productId)
+        .map(product => ({
+          productId: product.productId as number,
+          quantity: product.quantity ?? 1
         }))
-      ),
-      totalAmount: this.calculateTotalPrice()
+    );
+
+    if (!products.length) {
+      this.error = 'Your cart is empty.';
+      this.currentStepIndex = 0;
+      return;
+    }
+
+    const addressToPersist = this.address.trim();
+    const customerUpdate: UserRequest = {
+      customerId: this.customer.customerId,
+      firstName: this.customer.firstName ?? '',
+      lastName: this.customer.lastName ?? '',
+      email: this.customer.email ?? '',
+      password: this.customer.password ?? '',
+      dateOfBirth: this.customer.dateOfBirth,
+      phone: this.customer.phone,
+      location: addressToPersist
     };
 
-      this.orderService.createOrder({ body: orderRequest }).subscribe({
-        next: (orderId) => {
-          alert(`Order placed successfully! Order ID: ${orderId}`);
-          this.clearCartAfterOrder();
-        },
-        error: (err) => console.error('Error placing order:', err)
-      });
-    }
+    const orderRequest: OrderRequest = {
+      customers: { customerId: this.customer.customerId },
+      paymentMethod: this.paymentMethod,
+      reference: this.reference.trim() || `REF-${Date.now()}`,
+      products,
+      totalAmount: this.cartStore.getSubtotal()
+    };
 
-    clearCartAfterOrder(): void {
-      this.cartService.removeFromCart({ cartId: this.getUserId() }).subscribe({
-        next: () => {
-          this.cartItems.set([]);
-          this.totalPrice = 0;
-          console.log('Cart cleared after placing order');
-        },
-        error: (err) => console.error('Error clearing cart:', err)
-      });
-    }
+    this.submitting = true;
+    this.error = '';
 
-    calculateTotalPrice(): number {
-     return  this.totalPrice = this.cartItems().reduce((total, item) => {
-        if (!item.product) return total;
+    this.customerService.updateCustomer({ body: customerUpdate }).subscribe({
+      next: () => {
+        this.orderService.createOrder({ body: orderRequest }).pipe(
+          finalize(() => {
+            this.submitting = false;
+          })
+        ).subscribe({
+          next: (orderId) => {
+            this.cartStore.clearCartLocal();
+            this.cartStore.loadCart();
+            this.router.navigate(['/orders'], {
+              state: {
+                orderPlaced: true,
+                orderId
+              }
+            });
+          },
+          error: () => {
+            this.error = 'Failed to place order. Please try again.';
+          }
+        });
+      },
+      error: () => {
+        this.submitting = false;
+        this.error = 'Failed to save your address. Please check it and try again.';
+      }
+    });
+  }
 
-        return total + item.product.reduce(
-          (sum, p) => sum + (p.price?? 0) * (p.quantity ?? 1),
-          0
-        );
-      }, 0);
-
-    }
+  continueShopping(): void {
+    this.router.navigate(['/products']);
+  }
 
   protected readonly icons = icons;
 }

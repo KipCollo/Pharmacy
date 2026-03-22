@@ -1,20 +1,26 @@
-<section
-  class="relative flex back justify-center bg-cover bg-center bg-no-repeat text-center text-white w-full overflow-hidden transition-all duration-1000">
-  <!-- Dark overlay -->
-  <div class=" absolute inset-0 "></div>
+<section class="hero-wrap w-full pt-4">
+  <div class="hero-card mx-auto w-full overflow-hidden rounded-sm border border-[#ece5d9] bg-[#f6ecdf]">
+    <div class="hero-main relative grid min-h-67.5 grid-cols-1 items-center md:grid-cols-2">
+      <button class="hero-nav hero-nav-left" type="button" aria-label="Previous slide">&#10094;</button>
+      <button class="hero-nav hero-nav-right" type="button" aria-label="Next slide">&#10095;</button>
 
-  <!-- Content -->
-  <div class="relative z-10 flex flex-col justify-center items-center py-24 px-6 animate__animated animate__fadeInUp">
-    <h1 class="text-4xl font-bold">
-      The center of your <span class="text-green-500">helpful home.</span>
-    </h1>
-    <p class="text-gray-200 mt-4 max-w-xl">
-      Soon things will be brighter. Best wishes as you recover.
-    </p>
-    <button
-      class="mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md hover:scale-110 transition-transform"
-      [routerLink]="['/about']">
-      Learn More
-    </button>
+      <div class="hero-copy z-10 px-10 py-10 md:pl-16 md:pr-8">
+        <p class="hero-kicker m-0">SPECIAL OFFERS</p>
+        <h1 class="mt-2 text-4xl font-bold leading-tight text-slate-900">Your Medication<br />Now Made Easy</h1>
+        <p class="mt-4 text-sm text-slate-500">Best selling on Nika</p>
+        <button class="hero-cta mt-6" [routerLink]="['/offers']">Shop Now</button>
+      </div>
+
+      <div class="hero-media relative flex justify-center px-8 pb-8 pt-2 md:justify-start">
+        <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=420&q=80"
+          alt="Medicine bottle" class="hero-bottle" />
+      </div>
+
+      <div class="hero-dots absolute bottom-4 left-1/2 -translate-x-1/2">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
   </div>
 </section>

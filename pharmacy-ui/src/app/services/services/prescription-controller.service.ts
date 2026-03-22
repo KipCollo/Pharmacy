@@ -20,6 +20,8 @@ import { GetLatestApprovedPrescription$Params } from '../fn/prescription-control
 import { getUserPrescriptions } from '../fn/prescription-controller/get-user-prescriptions';
 import { GetUserPrescriptions$Params } from '../fn/prescription-controller/get-user-prescriptions';
 import { PrescriptionResponse } from '../models/prescription-response';
+import { reviewPrescription } from '../fn/prescription-controller/review-prescription';
+import { ReviewPrescription$Params } from '../fn/prescription-controller/review-prescription';
 import { uploadPrescription } from '../fn/prescription-controller/upload-prescription';
 import { UploadPrescription$Params } from '../fn/prescription-controller/upload-prescription';
 
@@ -27,6 +29,35 @@ import { UploadPrescription$Params } from '../fn/prescription-controller/upload-
 export class PrescriptionControllerService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `reviewPrescription()` */
+  static readonly ReviewPrescriptionPath = '/api/prescriptions/{id}/review';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `reviewPrescription()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  reviewPrescription$Response(params: ReviewPrescription$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
+    return reviewPrescription(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `reviewPrescription$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  reviewPrescription(params: ReviewPrescription$Params, context?: HttpContext): Observable<{
+}> {
+    return this.reviewPrescription$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+}>): {
+} => r.body)
+    );
   }
 
   /** Path part for operation `approvePrescription()` */

@@ -1,10 +1,10 @@
 import { Injectable, signal, inject } from '@angular/core';
-import {CartResponse} from "../../services/models/cart-response";
-import {CartControllerService} from "../../services/services/cart-controller.service";
-import {CartRequest} from "../../services/models/cart-request";
+import { CartResponse } from "../../services/models/cart-response";
+import { CartControllerService } from "../../services/services/cart-controller.service";
+import { CartRequest } from "../../services/models/cart-request";
 
 @Injectable({ providedIn: 'root' })
-export class CartStore{
+export class CartStore {
   private cartService = inject(CartControllerService);
 
   isOpen = signal(false);
@@ -16,7 +16,7 @@ export class CartStore{
   }
 
   loadCart(): void {
-    this.cartService.getUserCart( ).subscribe({
+    this.cartService.getUserCart().subscribe({
       next: (items) => {
         this.cart.set(items);
       },
@@ -24,7 +24,12 @@ export class CartStore{
     });
   }
 
-  addToCart(medicineId: number){
+  clearCartLocal(): void {
+    this.cart.set([]);
+    this.cartRequest = { product: [] };
+  }
+
+  addToCart(medicineId: number) {
 
     if (medicineId === null || medicineId === undefined || medicineId <= 0) {
       console.error('Invalid product ID, cannot add to cart');
@@ -42,7 +47,7 @@ export class CartStore{
 
     this.cartRequest.product?.push(productEntry);
 
-    this.cartService.addCart({body: this.cartRequest}).subscribe({
+    this.cartService.addCart({ body: this.cartRequest }).subscribe({
       next: () => {
 
         this.openCart();
@@ -60,16 +65,18 @@ export class CartStore{
     this.isOpen.set(false);
   }
 
-  removeItemFromCart(cartId: number,productId: number) {
-    this.cartService.removeProductFromCart({cartId: cartId, productId: productId}).subscribe({
-      next: () => {this.cart.update(carts =>
-        carts.map(cart => ({
-          ...cart,
-          product: (cart.product ?? []).filter(
-            p => p.productId !== productId
-          )
-        }))
-      )}
+  removeItemFromCart(cartId: number, productId: number) {
+    this.cartService.removeProductFromCart({ cartId: cartId, productId: productId }).subscribe({
+      next: () => {
+        this.cart.update(carts =>
+          carts.map(cart => ({
+            ...cart,
+            product: (cart.product ?? []).filter(
+              p => p.productId !== productId
+            )
+          }))
+        )
+      }
     })
 
   }
@@ -87,15 +94,26 @@ export class CartStore{
   }
 
   updateQuantity(id: number | undefined, change: number) {
-    const item = this.cart().find(i => i.id === id);
-    if (!item?.product || item.product.length === 0) return;
+    if (!id) return;
 
-    const product = item.product[0];
-    const newQuantity = (product.quantity ?? 0) + change;
+    this.cart.update(carts => carts.map(cart => {
+      const updatedProducts = (cart.product ?? []).map(product => {
+        if (product.productId !== id) {
+          return product;
+        }
 
-    if (newQuantity >= 1) {
-      product.quantity = newQuantity;
-    }
+        const nextQuantity = (product.quantity ?? 1) + change;
+        return {
+          ...product,
+          quantity: nextQuantity >= 1 ? nextQuantity : 1
+        };
+      });
+
+      return {
+        ...cart,
+        product: updatedProducts
+      };
+    }));
 
   }
 

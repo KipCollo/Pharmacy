@@ -1,84 +1,166 @@
-<form #registerForm="ngForm" (ngSubmit)="onRegister()">
-  <div class="flex  justify-center p-6 max-w-6xl mx-auto">
-    <div class="flex flex-col left-section">
+<div class="auth-shell">
+  <section class="auth-hero">
+    <div class="hero-copy">
+      <h1>Join KipCollo and take control of your health journey</h1>
+      <p>
+        Create your account to manage medical records, insurance updates, and prescriptions from one secure place.
+      </p>
+    </div>
+    <img src="/login.jpg" alt="Family smiling together" class="hero-image" />
+  </section>
 
-      <!--Register Title-->
-      <div class="title pt-7">
-        <div class="logo">&#12638;</div>
-        <h1 class="font-bold">CREATE ACCOUNT</h1>
-        <p>Please create an Account..</p>
-      </div>
+  <section class="auth-panel">
+    <div class="auth-card">
+
+      <h2>Create account</h2>
+      <p class="subtitle">Set up your KipCollo account</p>
 
       @if (errorMsg.length) {
-      <div class="mb-4">
-        @for (msg of errorMsg; track $index) { <p class="text-red-600 font-semibold">{{ msg }}</p>}
+      <div class="error-list">
+        @for (msg of errorMsg; track $index) {
+        <p>{{ msg }}</p>
+        }
       </div>
       }
 
-      <div class="social-buttons">
-        <div class="form-group">
-          <label for="firstname">First Name</label>
-          <input [(ngModel)]="customer.firstName" name="firstName" required minlength="3" type="text" id="firstname"
-            placeholder="Firstname" class="input-field" #firstName="ngModel">
-          @if (firstName.invalid && firstName.touched) {
-          <div class="text-red-600 text-sm">
-            <div *ngIf="firstName.errors?.['required']">First name is required.</div>
-            <div *ngIf="firstName.errors?.['minlength']">First name must be at least 3 characters.</div>
-          </div>
-          }
-        </div>
+      <form #registerForm="ngForm" (ngSubmit)="onRegister()" novalidate>
+        <mat-stepper [linear]="true" class="register-stepper">
+          <mat-step [completed]="isPersonalStepValid()">
+            <ng-template matStepLabel>Personal details</ng-template>
 
-        <div class="form-group">
-          <label for="lastname">Last Name</label>
-          <input [(ngModel)]="customer.lastName" name="lastName" required minlength="3" type="text" id="lastname"
-            placeholder="Lastname" class="input-field" #lastName="ngModel">
-          <div *ngIf="lastName.invalid && lastName.touched" class="text-red-600 text-sm">
-            <div *ngIf="lastName.errors?.['required']">Last name is required.</div>
-            <div *ngIf="lastName.errors?.['minlength']">Last name must be at least 3 characters.</div>
-          </div>
-        </div>
-      </div>
+            <div class="name-grid">
+              <mat-form-field class="w-full" appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input [(ngModel)]="customer.firstName" name="firstName" required minlength="3" matInput type="text"
+                  placeholder="First name" #firstName="ngModel" />
+                @if (firstName.invalid && firstName.touched) {
+                <mat-error>
+                  @if (firstName.errors?.['required']) {
+                  First name is required.
+                  } @else if (firstName.errors?.['minlength']) {
+                  First name must be at least 3 characters.
+                  }
+                </mat-error>
+                }
+              </mat-form-field>
 
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input [(ngModel)]="customer.email" name="email" required email type="email" id="email"
-          placeholder="name@gmail.com" class="input-field" #email="ngModel">
-        <div *ngIf="email.invalid && email.touched" class="text-red-600 text-sm">
-          <div *ngIf="email.errors?.['required']">Email is required.</div>
-          <div *ngIf="email.errors?.['email']">Enter a valid email.</div>
-        </div>
-      </div>
+              <mat-form-field class="w-full" appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input [(ngModel)]="customer.lastName" name="lastName" required minlength="3" matInput type="text"
+                  placeholder="Last name" #lastName="ngModel" />
+                @if (lastName.invalid && lastName.touched) {
+                <mat-error>
+                  @if (lastName.errors?.['required']) {
+                  Last name is required.
+                  } @else if (lastName.errors?.['minlength']) {
+                  Last name must be at least 3 characters.
+                  }
+                </mat-error>
+                }
+              </mat-form-field>
+            </div>
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input [(ngModel)]="customer.password" name="password" required minlength="6" type="password" id="password"
-          placeholder="password" class="input-field" #password="ngModel">
-        <div *ngIf="password.invalid && password.touched" class="text-red-600 text-sm">
-          <div *ngIf="password.errors?.['required']">Password is required.</div>
-          <div *ngIf="password.errors?.['minlength']">Password must be at least 6 characters long.</div>
-        </div>
-      </div>
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Email</mat-label>
+              <input [(ngModel)]="customer.email" name="email" required email matInput type="email"
+                placeholder="name@gmail.com" autocomplete="email" #email="ngModel" />
+              @if (email.invalid && email.touched) {
+              <mat-error>
+                @if (email.errors?.['required']) {
+                Email is required.
+                } @else if (email.errors?.['email']) {
+                Enter a valid email.
+                }
+              </mat-error>
+              }
+            </mat-form-field>
 
-      <div>
-        <button type="submit" class="btn-primary bg-blue-900 w-full text-white p-2 hover:cursor-pointer"
-          [disabled]="registerForm.invalid">
-          <em>&nbsp;Sign Up</em>
-        </button>
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Phone</mat-label>
+              <input [(ngModel)]="customer.phone" name="phone" matInput type="tel"
+                placeholder="e.g. +250 788 000 000" />
+            </mat-form-field>
 
-      </div>
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Date of birth</mat-label>
+              <input matInput [matDatepicker]="dobPicker" [(ngModel)]="dateOfBirth" name="dateOfBirth" required
+                #dateOfBirthModel="ngModel" placeholder="MM/DD/YYYY" />
+              <mat-datepicker-toggle matIconSuffix [for]="dobPicker"></mat-datepicker-toggle>
+              <mat-datepicker #dobPicker></mat-datepicker>
+              @if (dateOfBirthModel.invalid && dateOfBirthModel.touched) {
+              <mat-error>Date of birth is required.</mat-error>
+              }
+            </mat-form-field>
 
-      <div class="flex items-center divider">
-        <div class="line "></div>
-        <span>***Or***</span>
-        <div class="line"></div>
-      </div>
+            <div class="step-actions">
+              <button type="button" mat-flat-button color="primary" matStepperNext [disabled]="!isPersonalStepValid()">
+                Continue
+              </button>
+            </div>
+          </mat-step>
 
-      <div class="flex gap-2 pt-5">
-        <p class="pl-4 ">Already have an account?&nbsp;</p>
-        <button (click)="login()" type="button" class="btn-social text-white bg-green-700 hover:cursor-pointer">
-          Log In
-        </button>
-      </div>
+          <mat-step [completed]="isAddressStepValid()">
+            <ng-template matStepLabel>Address</ng-template>
+
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Address details (optional)</mat-label>
+              <input [(ngModel)]="customer.location" name="location" matInput type="text"
+                placeholder="City, district, street or landmark" #location="ngModel" />
+            </mat-form-field>
+
+            <div class="step-actions">
+              <button type="button" mat-button matStepperPrevious>Back</button>
+              <button type="button" mat-flat-button color="primary" matStepperNext>
+                Continue
+              </button>
+            </div>
+          </mat-step>
+
+          <mat-step [completed]="isSecurityStepValid()">
+            <ng-template matStepLabel>Password</ng-template>
+
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Password</mat-label>
+              <input [(ngModel)]="customer.password" name="password" required minlength="6" matInput
+                [type]="hide() ? 'password' : 'text'" autocomplete="new-password" placeholder="Create password"
+                #password="ngModel" />
+              <button type="button" mat-icon-button matSuffix (click)="clickEvent($event)"
+                [attr.aria-label]="'Toggle password visibility'" [attr.aria-pressed]="hide()">
+                <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (password.invalid && password.touched) {
+              <mat-error>
+                @if (password.errors?.['required']) {
+                Password is required.
+                } @else if (password.errors?.['minlength']) {
+                Password must be at least 6 characters long.
+                }
+              </mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field class="w-full" appearance="outline">
+              <mat-label>Confirm password</mat-label>
+              <input [(ngModel)]="confirmPassword" name="confirmPassword" required matInput
+                [type]="hide() ? 'password' : 'text'" autocomplete="new-password" placeholder="Re-enter password"
+                #confirmPasswordModel="ngModel" />
+              @if (confirmPasswordModel.touched && confirmPassword !== customer.password) {
+              <mat-error>Passwords do not match.</mat-error>
+              }
+            </mat-form-field>
+
+            <div class="step-actions">
+              <button type="button" mat-button matStepperPrevious>Back</button>
+              <button type="submit" class="btn-primary" [disabled]="!isRegisterFormValid()">Sign up</button>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      </form>
+
+      <p class="register-copy">
+        Already have an account?
+        <button (click)="login()" type="button" class="register-btn">Log in</button>
+      </p>
     </div>
-  </div>
-</form>
+  </section>
+</div>

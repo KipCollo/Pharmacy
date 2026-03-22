@@ -1,14 +1,13 @@
-
-<div  class="flex justify-center container" *ngIf="submitted else codeForm">
+<div class="flex justify-center container" *ngIf="submitted else codeForm">
   <div class="activate-message" *ngIf="isOkay else activationError">
     <h2>Activation successful!</h2>
-    <p>Your account has been successfully activated</p>
+    <p>{{ message }}</p>
     <button (click)="redirectToLogin()">Go To Login</button>
   </div>
 </div>
 
 <ng-template #activationError>
-  <div class="activate-error" >
+  <div class="activate-error">
     <h2>Activation failed!</h2>
     <p>{{message}}</p>
     <button (click)="submitted = false">Try Again</button>
@@ -16,13 +15,19 @@
 </ng-template>
 
 <ng-template #codeForm>
- <div class="flex justify-center pt-24 container">
-   <div class="text-center" style="width: 400px">
-     <h2 class="pb-3">Enter your Activation Code</h2>
-     <code-input [isCodeHidden]="false"
-                 [codeLength]="6"
-                 [code]="'number'"
-                 (codeCompleted)="onCodeCompleted($event)"></code-input>
-   </div>
- </div>
+  <div class="flex justify-center pt-24 container">
+    <div class="text-center code-box" *ngIf="!isLoading; else loadingState">
+      <h2 class="pb-3">Enter your Activation Code</h2>
+      <p *ngIf="email">We sent a verification code to {{ email }}</p>
+      <code-input [isCodeHidden]="false" [codeLength]="6" [code]="'number'"
+        (codeCompleted)="onCodeCompleted($event)"></code-input>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loadingState>
+  <div class="text-center code-box">
+    <h2>Activating account...</h2>
+    <p>Please wait while we verify your code.</p>
+  </div>
 </ng-template>

@@ -11,13 +11,13 @@ import { RequestBuilder } from '../../request-builder';
 import { ProductCategoryRequest } from '../../models/product-category-request';
 
 export interface UpdateProductCategory$Params {
-      body: {
-'categoryRequest'?: ProductCategoryRequest;
+      body?: {
+'category': ProductCategoryRequest;
 'image'?: Blob;
 }
 }
 
-export function updateProductCategory(http: HttpClient, rootUrl: string, params: UpdateProductCategory$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+export function updateProductCategory(http: HttpClient, rootUrl: string, params?: UpdateProductCategory$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, updateProductCategory.PATH, 'put');
   if (params) {
     rb.body(params.body, 'application/json');

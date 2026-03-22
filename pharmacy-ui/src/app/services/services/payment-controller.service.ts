@@ -29,7 +29,7 @@ export class PaymentControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createPayment$Response(params: CreatePayment$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+  createPayment$Response(params: CreatePayment$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
     return createPayment(this.http, this.rootUrl, params, context);
   }
 
@@ -39,9 +39,9 @@ export class PaymentControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createPayment(params: CreatePayment$Params, context?: HttpContext): Observable<number> {
+  createPayment(params: CreatePayment$Params, context?: HttpContext): Observable<void> {
     return this.createPayment$Response(params, context).pipe(
-      map((r: StrictHttpResponse<number>): number => r.body)
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 

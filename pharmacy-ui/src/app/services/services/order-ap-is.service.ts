@@ -21,7 +21,13 @@ import { findById } from '../fn/order-ap-is/find-by-id';
 import { FindById$Params } from '../fn/order-ap-is/find-by-id';
 import { getOrderStatus } from '../fn/order-ap-is/get-order-status';
 import { GetOrderStatus$Params } from '../fn/order-ap-is/get-order-status';
+import { getRevenueReport } from '../fn/order-ap-is/get-revenue-report';
+import { GetRevenueReport$Params } from '../fn/order-ap-is/get-revenue-report';
 import { OrderResponse } from '../models/order-response';
+import { RevenueReportResponse } from '../models/revenue-report-response';
+import { ShipmentResponse } from '../models/shipment-response';
+import { updateAdminWorkflow } from '../fn/order-ap-is/update-admin-workflow';
+import { UpdateAdminWorkflow$Params } from '../fn/order-ap-is/update-admin-workflow';
 
 @Injectable({ providedIn: 'root' })
 export class OrderApIsService extends BaseService {
@@ -80,7 +86,7 @@ export class OrderApIsService extends BaseService {
   }
 
   /** Path part for operation `createPrescriptionOrder()` */
-  static readonly CreatePrescriptionOrderPath = '/api/orders/create';
+  static readonly CreatePrescriptionOrderPath = '/api/orders/prescription';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -105,6 +111,31 @@ export class OrderApIsService extends BaseService {
       map((r: StrictHttpResponse<{
 }>): {
 } => r.body)
+    );
+  }
+
+  /** Path part for operation `updateAdminWorkflow()` */
+  static readonly UpdateAdminWorkflowPath = '/api/orders/{orderId}/admin-workflow';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `updateAdminWorkflow()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  updateAdminWorkflow$Response(params: UpdateAdminWorkflow$Params, context?: HttpContext): Observable<StrictHttpResponse<ShipmentResponse>> {
+    return updateAdminWorkflow(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `updateAdminWorkflow$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  updateAdminWorkflow(params: UpdateAdminWorkflow$Params, context?: HttpContext): Observable<ShipmentResponse> {
+    return this.updateAdminWorkflow$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ShipmentResponse>): ShipmentResponse => r.body)
     );
   }
 
@@ -159,6 +190,31 @@ export class OrderApIsService extends BaseService {
       map((r: StrictHttpResponse<{
 }>): {
 } => r.body)
+    );
+  }
+
+  /** Path part for operation `getRevenueReport()` */
+  static readonly GetRevenueReportPath = '/api/orders/reports/revenue';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getRevenueReport()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getRevenueReport$Response(params?: GetRevenueReport$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<RevenueReportResponse>>> {
+    return getRevenueReport(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getRevenueReport$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getRevenueReport(params?: GetRevenueReport$Params, context?: HttpContext): Observable<Array<RevenueReportResponse>> {
+    return this.getRevenueReport$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<RevenueReportResponse>>): Array<RevenueReportResponse> => r.body)
     );
   }
 

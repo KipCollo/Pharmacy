@@ -61,7 +61,7 @@ export class ProductCategoryControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  updateProductCategory$Response(params: UpdateProductCategory$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  updateProductCategory$Response(params?: UpdateProductCategory$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
     return updateProductCategory(this.http, this.rootUrl, params, context);
   }
 
@@ -71,7 +71,7 @@ export class ProductCategoryControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  updateProductCategory(params: UpdateProductCategory$Params, context?: HttpContext): Observable<void> {
+  updateProductCategory(params?: UpdateProductCategory$Params, context?: HttpContext): Observable<void> {
     return this.updateProductCategory$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );

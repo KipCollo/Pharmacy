@@ -11,6 +11,7 @@ import { ProductCategoryControllerService } from './services/product-category-co
 import { PrescriptionControllerService } from './services/prescription-controller.service';
 import { CustomersApIsService } from './services/customers-ap-is.service';
 import { AuthenticationApIsService } from './services/authentication-ap-is.service';
+import { ShipmentTrackingApIsService } from './services/shipment-tracking-ap-is.service';
 import { PaymentControllerService } from './services/payment-controller.service';
 import { OrderApIsService } from './services/order-ap-is.service';
 import { HealthConditionControllerService } from './services/health-condition-controller.service';
@@ -30,6 +31,7 @@ import { OrderLineControllerService } from './services/order-line-controller.ser
     PrescriptionControllerService,
     CustomersApIsService,
     AuthenticationApIsService,
+    ShipmentTrackingApIsService,
     PaymentControllerService,
     OrderApIsService,
     HealthConditionControllerService,

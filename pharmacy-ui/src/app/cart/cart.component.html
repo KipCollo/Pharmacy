@@ -4,48 +4,96 @@
     <span class="text-[10px]">></span>
     <span class="mx-2 cursor-pointer hover:underline" routerLink="/products">Products</span>
     <span class="text-[10px]">></span>
-    <span class="mx-2 font-semibold text-black">Cart</span>
+    <span class="mx-2 font-semibold text-black">{{ checkoutSteps[currentStepIndex] }}</span>
   </nav>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
     <div class="lg:col-span-2 space-y-4">
-      @for (cart of cartStore.cart(); track cart.id) {
-                  @for (product of cart.product; track product.productId){
-      <div class="bg-white p-4 rounded-lg border border-gray-200 flex flex-wrap sm:flex-nowrap items-center gap-4 relative shadow-sm">
+      @if (error) {
+      <p class="error-text">{{ error }}</p>
+      }
 
-        <div class="w-24 h-24 border rounded flex-shrink-0 p-2">
-          <img [src]="'data:image/jpeg;base64,' + product.image" alt="{{ product.name }}" class="w-full h-full object-contain">
+      @if (loading) {
+      <p class="state-text">Loading your checkout details...</p>
+      } @else {
+      @if (currentStepIndex === 0) {
+      @for (cart of cartStore.cart(); track cart.id) {
+      @for (product of cart.product; track product.productId){
+      <div class="product-card">
+        <div class="product-media">
+          <img [src]="'data:image/jpeg;base64,' + product.image" alt="{{ product.name }}"
+            class="w-full h-full object-contain">
         </div>
 
-        <div class="flex-grow">
-          <div class="flex justify-between items-start">
-            <div>
-              <h3 class="font-bold text-gray-800 text-lg">{{ product.name }}</h3>
-              <p class="text-sm text-gray-400">{{ product.quantity }}</p>
-              <p class="text-gray-900 font-bold mt-2">Kes {{ product.price | number }}</p>
-              <p class="text-xs text-green-500 font-medium mt-1">{{ product.stockQuantity }} in stock</p>
-            </div>
+        <div class="product-details">
+          <h3 class="font-bold text-gray-800 text-lg leading-tight">{{ product.name }}</h3>
+          <p class="text-gray-900 font-bold mt-2">Kes {{ product.price | number }}</p>
+          <p class="text-xs text-green-500 font-medium mt-1">{{ product.stockQuantity }} in stock</p>
+        </div>
 
+        <div class="product-actions">
+          <button class="text-red-500 cursor-pointer self-end"
+            (click)="cartStore.removeItemFromCart(cart.id!,product.productId!)"><lucide-icon [img]="icons.Trash2"
+              class="h-5 w-5"></lucide-icon></button>
+
+          <div class="quantity-control">
+            <button (click)="cartStore.updateQuantity(product.productId,-1)"
+              class="px-3 py-1 hover:bg-gray-200 border-r">-</button>
+            <span class="px-4 py-1 font-medium">{{ product.quantity }}</span>
+            <button (click)="cartStore.updateQuantity(product.productId, 1)"
+              class="px-3 py-1 hover:bg-gray-200 border-l">+</button>
           </div>
         </div>
-
-        <div class="flex flex-col">
-        <!-- Delete -->
-        <button class="text-red-500 cursor-pointer" (click)="cartStore.removeItemFromCart(cart.id!,product.productId!)"><lucide-icon [img]="icons.Trash2" class="h-5 w-5"></lucide-icon></button>
-
-        <div class="flex items-center border rounded-md overflow-hidden bg-gray-50">
-          <button (click)="cartStore.updateQuantity(product.productId,-1)" class="px-3 py-1 hover:bg-gray-200 border-r">-</button>
-          <span class="px-4 py-1 font-medium">{{ product.quantity }}</span>
-          <button (click)="cartStore.updateQuantity(product.productId, 1)" class="px-3 py-1 hover:bg-gray-200 border-l">+</button>
-        </div>
-        </div>
       </div>
-                    @if (cartStore.cart().length === 0) {
-      <div class="text-center py-10 text-gray-500">
+      }
+      }
+      @if (cartStore.cart().length === 0) {
+      <div class="text-center py-10 text-gray-500 bg-white border border-gray-200 rounded-lg">
         Your cart is empty.
       </div>
-                    }
+      }
+      } @else if (currentStepIndex === 1) {
+      <div class="stage-panel">
+        <h3 class="section-title">Address</h3>
+        <p class="text-gray-700 font-medium mb-2">Delivery Options</p>
+        <div class="delivery-option-box">
+          <input type="radio" checked class="delivery-radio">
+          <label class="text-gray-700 font-medium">Delivery</label>
+        </div>
+
+        <label class="form-label mt-4">Delivery Address</label>
+        <textarea rows="4" [(ngModel)]="address" name="address" class="w-full form-input"
+          placeholder="City, district, street, landmark"></textarea>
+      </div>
+      } @else {
+      <div class="stage-panel">
+        <h3 class="section-title">Checkout</h3>
+
+        <label class="form-label">Reference</label>
+        <input type="text" [(ngModel)]="reference" name="reference" class="w-full form-input"
+          placeholder="Reference code">
+
+        <label class="form-label mt-4">Payment Method</label>
+        <div class="payment-grid">
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="MPESA" [(ngModel)]="paymentMethod">
+            <span>M-Pesa</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="VISA" [(ngModel)]="paymentMethod">
+            <span>Visa</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="BANK" [(ngModel)]="paymentMethod">
+            <span>Bank</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="BITCOIN" [(ngModel)]="paymentMethod">
+            <span>Bitcoin</span>
+          </label>
+        </div>
+      </div>
       }
       }
     </div>
@@ -58,41 +106,58 @@
         </div>
 
         <div class="p-4 space-y-4">
-          <p class="text-gray-700 font-medium">Delivery Options</p>
+          <div class="checkout-stepper" aria-label="Checkout progress">
+            @for (step of checkoutSteps; track step; let i = $index) {
+            <div class="step-item" [class.step-item-last]="i === checkoutSteps.length - 1" (click)="goToStep(i)">
+              <div class="step-marker" [class.step-marker-active]="i === currentStepIndex"
+                [class.step-marker-done]="i < currentStepIndex">
+                @if (i < currentStepIndex) { <lucide-icon [img]="icons.Check" class="h-3.5 w-3.5"></lucide-icon>
+                  } @else {
+                  <span>{{ i + 1 }}</span>
+                  }
+              </div>
 
-          <div class="flex items-center border border-red-300 rounded-lg p-3 bg-red-50">
-            <input type="radio" checked class="w-4 h-4 text-red-500">
-            <label class="ml-3 font-medium text-gray-700">Delivery</label>
+              <div class="step-content">
+                <p class="step-title" [class.step-title-active]="i === currentStepIndex">{{ step }}</p>
+                @if (i === currentStepIndex) {
+                <p class="step-subtitle">Current step</p>
+                } @else if (i > currentStepIndex) {
+                <p class="step-subtitle">Next</p>
+                }
+              </div>
+            </div>
+            }
           </div>
 
-          <button class="w-full bg-green-600 text-white py-3 rounded-md font-medium">
-            Select Your Delivery Address
-          </button>
-
-          <div class="relative flex py-2 items-center">
-            <div class="flex-grow border-t border-gray-300"></div>
-            <span class="mx-4 text-gray-400 text-sm">OR</span>
-            <div class="flex-grow border-t border-gray-300"></div>
+          <div class="summary-box">
+            <h3 class="section-title">Order Summary</h3>
+            <div class="flex justify-between text-gray-500">
+              <span>Items</span>
+              <span>{{ cartStore.getCartCount() }}</span>
+            </div>
+            <div class="flex justify-between font-bold text-lg text-gray-900 pt-2">
+              <span>Total</span>
+              <span>Kes {{ cartStore.getSubtotal() | number }}</span>
+            </div>
           </div>
 
-          <button class="w-full bg-red-500 text-white py-3 rounded-md font-medium">
-            Use Saved Location
-          </button>
-
-          <hr class="my-4">
-
-          <div class="flex justify-between text-gray-500">
-            <span>Subtotal ({{ cartStore.cart().length }} items)</span>
-            <span>Kes {{ cartStore.getSubtotal() | number }}</span>
-          </div>
-          <div class="flex justify-between font-bold text-lg text-gray-900 pt-2">
-            <span>Order Amount</span>
-            <span>Kes {{ cartStore.getSubtotal() | number }}</span>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3 pt-4">
-            <button class="bg-green-600 text-white py-2 rounded-md shadow-md" (click)="placeOrder()">Proceed to Checkout</button>
-            <button class="border border-gray-300 py-2 rounded-md">Continue Shopping</button>
+          <div class="grid grid-cols-2 gap-3 pt-2">
+            @if (currentStepIndex === 0) {
+            <button class="bg-green-600 text-white py-2 rounded-md shadow-md" (click)="goToAddress()">Proceed to
+              Address</button>
+            <button class="border border-gray-300 py-2 rounded-md" (click)="continueShopping()">Continue
+              Shopping</button>
+            } @else if (currentStepIndex === 1) {
+            <button class="border border-gray-300 py-2 rounded-md" (click)="goToStep(0)">Back</button>
+            <button class="bg-green-600 text-white py-2 rounded-md shadow-md" [disabled]="!isAddressValid()"
+              (click)="goToCheckoutStep()">Continue to Checkout</button>
+            } @else {
+            <button class="border border-gray-300 py-2 rounded-md" (click)="goToStep(1)">Back</button>
+            <button class="bg-green-600 text-white py-2 rounded-md shadow-md" [disabled]="submitting"
+              (click)="placeOrder()">
+              {{ submitting ? 'Placing order...' : 'Pay and Place Order' }}
+            </button>
+            }
           </div>
         </div>
       </div>

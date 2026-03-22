@@ -1,8 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
-import { FormsModule, NgModel } from "@angular/forms";
-import { NgForOf, NgIf, NgOptimizedImage } from "@angular/common";
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
-import { jwtDecode } from "jwt-decode";
 import { AuthenticationRequest } from '../../services/models/authentication-request';
 import { AuthenticationApIsService } from '../../services/services/authentication-ap-is.service';
 import { TokenService } from '../../services/token/token.service';
@@ -19,7 +17,7 @@ import { MatInputModule } from '@angular/material/input';
   styleUrl: './login.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   private router = inject(Router);
   private authService = inject(AuthenticationApIsService);
   private tokenService = inject(TokenService);
@@ -27,14 +25,6 @@ export class LoginComponent implements OnInit {
 
   authRequest: AuthenticationRequest = { email: '', password: '' };
   errorMsg: Array<string> = [];
-  isLoggedIn = false;
-
-  ngOnInit() {
-    // Subscribe to token changes to update UI instantly
-    this.tokenService.token$.subscribe((token) => {
-      this.isLoggedIn = !!token;
-    });
-  }
 
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
@@ -47,7 +37,7 @@ export class LoginComponent implements OnInit {
       body: this.authRequest
     }).subscribe({
       next: (res) => {
-        this.tokenService.token = res.token as string
+        this.tokenService.setAuthTokens(res.token ?? null, res.refreshToken ?? null);
         const roles: string[] = this.tokenService.getRoles()
 
         if (roles.includes('ADMIN')) {
@@ -61,10 +51,15 @@ export class LoginComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
-        if (err.error.validationErrors) {
-          this.errorMsg = err.error.validationErrors;
+        const validationErrors = err?.error?.validationErrors;
+        const errorMessage = err?.error?.error;
+
+        if (Array.isArray(validationErrors) && validationErrors.length) {
+          this.errorMsg = validationErrors;
+        } else if (typeof errorMessage === 'string' && errorMessage.length) {
+          this.errorMsg.push(errorMessage);
         } else {
-          this.errorMsg.push(err.error.error);
+          this.errorMsg.push('Login failed. Please try again.');
         }
       }
     });
@@ -75,5 +70,4 @@ export class LoginComponent implements OnInit {
   }
 
 }
-/* Removed custom signal function. Use Angular's signal from @angular/core. */
 

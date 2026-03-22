@@ -31,4 +31,4 @@ export function createPrescriptionOrder(http: HttpClient, rootUrl: string, param
   );
 }
 
-createPrescriptionOrder.PATH = '/api/orders/create';
+createPrescriptionOrder.PATH = '/api/orders/prescription';

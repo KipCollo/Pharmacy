@@ -1,3 +1,85 @@
-.width{
-   width: 30%;
+.browse-btn {
+   align-items: center;
+   background: #16a34a;
+   border: 0;
+   border-radius: 0.4rem;
+   color: #ffffff;
+   display: inline-flex;
+   font-size: 0.82rem;
+   font-weight: 600;
+   gap: 0.5rem;
+   padding: 0.65rem 0.95rem;
+}
+
+.menu-panel {
+   background: #ffffff;
+   border: 1px solid #e2e8f0;
+   border-radius: 0.5rem;
+   box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
+   left: 0;
+   margin-top: 0.4rem;
+   position: absolute;
+   top: 100%;
+   z-index: 30;
+}
+
+.menu-item {
+   color: #334155;
+   display: block;
+   font-size: 0.82rem;
+   padding: 0.55rem 0.8rem;
+   text-decoration: none;
+}
+
+.menu-item:hover {
+   background: #f8fafc;
+}
+
+.nav-links {
+   overflow-x: auto;
+   scrollbar-width: none;
+   white-space: nowrap;
+}
+
+.nav-links::-webkit-scrollbar {
+   display: none;
+}
+
+.nav-link {
+   align-items: center;
+   color: #334155;
+   display: inline-flex;
+   gap: 0.25rem;
+   text-decoration: none;
+}
+
+.nav-link:hover {
+   color: #16a34a;
+}
+
+.hot {
+   font-weight: 600;
+}
+
+.prescription-btn {
+   background: #ef4444;
+   border: 0;
+   border-radius: 9999px;
+   color: #ffffff;
+   cursor: pointer;
+   font-size: 0.76rem;
+   font-weight: 700;
+   padding: 0.46rem 0.9rem;
+   transition: background-color 0.2s ease;
+}
+
+.prescription-btn:hover {
+   background: #dc2626;
+}
+
+@media (max-width: 900px) {
+   .nav-links {
+      margin-left: 0;
+      margin-right: 0;
+   }
 }

@@ -1,3 +1,9 @@
-.mg{
-   margin-top: 2rem;
+.categories-swiper .swiper-slide {
+   width: 110px;
+}
+
+@media (min-width: 768px) {
+   .categories-swiper .swiper-slide {
+      width: 122px;
+   }
 }
