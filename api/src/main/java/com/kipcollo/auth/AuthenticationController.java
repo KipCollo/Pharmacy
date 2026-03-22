@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,12 @@ public class AuthenticationController {
    @PostMapping("/authenticate")
    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody @Valid AuthenticationRequest request){
         return ResponseEntity.ok(service.authenticate(request));
+   }
+
+   @PostMapping("/refresh-token")
+   public ResponseEntity<AuthenticationResponse> refreshToken(
+           @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
+       return ResponseEntity.ok(service.refreshToken(authHeader));
    }
 
    @GetMapping("/activate-account")

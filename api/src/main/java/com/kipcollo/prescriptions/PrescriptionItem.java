@@ -1,5 +1,6 @@
 package com.kipcollo.prescriptions;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kipcollo.products.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class PrescriptionItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
+    @JsonIgnore
     private Prescriptions prescriptions;
     @ManyToOne
     private Product product;

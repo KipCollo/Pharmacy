@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-import com.kipcollo.user.UserResponse;
+import com.kipcollo.user.Users;
 
 @Data
 @AllArgsConstructor
@@ -17,5 +17,5 @@ public class PaymentRequest {
     private PaymentMethod paymentMethod;
     private int orderId;
     private String orderReference;
-    private UserResponse customer;
+    private Users customer;
 }

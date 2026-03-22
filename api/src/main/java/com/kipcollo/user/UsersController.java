@@ -1,13 +1,12 @@
 package com.kipcollo.user;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -84,6 +83,20 @@ public class UsersController {
         List<CustomerReportResponse> report = new ArrayList<>();
 
         switch (period.toLowerCase()) {
+            case "day":
+            for (int hour = 0; hour < 24; hour++) {
+                int targetHour = hour;
+                long count = allCustomers.stream()
+                    .filter(c -> c.getCreatedDate() != null
+                        && c.getCreatedDate().toLocalDate().isEqual(today)
+                        && c.getCreatedDate().getHour() == targetHour)
+                    .count();
+                report.add(new CustomerReportResponse(
+                    today.atTime(LocalTime.of(hour, 0)).toString(),
+                    (int) count
+                ));
+            }
+            break;
             case "week":
                 LocalDate weekAgo = today.minusDays(6); // last 7 days
                 for (int i = 0; i < 7; i++) {

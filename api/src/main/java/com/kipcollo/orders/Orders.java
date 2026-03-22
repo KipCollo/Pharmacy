@@ -3,6 +3,7 @@ package com.kipcollo.orders;
 import com.kipcollo.orderlines.OrderLine;
 import com.kipcollo.payments.PaymentMethod;
 import com.kipcollo.products.Product;
+import com.kipcollo.shipments.Shipment;
 import com.kipcollo.user.Users;
 
 import jakarta.persistence.*;
@@ -32,6 +33,8 @@ public class Orders {
     private BigDecimal totalAmount;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
+    @Enumerated(EnumType.STRING)
+    private OrderApprovalStatus approvalStatus;
     @ManyToOne
     private Users customers;
     @ManyToMany
@@ -39,14 +42,16 @@ public class Orders {
     private LocalDateTime localDateTime;
     @OneToMany(mappedBy = "order")
     private List<OrderLine> orderLines;
+    @OneToMany(mappedBy = "order")
+    private List<Shipment> shipments;
     private int prescriptionId;
     @CreatedDate
-    @Column(updatable = false,nullable = false)
+    @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
     @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
 
     public Integer getCustomerId() {
-        return customers != null? customers.getCustomerId(): null;
+        return customers != null ? customers.getCustomerId() : null;
     }
 }

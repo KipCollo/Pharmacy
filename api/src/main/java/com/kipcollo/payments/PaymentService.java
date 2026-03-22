@@ -3,6 +3,8 @@ package com.kipcollo.payments;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
@@ -11,6 +13,6 @@ public class PaymentService {
     private final PaymentMapper paymentMapper;
 
     public void process(PaymentRequest request){
-        var payment = paymentRepository.save(paymentMapper.toPayment(request));
+        paymentRepository.save(Objects.requireNonNull(paymentMapper.toPayment(request)));
     }
 }

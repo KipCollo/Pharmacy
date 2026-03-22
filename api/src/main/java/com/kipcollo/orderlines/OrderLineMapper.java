@@ -6,19 +6,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderLineMapper {
 
-    public OrderLine toOrderLine(OrderLineRequest orderLineRequest){
+    public OrderLine toOrderLine(OrderLineRequest orderLineRequest) {
         return OrderLine.builder()
-                .orderLineId(orderLineRequest.getOrderId())
+                .orderLineId(orderLineRequest.getOrderLineId())
+                .productId(orderLineRequest.getProductId())
                 .quantity(orderLineRequest.getQuantity())
                 .order(
                         Orders.builder()
                                 .id(orderLineRequest.getOrderId())
-                                .build()
-                )
+                                .build())
                 .build();
     }
 
-    public OrderLineResponse toOrderLineResponse(OrderLine orderLine){
-        return new OrderLineResponse(orderLine.getOrderLineId(),orderLine.getQuantity());
+    public OrderLineResponse toOrderLineResponse(OrderLine orderLine) {
+        return new OrderLineResponse(orderLine.getOrderLineId(), orderLine.getQuantity());
     }
 }

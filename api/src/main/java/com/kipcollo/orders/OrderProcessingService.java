@@ -1,5 +1,6 @@
 package com.kipcollo.orders;
 
+import com.kipcollo.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class OrderProcessingService {
     public Orders getOrderStatus(int id) {
         Optional<Orders> optionalOrders = orderRepository.findById(id);
         if (optionalOrders.isEmpty()) {
-            throw new RuntimeException("Order not found");
+            throw new ResourceNotFoundException("Order not found");
         }
         return optionalOrders.get();
     }

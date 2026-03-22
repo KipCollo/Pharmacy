@@ -3,7 +3,6 @@ package com.kipcollo.products;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -68,7 +67,7 @@ public class ProductService {
 
    public void updateMedicine(ProductRequest request) {
            var medicine = repository.findById(request.getMedicineId())
-                   .orElseThrow(() -> new RuntimeException("Medicine not found"));
+           .orElseThrow(() -> new ProductNotFoundException("Medicine not found"));
            mergeMedicine(medicine,request);
        }
 

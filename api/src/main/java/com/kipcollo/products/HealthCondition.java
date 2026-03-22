@@ -1,5 +1,6 @@
 package com.kipcollo.products;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class HealthCondition {
     private String name;
     private String description;
     @ManyToMany(mappedBy = "conditions")
+    @JsonIgnore
     private Set<Product> products;
 
 }

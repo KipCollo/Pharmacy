@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.kipcollo.shipments.ShipmentResponse;
+
 import java.util.List;
 
 @Tag(name = "Order APIs")
@@ -42,8 +44,23 @@ public class OrderController {
         return ResponseEntity.ok(orderService.findAll());
     }
 
+    @GetMapping("/reports/revenue")
+    public ResponseEntity<List<RevenueReportResponse>> getRevenueReport(
+            @RequestParam(defaultValue = "week") String period
+    ) {
+        return ResponseEntity.ok(orderService.getRevenueReport(period));
+    }
+
     @GetMapping("{orderId}")
     public ResponseEntity<OrderResponse> findById(@PathVariable int orderId){
         return ResponseEntity.ok(orderService.findById(orderId));
+    }
+
+    @PatchMapping("/{orderId}/admin-workflow")
+    public ResponseEntity<ShipmentResponse> updateAdminWorkflow(
+            @PathVariable Integer orderId,
+            @RequestBody OrderAdminUpdateRequest request
+    ) {
+        return ResponseEntity.ok(orderService.updateOrderAdminWorkflow(orderId, request));
     }
 }

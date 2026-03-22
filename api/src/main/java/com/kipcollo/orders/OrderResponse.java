@@ -4,7 +4,6 @@ import com.kipcollo.payments.PaymentMethod;
 import com.kipcollo.products.Product;
 import com.kipcollo.user.Users;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
 
 @Data
 @AllArgsConstructor
@@ -23,6 +21,7 @@ public class OrderResponse {
     private Users customers;
     private List<Product> products;
     private PaymentMethod paymentMethod;
+    private OrderApprovalStatus approvalStatus;
     private BigDecimal totalAmount;
     private LocalDateTime localDateTime;
     private LocalDateTime createdAt;

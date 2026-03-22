@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Order Confirmation</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 0; }
+        .container { max-width: 680px; margin: 20px auto; background: #ffffff; border-radius: 8px; padding: 20px; }
+        h1 { color: #1f2937; }
+        .meta { background: #f9fafb; border-radius: 8px; padding: 12px; margin: 16px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { border-bottom: 1px solid #e5e7eb; text-align: left; padding: 10px 6px; }
+        th { color: #374151; font-size: 13px; }
+        td { color: #111827; font-size: 14px; }
+        .cta { display: inline-block; margin-top: 16px; background: #2563eb; color: #fff; text-decoration: none; padding: 10px 14px; border-radius: 6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Thanks for your order, <span th:text="${username}">Customer</span>!</h1>
+    <p>Your order has been received and is being processed.</p>
+
+    <div class="meta">
+        <p><strong>Order Reference:</strong> <span th:text="${orderReference}">ORD-000</span></p>
+        <p><strong>Payment Method:</strong> <span th:text="${paymentMethod}">CARD</span></p>
+        <p><strong>Total Amount:</strong> <span th:text="${totalAmount}">0.00</span></p>
+        <p><strong>Order Date:</strong> <span th:text="${orderDate}">2026-03-22</span></p>
+    </div>
+
+    <h3>Items Ordered</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Line Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${orderedItems}">
+            <td th:text="${item.name}">Product</td>
+            <td th:text="${item.quantity}">1</td>
+            <td th:text="${item.unitPrice}">0.00</td>
+            <td th:text="${item.lineTotal}">0.00</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p>You will receive another email with tracking details once shipment starts.</p>
+    <a class="cta" th:href="${orderTrackingUrl}" target="_blank">View Order Tracking</a>
+</div>
+</body>
+</html>

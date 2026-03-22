@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Shipment Tracking Update</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f3f4f6; margin: 0; padding: 0; }
+        .container { max-width: 680px; margin: 20px auto; background: #fff; border-radius: 8px; padding: 20px; }
+        h1 { color: #111827; }
+        .pill { display: inline-block; background: #e5edff; color: #1d4ed8; border-radius: 999px; padding: 4px 10px; font-size: 12px; }
+        .meta { background: #f9fafb; border-radius: 8px; padding: 12px; margin-top: 14px; }
+        .cta { display: inline-block; margin-top: 16px; background: #059669; color: #fff; text-decoration: none; padding: 10px 14px; border-radius: 6px; }
+        ul { padding-left: 18px; }
+        li { margin-bottom: 6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Shipment update for your order <span th:text="${orderReference}">Order-000</span></h1>
+    <p>Hello <span th:text="${username}">Customer</span>, your shipment is now updated.</p>
+    <span class="pill" th:text="${shipmentStatus}">IN_PROGRESS</span>
+
+    <div class="meta">
+        <p><strong>Shipment ID:</strong> <span th:text="${shipmentId}">SHP-000</span></p>
+        <p><strong>Carrier:</strong> <span th:text="${carrier}">Carrier</span></p>
+        <p><strong>Service:</strong> <span th:text="${service}">Service</span></p>
+        <p><strong>Expected Arrival:</strong> <span th:text="${expectedArrival}">2026-03-30</span></p>
+        <p><strong>From:</strong> <span th:text="${origin}">Origin</span></p>
+        <p><strong>To:</strong> <span th:text="${destination}">Destination</span></p>
+    </div>
+
+    <h3>Latest Timeline</h3>
+    <ul>
+        <li th:each="entry : ${timeline}"
+            th:text="${entry.title + ' - ' + entry.time + ' (' + entry.note + ')'}">Timeline entry</li>
+    </ul>
+
+    <a class="cta" th:href="${trackingUrl}" target="_blank">Track Shipment</a>
+</div>
+</body>
+</html>

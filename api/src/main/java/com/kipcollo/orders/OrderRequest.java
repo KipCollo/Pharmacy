@@ -1,6 +1,5 @@
 package com.kipcollo.orders;
 
-import com.kipcollo.dto.PurchaseRequest;
 import com.kipcollo.payments.PaymentMethod;
 import com.kipcollo.products.PurchaseProductRequest;
 import com.kipcollo.user.Users;
@@ -24,10 +23,10 @@ public class OrderRequest {
     @NotBlank(message = "Customer Should be present")
     @NotNull(message = "Customer should be present")
     private String reference;
-    @NotNull(message="Payment method should be precise")
+    @NotNull(message = "Payment method should be precise")
     private PaymentMethod paymentMethod;
     @NotNull(message = "Customer should be present")
-    @NotBlank(message="Customer should be present")
+    @NotBlank(message = "Customer should be present")
     private Users customers;
     @Positive(message = "Amount should be positive")
     private BigDecimal totalAmount;

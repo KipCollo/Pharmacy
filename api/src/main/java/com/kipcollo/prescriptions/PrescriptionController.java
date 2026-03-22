@@ -16,7 +16,7 @@ public class PrescriptionController {
     private final PrescriptionService prescriptionService;
 
     @GetMapping
-    public ResponseEntity<List<PrescriptionResponse>> getAllPrescriptions(){
+    public ResponseEntity<List<PrescriptionResponse>> getAllPrescriptions() {
         return ResponseEntity.ok(prescriptionService.getAllPrescriptions());
     }
 
@@ -24,7 +24,6 @@ public class PrescriptionController {
     public ResponseEntity<List<PrescriptionResponse>> getUserPrescriptions() {
         return ResponseEntity.ok(prescriptionService.getUserPrescriptions());
     }
-
 
     @PostMapping
     public ResponseEntity<Void> uploadPrescription(@RequestParam("image") MultipartFile image) throws IOException {
@@ -35,18 +34,26 @@ public class PrescriptionController {
     @PutMapping("/{id}/approve")
     public ResponseEntity<?> approvePrescription(
             @PathVariable Integer id,
-            @RequestBody(required = false) List<PrescriptionItemRequest> items
-    ){
-        prescriptionService.approvePrescriptions(id,items);
+            @RequestBody(required = false) List<PrescriptionItemRequest> items) {
+        prescriptionService.reviewPrescription(id, true, items);
         return ResponseEntity.ok("Prescription approved successfully.");
     }
 
+    @PutMapping("/{id}/review")
+    public ResponseEntity<?> reviewPrescription(
+            @PathVariable Integer id,
+            @RequestParam boolean approved,
+            @RequestBody(required = false) List<PrescriptionItemRequest> items) {
+        prescriptionService.reviewPrescription(id, approved, items);
+        String message = approved
+                ? "Prescription approved successfully."
+                : "Prescription rejected successfully.";
+        return ResponseEntity.ok(message);
+    }
 
     @GetMapping("/user/latest-approved")
     public ResponseEntity<PrescriptionResponse> getLatestApprovedPrescription() {
         return ResponseEntity.ok(prescriptionService.getLatestApprovedPrescription());
     }
-
-
 
 }

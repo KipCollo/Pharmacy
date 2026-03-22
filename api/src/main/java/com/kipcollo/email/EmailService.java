@@ -23,19 +23,27 @@ public class EmailService {
 
    @Async
    public void send(String to, String userName, EmailTemplate emailTemplate, String confirmUrl, String activationCode, String subject)throws MessagingException {
-       String templateName;
-       if (emailTemplate == null) {
-           templateName = "confirm-email";
-       } else {
-           templateName = emailTemplate.name();
-       }
-
-       MimeMessage message = mailSender.createMimeMessage();
-       MimeMessageHelper helper = new MimeMessageHelper(message,MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
        Map<String, Object> properties = new HashMap<>();
        properties.put("username", userName);
+       properties.put("userName", userName);
        properties.put("confirmation", confirmUrl);
+       properties.put("confirmationUrl", confirmUrl);
        properties.put("activationCode", activationCode);
+
+       send(to, subject, emailTemplate, properties);
+   }
+
+   @Async
+   public void send(String to, String subject, EmailTemplate emailTemplate, Map<String, Object> properties)
+           throws MessagingException {
+       String templateName = emailTemplate == null ? "confirm-email" : emailTemplate.name();
+
+       MimeMessage message = mailSender.createMimeMessage();
+       MimeMessageHelper helper = new MimeMessageHelper(
+               message,
+               MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+               StandardCharsets.UTF_8.name()
+       );
 
        Context context = new Context();
        context.setVariables(properties);

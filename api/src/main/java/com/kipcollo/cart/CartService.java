@@ -1,5 +1,6 @@
 package com.kipcollo.cart;
 
+import com.kipcollo.exceptions.ResourceNotFoundException;
 import com.kipcollo.exceptions.ProductNotFoundException;
 import com.kipcollo.products.Product;
 import com.kipcollo.products.ProductRepository;
@@ -7,11 +8,6 @@ import com.kipcollo.user.UserService;
 import com.kipcollo.user.Users;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.web.embedded.undertow.UndertowServletWebServer;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -72,7 +68,8 @@ public class CartService {
     }
 
     public void removeFromCart(Integer cartId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("Cart Not Found"));
+        Cart cart = cartRepository.findById(cartId)
+            .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
         cart.setStatus(CartStatus.REMOVED);
         cart.setUpdateTime(LocalDateTime.now());
         cartRepository.save(cart);
@@ -110,7 +107,7 @@ public class CartService {
     @Transactional
     public void removeProductFromCart(int cartId, int productId) {
         Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
         cart.getCartProducts().removeIf(p -> p.getProduct().getId() == productId);
         cartRepository.save(cart);
     }

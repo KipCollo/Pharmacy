@@ -6,11 +6,13 @@ import lombok.Getter;
 
 public enum EmailTemplate {
 
-   ACTIVATE_ACCOUNT("activate_account");
+    ACTIVATE_ACCOUNT("activate_account"),
+    ORDER_PLACED("order_placed"),
+    ORDER_TRACKING("order_tracking");
 
-   private final String name;
+    private final String name;
 
-   EmailTemplate(String name) {
-       this.name = name;
-   }
+    EmailTemplate(String name) {
+        this.name = name;
+    }
 }

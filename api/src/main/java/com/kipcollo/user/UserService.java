@@ -1,9 +1,11 @@
 package com.kipcollo.user;
 
-import java.time.LocalDate;
+import com.kipcollo.exceptions.ResourceNotFoundException;
+import com.kipcollo.exceptions.UnauthorizedException;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import io.micrometer.common.util.StringUtils;
@@ -16,96 +18,96 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService{
+public class UserService implements UserDetailsService {
 
-   private final UsersRepository repo;
-   private final UsersMapper mapper;
+    private final UsersRepository repo;
+    private final UsersMapper mapper;
 
-   @Override
-   @Transactional
-   public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-       return repo.findByEmail(userEmail)
-               .orElseThrow(()-> new UsernameNotFoundException("User not found!"));
-   }
-
-   public List<UserResponse> getAllCustomers() {
-
-      return repo.findAll()
-              .stream()
-              .map(mapper::fromCustomer)
-              .collect(Collectors.toList());
-   }
-
-    public String createCustomer(UserRequest request) {
-      repo.save(mapper.toCustomer(request));
-      return "Customer Created with ID:: ";
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
+        return repo.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 
-   public UserResponse getCustomerById(Integer customerId) {
-      return repo.findById(customerId)
-              .map(mapper::fromCustomer)
-              .orElseThrow(() -> new RuntimeException("Customer not found"));
-   }
+    public List<UserResponse> getAllCustomers() {
 
-   public void updateCustomer(UserRequest request) {
-       var customer = repo.findById(request.getCustomerId())
-                       .orElseThrow(() -> new RuntimeException("Customer not found"));
-       mergeCustomer(customer,request);
-   }
+        return repo.findAll()
+                .stream()
+                .map(mapper::fromCustomer)
+                .collect(Collectors.toList());
+    }
 
-   public void deleteCustomer(Integer customerId) {
-      repo.deleteById(customerId);
-   }
+    public String createCustomer(UserRequest request) {
+        repo.save(Objects.requireNonNull(mapper.toCustomer(request)));
+        return "Customer Created with ID:: ";
+    }
 
-   private void mergeCustomer(Users users, UserRequest request) {
+    public UserResponse getCustomerById(Integer customerId) {
+        return repo.findById(Objects.requireNonNull(customerId))
+                .map(mapper::fromCustomer)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+    }
 
-       if (StringUtils.isNotBlank(String.valueOf(users.getCustomerId()))){
-           users.setCustomerId(request.getCustomerId());
-       }
-       if (StringUtils.isNotBlank(users.getFirstName())){
-           users.setFirstName(request.getFirstName());
-       }
-       if (StringUtils.isNotBlank(users.getLastName())){
-           users.setLastName(request.getLastName());
-       }
-       if (StringUtils.isNotBlank(String.valueOf(users.getDateOfBirthDate()))){
-           users.setDateOfBirthDate(request.getDateOfBirth());
-       }
-       if (StringUtils.isNotBlank(users.getEmail())){
-           users.setEmail(request.getEmail());
-       }
-       if (StringUtils.isNotBlank(users.getPhone())){
-           users.setPhone(request.getPhone());
-       }
-       if(StringUtils.isNotBlank(users.getLocation())){
-           users.setLocation(request.getLocation());
-       }
-       if (StringUtils.isNotBlank(users.getPassword())){
-           users.setPassword(request.getPassword());
-       }
-   }
+    public void updateCustomer(UserRequest request) {
+        var customer = repo.findById(request.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        mergeCustomer(customer, request);
+    }
+
+    public void deleteCustomer(Integer customerId) {
+        repo.deleteById(Objects.requireNonNull(customerId));
+    }
+
+    private void mergeCustomer(Users users, UserRequest request) {
+
+        if (request.getCustomerId() > 0) {
+            users.setCustomerId(request.getCustomerId());
+        }
+        if (StringUtils.isNotBlank(request.getFirstName())) {
+            users.setFirstName(request.getFirstName());
+        }
+        if (StringUtils.isNotBlank(request.getLastName())) {
+            users.setLastName(request.getLastName());
+        }
+        if (request.getDateOfBirth() != null) {
+            users.setDateOfBirthDate(request.getDateOfBirth());
+        }
+        if (StringUtils.isNotBlank(request.getEmail())) {
+            users.setEmail(request.getEmail());
+        }
+        if (StringUtils.isNotBlank(request.getPhone())) {
+            users.setPhone(request.getPhone());
+        }
+        if (request.getLocation() != null) {
+            users.setLocation(request.getLocation());
+        }
+        if (StringUtils.isNotBlank(request.getPassword())) {
+            users.setPassword(request.getPassword());
+        }
+    }
 
     public Boolean existsById(int customerId) {
-       return repo.findById(customerId)
-               .isPresent();
+        return repo.findById(customerId)
+                .isPresent();
     }
 
     public UserResponse getCustomerByEmail(String email) {
-       return repo.findByEmail(email)
-               .map(mapper::fromCustomer)
-               .orElseThrow(() -> new RuntimeException("Customer not found"));
+        return repo.findByEmail(email)
+                .map(mapper::fromCustomer)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
     }
 
-    // public List<UserReport> getCustomerReport(LocalDateTime startDate, LocalDateTime endDate) {
-    //     if (startDate == null || endDate == null) {
-    //         return repo.findAllCustomers();
-    //     }
-    //     return repo.findCustomersBetweenDates(startDate, endDate);
+    // public List<UserReport> getCustomerReport(LocalDateTime startDate,
+    // LocalDateTime endDate) {
+    // if (startDate == null || endDate == null) {
+    // return repo.findAllCustomers();
+    // }
+    // return repo.findCustomersBetweenDates(startDate, endDate);
     // }
 
     public Users getAuthenticatedUser() {
@@ -115,7 +117,7 @@ public class UserService implements UserDetailsService{
                 .getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new RuntimeException("Unauthenticated request");
+            throw new UnauthorizedException("Unauthenticated request");
         }
 
         Object principal = authentication.getPrincipal();
@@ -129,11 +131,8 @@ public class UserService implements UserDetailsService{
         }
 
         return repo.findByEmail(username)
-                .orElseThrow(() ->
-                        new RuntimeException("User not found: " + username)
-                );
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
     }
-
 
     public CustomerDashboardResponse getCustomerDashboardMetrics() {
         List<Users> allUsers = repo.findAll();

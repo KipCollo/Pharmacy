@@ -1,22 +1,20 @@
 package com.kipcollo.prescriptions;
 
+import com.kipcollo.exceptions.BadRequestException;
+import com.kipcollo.exceptions.ResourceNotFoundException;
 import com.kipcollo.products.Product;
 import com.kipcollo.products.ProductRepository;
 import com.kipcollo.user.UserService;
 import com.kipcollo.user.Users;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +26,7 @@ public class PrescriptionService {
     private final UserService userService;
     private final ProductRepository productRepository;
 
-    public void uploadPrescriptions( MultipartFile image) throws IOException {
+    public void uploadPrescriptions(MultipartFile image) throws IOException {
 
         Users user = userService.getAuthenticatedUser();
 
@@ -41,32 +39,58 @@ public class PrescriptionService {
     }
 
     @Transactional
-    public void approvePrescriptions(Integer prescriptionId, List<PrescriptionItemRequest> items) {
+    public void reviewPrescription(Integer prescriptionId, boolean approved, List<PrescriptionItemRequest> items) {
+        if (prescriptionId == null) {
+            throw new IllegalArgumentException("Prescription id is required");
+        }
+
         Prescriptions prescription = repository.findById(prescriptionId)
-                .orElseThrow(() -> new RuntimeException("Prescription not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Prescription not found"));
 
-        prescription.setStatus(PrescriptionStatus.APPROVED);
-
-        if (items != null && !items.isEmpty()) {
-
+        if (!approved) {
+            prescription.setStatus(PrescriptionStatus.REJECTED);
             if (prescription.getPrescriptionItem() != null) {
                 prescription.getPrescriptionItem().clear();
             }
+            repository.save(prescription);
+            return;
+        }
 
-            for (PrescriptionItemRequest itemRequest : items) {
-                Product product = productRepository.findById(itemRequest.getProduct().getId())
-                        .orElseThrow(() -> new RuntimeException("Product not found"));
+        if (items == null || items.isEmpty()) {
+            throw new BadRequestException("At least one product is required when approving a prescription");
+        }
 
-                PrescriptionItem prescriptionItem = new PrescriptionItem();
-                prescriptionItem.setPrescriptions(prescription);
-                prescriptionItem.setProduct(product);
-                prescriptionItem.setQuantity(itemRequest.getQuantity());
+        prescription.setStatus(PrescriptionStatus.APPROVED);
 
-                prescription.getPrescriptionItem().add(prescriptionItem);
+        if (prescription.getPrescriptionItem() != null) {
+            prescription.getPrescriptionItem().clear();
+        } else {
+            prescription.setPrescriptionItem(new ArrayList<>());
+        }
+
+        for (PrescriptionItemRequest itemRequest : items) {
+            if (itemRequest.getProduct() == null || itemRequest.getProduct().getId() <= 0) {
+                throw new BadRequestException("Each item must have a product id");
             }
+
+            Product product = productRepository.findById(itemRequest.getProduct().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+            PrescriptionItem prescriptionItem = new PrescriptionItem();
+            prescriptionItem.setPrescriptions(prescription);
+            prescriptionItem.setProduct(product);
+            prescriptionItem.setQuantity(
+                    itemRequest.getQuantity() == null || itemRequest.getQuantity() < 1 ? 1 : itemRequest.getQuantity());
+
+            prescription.getPrescriptionItem().add(prescriptionItem);
         }
 
         repository.save(prescription);
+    }
+
+    @Transactional
+    public void approvePrescriptions(Integer prescriptionId, List<PrescriptionItemRequest> items) {
+        reviewPrescription(prescriptionId, true, items);
     }
 
     @Transactional
@@ -92,7 +116,8 @@ public class PrescriptionService {
     public PrescriptionResponse getLatestApprovedPrescription() {
         Users user = userService.getAuthenticatedUser();
         return repository
-                .findTopByUserCustomerIdAndStatusOrderByUploadedAtDesc(user.getCustomerId(), PrescriptionStatus.APPROVED)
+                .findTopByUserCustomerIdAndStatusOrderByUploadedAtDesc(user.getCustomerId(),
+                        PrescriptionStatus.APPROVED)
                 .map(prescriptionMapper::fromPrescription)
                 .orElse(null);
 

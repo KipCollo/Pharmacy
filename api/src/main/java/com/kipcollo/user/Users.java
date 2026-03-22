@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kipcollo.auth.Roles;
 import com.kipcollo.auth.Token;
 import com.kipcollo.cart.Cart;
@@ -49,10 +50,15 @@ public class Users implements Principal,UserDetails{
    private byte[] profilePicture;
    @Column(unique = true)
    private String email;
+   @JsonIgnore
    private String password;
    private String phone;
    private String location;
+   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+   @JsonManagedReference(value = "user-address")
+   private Address address;
    @OneToMany(mappedBy = "user")
+   @JsonIgnore
    private List<Cart> cart;
    private boolean accountLocked;
    private boolean enabled;
@@ -85,6 +91,16 @@ public class Users implements Principal,UserDetails{
   @Override
   public String getName() {
      return email;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+     return !accountLocked;
+  }
+
+  @Override
+  public boolean isEnabled() {
+     return enabled;
   }
 
    public String fullname(){
