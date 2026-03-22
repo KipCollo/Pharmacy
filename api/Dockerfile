@@ -1,29 +1,25 @@
+# Build stage
 FROM maven AS build
-
 LABEL authors="collins"
-
-WORKDIR /app
-
+WORKDIR /build
 COPY pom.xml .
-
-RUN mvn clean install
-
-COPY ./src ./app/src
-
+RUN mvn dependency:go-offline
+COPY ./src ./src
 RUN mvn clean package -Dskiptests
 
-FROM java
+# Runtime stage
+FROM amazoncorretto:21
 
+ARG PROFILE=dev
 ARG APP_VERSION=1.0.0
 
-WORKDIR /target
-
-COPY --from=build app/target /target
-
+WORKDIR /app
+COPY --from=build app/target/api-*.jar /target/api.jar
 EXPOSE 8080
 
+ENV SPRING_PROFILES_ACTIVE=${PROFILE}
 ENV APP_VERSION=APP_VERSION
 ENV DB_URL=jdbc:postgresql://localhost:5432/Pharmacy
 
-CMD java -jar api-${APP_VERSION}.jar
+CMD java -jar -Dspring.profiles.active=${PROFILE}  -Dspring.datasource.url=${DB_URL} api-${APP_VERSION}.jar
 
