@@ -1,0 +1,135 @@
+<div class="prescription-shell">
+    <nav class="breadcrumb">
+        <a (click)="goHome()">Home</a>
+        <span>></span>
+        <a (click)="goProducts()">Products</a>
+        <span>></span>
+        <span class="current">Prescription Approval</span>
+    </nav>
+
+    <div class="layout">
+        <section class="main-panel">
+            @if (errorMessage) {
+            <p class="message error">{{ errorMessage }}</p>
+            }
+
+            @if (successMessage) {
+            <p class="message success">{{ successMessage }}</p>
+            }
+
+            @if (currentStepIndex === 0) {
+            <div class="card">
+                <h2>Upload Prescription</h2>
+                <p>Upload a clear prescription image so the admin can review and add products.</p>
+
+                <div class="upload-row">
+                    <input type="file" (change)="onFileSelected($event)" class="file-input" accept="image/*,.pdf">
+                    <button (click)="uploadPrescription()" class="btn btn-primary" [disabled]="isUploading">
+                        {{ isUploading ? 'Uploading...' : 'Upload Prescription' }}
+                    </button>
+                </div>
+            </div>
+            } @else if (currentStepIndex === 1) {
+            <div class="card">
+                <h2>Approval Status</h2>
+                <p>We check your latest prescription status and update this page automatically.</p>
+
+                @if (isLoadingStatus) {
+                <p class="muted">Checking status...</p>
+                } @else if (!latestPrescription) {
+                <p class="muted">No prescription found yet. Upload one to continue.</p>
+                } @else {
+                <div class="status-box">
+                    <span class="status-label">Status</span>
+                    <span class="status-chip" [class.status-approved]="latestPrescription.status === 'APPROVED'"
+                        [class.status-rejected]="latestPrescription.status === 'REJECTED'"
+                        [class.status-pending]="latestPrescription.status !== 'APPROVED' && latestPrescription.status !== 'REJECTED'">
+                        {{ latestPrescription.status || 'PENDING' }}
+                    </span>
+                </div>
+
+                @if (latestPrescription.status !== 'APPROVED') {
+                <p class="muted">
+                    Not approved yet. Once admin approves and adds prescription products, you can continue.
+                </p>
+                }
+
+                @if (latestPrescription.status === 'APPROVED') {
+                <div class="approved-products-preview">
+                    <h3>Products Added By Admin</h3>
+                    @for (item of selectedProducts; track item.id) {
+                    <div class="preview-item">
+                        <span>{{ item.product?.name || 'Unnamed product' }}</span>
+                        <span>x{{ item.quantity || 1 }}</span>
+                    </div>
+                    }
+                </div>
+                }
+                }
+            </div>
+            } @else {
+            <div class="card">
+                <h2>Prescription Products</h2>
+                <p>Review products before sending them to your cart.</p>
+
+                @if (!selectedProducts.length) {
+                <p class="muted">No products selected. Go back to approval step and refresh status.</p>
+                } @else {
+                @for (item of selectedProducts; track item.id) {
+                <div class="product-item">
+                    <div class="item-main">
+                        @if (item.product?.image) {
+                        <img [src]="'data:image/jpeg;base64,' + item.product?.image" alt="Product"
+                            class="product-image">
+                        }
+                        <div>
+                            <h4>{{ item.product?.name || 'Unnamed product' }}</h4>
+                            <p>Qty: {{ item.quantity || 1 }}</p>
+                            <p>Kes {{ item.product?.price || 0 }}</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" (click)="removeSelectedProduct(item.id)">Remove</button>
+                </div>
+                }
+                }
+            </div>
+            }
+        </section>
+
+        <aside class="side-panel">
+            <div class="stepper" aria-label="Prescription steps">
+                @for (step of steps; track step; let i = $index) {
+                <div class="step" [class.last]="i === steps.length - 1" (click)="goToStep(i)">
+                    <div class="marker" [class.active]="i === currentStepIndex" [class.done]="i < currentStepIndex">
+                        @if (i < currentStepIndex) { <span>✓</span> } @else { <span>{{ i + 1 }}</span> }
+                    </div>
+                    <div class="step-copy">
+                        <p class="step-title" [class.active]="i === currentStepIndex">{{ step }}</p>
+                        @if (i === currentStepIndex) { <p class="step-note">Current</p> }
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="actions">
+                @if (currentStepIndex === 0) {
+                <button class="btn btn-secondary" (click)="goProducts()">Cancel</button>
+                <button class="btn btn-primary" [disabled]="!selectedFile || isUploading"
+                    (click)="uploadPrescription()">
+                    Continue
+                </button>
+                } @else if (currentStepIndex === 1) {
+                <button class="btn btn-secondary" (click)="goToStep(0)">Back</button>
+                <button class="btn btn-primary" [disabled]="!canProceedToProducts()" (click)="proceedToProducts()">
+                    Continue
+                </button>
+                } @else {
+                <button class="btn btn-secondary" (click)="cancelPurchase()">Cancel</button>
+                <button class="btn btn-primary" [disabled]="!selectedProducts.length" (click)="proceedToPurchase()">
+                    Proceed to Purchase
+                </button>
+                }
+            </div>
+        </aside>
+    </div>
+</div>
