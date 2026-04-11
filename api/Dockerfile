@@ -8,7 +8,7 @@ COPY ./src ./src
 RUN mvn clean package -Dskiptests
 
 # Runtime stage
-FROM amazoncorretto:21
+FROM amazoncorretto:17
 
 ARG PROFILE=dev
 ARG APP_VERSION=1.0.0
