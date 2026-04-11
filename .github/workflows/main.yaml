@@ -1,0 +1,10 @@
+name: Pharmacy Deployment
+on:
+    push:
+        branches:
+            - "main"
+jobs:
+    Install_Dependencies:
+        runs-on: ubuntu:latest
+        steps:
+            - run:  echo "Hello World"
