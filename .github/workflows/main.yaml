@@ -5,7 +5,7 @@ on:
             - "main"
 jobs:
     compile:
-        runs-on: ubuntu:latest
+        runs-on: ubuntu-latest
         name: Compile Project
         steps:
           - name: Checkout Code
@@ -17,3 +17,8 @@ jobs:
             uses: actions/setup-jdk@v4
             with:
                 java-version: 21
+
+          - name: Compile
+            run: |
+                cd api
+                ./mvnw clean compile
