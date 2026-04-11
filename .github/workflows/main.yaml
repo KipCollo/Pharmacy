@@ -33,6 +33,7 @@ jobs:
 
           - name: Running Unit Test
             run: |
+                cd api
                 ./mvnw clean test
     build-and-deploy:
         runs-on: ubuntu-latest
