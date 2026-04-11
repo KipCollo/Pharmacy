@@ -4,7 +4,16 @@ on:
         branches:
             - "main"
 jobs:
-    Install_Dependencies:
+    compile:
         runs-on: ubuntu:latest
+        name: Compile Project
         steps:
-            - run:  echo "Hello World"
+          - name: Checkout Code
+            uses: actions/checkout@v4
+            with:
+                fetch-depth: 0
+
+          - name: Setup JDK
+            uses: actions/setup-jdk@v4
+            with:
+                java-version: 21
