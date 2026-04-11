@@ -4,9 +4,9 @@ on:
         branches:
             - "main"
 jobs:
-    compile:
+    compile-and-test:
         runs-on: ubuntu-latest
-        name: Compile Project
+        name: Compile and Test Project
         steps:
           - name: Checkout Code
             uses: actions/checkout@v4
@@ -23,3 +23,37 @@ jobs:
             run: |
                 cd api
                 ./mvnw clean compile
+
+          - name: Cache Maven Dependencies
+            uses: actions/cache@v4
+            with:
+                path: ~/.m2
+                key: ${{runner.os}}-m2-${{hashFiles('**/pom.xml')}}
+                restore-keys: ${{runner.os}}-m2
+
+          - name: Running Unit Test
+            run: |
+                ./mvnw clean test
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        name: Build & Deploy
+        needs: compile-and-test
+        steps:
+          - name: Setup JDK
+            uses: actions/setup-java@v4
+            with:
+                java-version: 21
+                distribution: 'corretto'
+
+          - name: Cache Maven Dependencies
+            uses: actions/cache@v4
+            with:
+                path: ~/.m2
+                key: ${{runner.os}}-m2-${{hashFiles('**/pom.xml')}}
+                restore-keys: ${{runner.os}}-m2
+
+          - name: Build Project
+            run: ./mvnw clean package DskipTests
+
+          - name: Set up Docker
+            uses: docker/setup-buildx-action@v3
