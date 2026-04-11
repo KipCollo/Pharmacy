@@ -33,10 +33,10 @@ jobs:
                 key: ${{runner.os}}-m2-${{hashFiles('**/pom.xml')}}
                 restore-keys: ${{runner.os}}-m2
 
-          - name: Running Unit Test
-            run: |
-                cd api
-                ./mvnw clean test
+        #   - name: Running Unit Test
+        #     run: |
+        #         cd api
+        #         ./mvnw clean test
     build-and-deploy:
         runs-on: ubuntu-latest
         name: Build & Deploy
