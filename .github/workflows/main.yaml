@@ -63,7 +63,7 @@ jobs:
           - name: Build Project
             run: |
                 cd api
-                ./mvnw clean package DskipTests
+                ./mvnw clean package -DskipTests
 
           - name: Set up Docker
             uses: docker/setup-buildx-action@v3
